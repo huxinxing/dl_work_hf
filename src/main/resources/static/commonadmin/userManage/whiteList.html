@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>白名单</title>
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <style>
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+        #removeModal .modal-header{
+            border-bottom:none;
+        }
+        #removeModal .modal-footer{
+            border-top:none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent" id="whiteList">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">白名单</div>
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-2">
+                <input class="form-control" id="uidWalletAddr" type="text" placeholder="钱包地址">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+            <div class="btn btn-info new-create" id="createWhiteList" style="float: right;margin-right: 15px;">添加白名单</div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+            </table>
+        </div>
+    </div>
+    <!--新增-->
+    <div id="createModal" class="modal fade">
+        <div class="modal-dialog" style="width: 500px;height: 230px">
+            <div class="modal-content" style="margin-left: 100px;width: 500px;height: 230px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">添加白名单</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;overflow: hidden;min-height: 104px;">
+                    <div class="form-group">
+                        <input type="text" placeholder="请输入钱包地址" class="form-control" id="newAddr" />
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default confirmUserType" id="saveNewAddr">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--删除-->
+    <div id="removeModal" class="modal fade">
+        <div class="modal-dialog" style="width: 500px;height: 208px">
+            <div class="modal-content" style="margin-left: 100px;width: 500px;height: 208px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <!--<h4 id="" class="modal-title">发放体验金</h4>-->
+                </div>
+                <div class="modal-body" style="text-align: center;overflow: hidden;min-height: 100px;">
+                    <div class="form-group" style="font-weight: bold">
+                        确定要将此地址移除白名单吗？
+                    </div>
+                    <div id="removeAddr" style="margin-top: 20px"></div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-right: 20px">取消</button>
+                    <button type="button" class="btn btn-default confirmUserType" id="confirmRemove">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--添加备注-->
+    <div id="remarkModal" class="modal fade">
+        <div class="modal-dialog" style="width: 500px;height: 260px">
+            <div class="modal-content" style="margin-left: 100px;width: 500px;height: 260px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLab3" class="modal-title">添加/修改备注</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;overflow: hidden;min-height: 141px;">
+                    <div class="form-group">
+                        <textarea type="text" placeholder="请输入备注，不超过50字" class="form-control" id="white_remark" style="height: 80px;" maxlength="50"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-default confirmUserType" id="saveUpdateRemark">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alertTip" id="languageSet"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+<script type="text/html" id="oper_whiteList">
+    <a href="javascript:void(0);" id="remove_whiteList" targetId={{d.id}} targetAddr={{d.walletAddress}}>移除白名单</a>
+    <a style="margin-left: 15px;" href="javascript:void(0);" id="update_remark" targetId={{d.id}}>修改备注</a>
+</script>
+<script type="text/javascript" src="/js/userManage/whiteList.js"></script>
+</body>
+</html>

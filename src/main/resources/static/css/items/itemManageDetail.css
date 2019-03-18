@@ -1,0 +1,225 @@
+*{margin: 0;padding: 0}
+body{
+    margin: 40px;
+}
+li{list-style: none}
+.fl{float: left}
+.fr{float: right}
+.dn{display: none!important;}
+.d-title{
+    font-size: 20px;
+    font-weight: bold;
+    width: 82px;
+    border-bottom: 3px solid #0066ff;
+    padding-bottom: 5px;
+    margin-bottom: 50px;
+}
+#lan_detail h5{
+    padding-left: 10px;
+    border-left: 2px solid #0066FF;
+    margin-bottom: 22px;
+}
+.form-group{
+    width: 340px;
+}
+.mrr-45{
+    margin-right: 45px;
+}
+.line-dashed{
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, #ccc 0%, #ccc 50%, transparent 50%);
+    background-size: 18px 1px;
+    background-repeat: repeat-x;
+}
+.invest-list{
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+.form-group-input{
+    width: 312px;
+    margin-right: 80px;
+    margin-bottom: 45px;
+}
+.form-group-input div{
+    display: inline-block;
+}
+.input-detail .form-control{
+    width: 226px;
+}
+.control-label{
+    margin-right: 20px;
+}
+.red-sp{
+    color: red;
+}
+.red-tr{
+    color: transparent;
+}
+.po-top-10{
+    float: left;
+}
+.mrt-9{
+    margin-bottom: 34px;
+}
+.mrt-10{
+    margin-bottom: 35px;
+}
+.combobox{
+    width: 72px!important;
+    display: inline-block;
+    float: right;
+}
+.btn-upload,.btn-black,.btn-upload-ETH{
+    text-align: center;
+    background: #333;
+    color: #fff;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    width: 60px;
+}
+.btn-black{
+    width: 82px;
+    margin-right: 10px;
+}
+.padding-top-6{
+    padding-top: 6px;
+}
+.padding-top-6 input{
+    position: relative;
+    top:1px;
+}
+.clear{
+    clear: both;
+}
+#token_show{
+    width: 160px;
+}
+.status{
+    display: inline-block;
+    background: #b3d1FF;
+    color: #fff;
+    border: 1px solid #0066FF;
+    border-radius: 3px;
+    height: 30px;
+    line-height: 30px;
+    width: 78px;
+    text-align: center;
+    color: #0066ff;
+}
+.detail-state div{
+    display: inline-block;
+}
+.detail-state{
+    margin-top: 33px;
+    margin-bottom: 80px;
+}
+.status-out{
+    margin-bottom: 80px;
+}
+.status-in{
+    margin-right: 236px;
+}
+.status-in label{
+    margin-right: 27px;
+}
+.publish-in label{
+    margin-right: 20px;
+}
+.btn-all{
+    display: block!important;
+}
+.input-detail{
+    margin-top: 42px;
+}
+input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {
+/* placeholder字体大小  */
+    font-size: 12px;
+}
+.ell{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.margin-50{
+    margin-right: 50px;
+}
+.modal-header{
+    border-bottom:0;
+}
+.modal-footer{
+    border-top:0;
+    text-align: center;
+    margin-top: 0;
+}
+.modal-footer button{
+    width: 60px;
+}
+.marr-20{
+    margin-right: 20px;
+}
+.modal-dialog{
+    width: 500px;
+}
+.modal-body{
+    text-align: center;
+    height: 80px;
+    line-height: 60px;
+}
+.alert-success{
+    display: none;
+    text-align: center;
+    position: fixed;
+    left: 44%;
+    z-index: 10000;
+    top: 54px;
+    width: 360px;
+}
+.alertTip {
+    display: none;
+    text-align: center;
+    position: fixed;
+    left: 44%;
+    z-index: 10000;
+    top: 54px;
+    color: #E6A23C;
+    background-color: #FDF6EC;
+    width: 360px;
+    height: 50px;
+    border-radius: 5px;
+    line-height: 50px;
+    border: 1px solid #E6A23C;
+}
+#item_tag{
+    display: inline-block;
+}
+#item_tag span{
+    display: inline-block;
+    margin-right: 20px;
+    width: 74px;
+    height: 32px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    text-align: center;
+    line-height: 32px;
+    cursor: pointer;
+}
+.item-active{
+    border: 1px solid #199ED8!important;
+    background: #199ED8!important;
+    color: #fff;
+}
+#minMoney,#coinLimit{
+    display: inline-block;
+    width: 105px;
+}
+
+
+#token_show,#token_show_ETH{
+    width: 200px;
+    display: inline-block;
+}

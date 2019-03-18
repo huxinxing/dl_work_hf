@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>白名单</title>
+</head>
+<body>
+	<div class="innerContent" id="innerContent">
+		<div class="panel-heading">
+			<div class="text-muted bootstrap-admin-box-title">白名单列表</div>
+			<!-- <button class="btn btn-xs btn-info" style="margin:0 auto;" @click="addMonitoring('add')">新增账号</button> -->
+		</div>
+		<div class="b-inputWrapper" style="padding-top: 10px;">
+			<el-input placeholder="地址" v-model.trim="searchForm.address"></el-input>
+			<el-select v-model="searchForm.state" placeholder="状态">
+				<!-- <el-option v-for="item in coinNameList" :label="item.coinName" :value="item.coinId"></el-option> -->
+				<el-option label="启用" value="true"></el-option>
+				<el-option label="禁用" value="false"></el-option>
+			</el-select>
+			<el-button type="primary" size="middle" @click="search(1)">搜索</el-button>
+		</div>
+		<div class="b-inputWrapper">
+			<el-button type="primary" @click="addMonitoring('add')">添加</el-button>
+			<el-button type="primary" @click="addMonitoring('modify')">修改</el-button>
+			<el-button type="primary" @click="disableState(0)">删除</el-button>
+			<el-button type="primary" @click="disableState(1)">启用</el-button>
+			<el-button type="primary" @click="disableState(2)">禁用</el-button>
+		</div>
+		<div class="tableWrapper">
+			<el-table
+				:data="tableData"
+				border
+				style="width:100%" highlight-current-row @selection-change="handleSelectionchanged">
+				<el-table-column type="selection" width="55"></el-table-column>
+				<el-table-column
+					prop="address"
+					label="钱包地址"
+					min-width="120"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					prop="modifyFormatTime"
+					label="时间"
+					min-width="120"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					prop="stateName"
+					label="状态"
+					min-width="120"
+					align="center"
+				></el-table-column>
+			</el-table>
+			<div class="block-me">
+				<el-pagination
+					@size-change="handleSizeChange"
+					@current-change="currentPageChange"
+					:current-page="curPage"
+					:page-sizes="[10, 20, 30, 40]"
+					:page-size="dataNumber"
+					layout="total, sizes, prev, pager, next, jumper"
+					:total="totalpages"
+				>
+				</el-pagination>
+			</div>
+		</div>
+		<div class="addMonitoring">
+			<el-dialog :title="changedTitle" :visible.sync="addMonitoringShow" :before-close="handleClose">
+				<div class="memberWrapper">
+					<span class="labelSpan necessary">钱包地址</span>
+					<el-input type="text" v-model.trim="addForm.address" placeholder="请输入钱包地址"></el-input>
+				</div>
+				<div class="memberWrapper">
+					<span class="labelSpan necessary">状态</span>
+					<!-- <el-switch
+						v-model="addForm.state"
+						active-color="#13ce66"
+						active-value="1"
+						active-text="启用"
+						inactive-color="#ff4949"
+						inactive-value="0"
+						inactive-text="禁用"
+					>
+					</el-switch> -->
+					<el-checkbox v-model="addForm.state">{{addForm.state ? '启用' : '禁用'}}</el-checkbox>
+				</div>
+				<div class="btnWrapper">
+					<el-button type="info" @click="cancel">取消</el-button>
+					<el-button :disabled="addIsShow" type="primary" @click="confirmMonitoring">{{addText}}</el-button>
+				</div>
+			</el-dialog>
+		</div>
+		<el-dialog class="sureDelete" title="是否确定删除" :visible.sync="showDeleteDialog" width="30%" :before-close="handleClose">
+			<span>是否删除当前选中记录？</span>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="cancelDelete">取 消</el-button>
+				<el-button type="primary" @click="sureDelete">{{delText}}</el-button>
+			</span>
+		</el-dialog>
+	</div>
+	<script>
+		var BL_VM = new Vue({
+			el: '#innerContent',
+			data: {
+				tableData: [],
+			    searchForm: {
+			    	address: null,
+			    	state: null,
+			    	"pageNum": 0,
+			    	"pageSize": 10
+			    },
+			    addForm: {
+			    	address: null,
+			    	state: true
+			    },
+				curPage: 1,
+				dataNumber: 10,
+				totalpages: null,
+				changedTitle: '添加',
+				addMonitoringShow: false,
+				addIsShow:  false,
+				showDeleteDialog: false,
+				multipleSelection: [],
+				addText: '确定',
+				delText: '删除'
+			},
+			mounted () {
+				this.search();
+			},
+			methods: {
+				// 改变每页条数查询
+				handleSizeChange (val) {
+					this.searchForm.pageSize = val;
+					this.search();
+				},
+				// 改变当前页查询
+				currentPageChange (val) {
+					this.searchForm.pageNum = val - 1;
+					this.search();
+				},
+				// 格式化时间
+				formatTime (date) {
+					var tempDate = new Date(date);
+					var Y = tempDate.getFullYear() + '-';
+					var M = (tempDate.getMonth() + 1 < 10 ? '0' + (tempDate.getMonth() + 1) : tempDate.getMonth() + 1) + '-';
+					var D = tempDate.getDate() + ' ';
+					var h = (tempDate.getHours() < 10 ? '0' + tempDate.getHours() : tempDate.getHours()) + ':';
+					var m = (tempDate.getMinutes() < 10 ? '0' + tempDate.getMinutes() : tempDate.getMinutes()) + ':';
+					var s = (tempDate.getSeconds() < 10 ? '0' + tempDate.getSeconds() : tempDate.getSeconds());
+					return Y + M + D + h + m + s;
+				},
+				// 搜索表单数据
+				search (index) {
+					var self = this;
+					if(!index) {
+						self.searchForm.state = null;
+					}
+					axios.post('/whitelist/list',
+						self.searchForm,
+						{
+							headers: {"Authorization": localStorage.getItem("loginToken")}
+						})
+						.then(function(response) {
+							self.tableData = response.data.list;
+							self.totalpages = response.data.total;
+							var len = response.data.list.length;
+							for(var i = 0; i < len; i++) {
+								self.tableData[i].stateName = self.tableData[i].state ? '启用' : '禁用';
+								self.tableData[i].modifyFormatTime = self.formatTime(self.tableData[i].modifyTime);
+							}
+							// console.log(self.tableData);
+							if(index == 1) {
+								self.searchForm.address = null;
+								self.searchForm.state = null;
+							}
+						})
+						.catch(function(error) {
+							console.log(error)
+						})
+				},
+				addMonitoring (type) {
+					if(type === 'add') {
+						this.changedTitle = '添加';
+						this.addMonitoringShow = true;
+						// this.searchForm.state = true;
+					} else {
+						if(this.multipleSelection.length == 1) {
+							this.changedTitle = '修改';
+							this.addMonitoringShow = true;
+							// this.searchForm = this.multipleSelection[0];
+							for (var attr in this.multipleSelection[0]) {
+								this.addForm[attr] = this.multipleSelection[0][attr];
+							}
+						} else {
+							this.$message('请选中一条记录！');
+						}
+					}
+				},
+				handleClose() {
+					if(this.addText == '正在保存') {
+						this.$message('正在保存，请勿进行其他操作');
+						return;
+					} else if(this.delText == '正在删除') {
+						this.$message('正在删除，请勿进行其他操作');
+						return;
+					} else {
+						this.addMonitoringShow = false;
+						this.showDeleteDialog = false;
+						this.addForm.address = null;
+						this.addForm.state = true;
+					}
+				},
+				confirmMonitoring() {
+					var self = this;
+					var url = '';
+					var data = null;
+					if(this.changedTitle == '添加') {
+						url = '/whitelist/add';
+						data = self.addForm;
+						if(data.state === '' || data.state) {
+							data.state = true;
+						} else {
+							data.state = false;
+						}
+					} else {
+						url = '/whitelist/update';
+						data = [];
+						data.push(self.addForm);
+					}
+					if(self.addText == '正在保存') {
+						this.$message('正在保存，请勿进行其他操作');
+						return;
+					}
+					if(!this.addForm.address) {
+						this.$message('请输入地址');
+						return;
+					} else {
+						self.addText = '正在保存';
+						axios.post(url,
+							data,
+							{
+								headers: {"Authorization": localStorage.getItem("loginToken")}
+							})
+							.then(function(response) {
+								if(response.data.status === 'success') {
+									self.$message(response.data.message);
+									self.addText = '确定';
+									self.handleClose();
+									self.search();
+									self.addMonitoringShow = false;
+								} else {
+									self.addText = '确定';
+									self.$message(response.data.message);
+								}
+							})
+							.catch(function(error) {
+								console.log(error);
+							})
+					}
+				},
+				cancel() {
+					this.handleClose();
+				},
+				// 多选
+				handleSelectionchanged (val) {
+					var self = this;
+					self.multipleSelection = val;
+				},
+				// 删除
+				disableState (index) {
+					var self = this;
+					if(index == 0) {// 显示删除面板
+						if(this.multipleSelection.length == 0) {
+							this.$message('请至少选择一项');
+						} else {
+							this.showDeleteDialog = true;
+						}
+					} else {
+						if(self.multipleSelection.length == 0) {
+							self.$message('请选中一条记录！');
+						} else {
+							// 启用、禁用多条
+							// 批量更新
+							var data = self.multipleSelection;
+							var len = self.multipleSelection.length;
+							for(let i = 0; i < len; i++) {
+								if(index == 1) {
+									data[i].state = true;
+								} else {
+									data[i].state = false;
+								}
+							}
+							self.updateState(data);
+						}
+					}
+				},
+				// 更新
+				updateState (data) {
+					var self = this;
+					axios.post('/whitelist/update',
+						data,
+						{
+							headers: {"Authorization": localStorage.getItem("loginToken")}
+						})
+						.then(function(response) {
+							if(response.data.status === 'success') {
+								self.$message(response.data.message);
+								self.handleClose();
+								self.search();
+							} else {
+								self.$message(response.data.message);
+							}
+						})
+						.catch(function(error) {
+							console.log(error);
+						})
+					},
+				// 确认删除
+				sureDelete () {
+					var self = this;
+					var data = [];
+					var len = self.multipleSelection.length;
+					for(var i = 0; i < len; i++) {
+						data.push(self.multipleSelection[i].id);
+					}
+					self.delText = '正在删除';
+					axios.post('/whitelist/del',
+						data,
+						{
+							headers: {"Authorization": localStorage.getItem("loginToken")}
+						})
+						.then(function(response) {
+							// console.log(response)
+							if(response.data.status === 'success') {
+								self.$message(response.data.message);
+								self.showDeleteDialog = false;
+								self.handleClose();
+								self.searchForm.pageNum = 0;
+								self.search();
+							} else {
+								self.$message(response.data.message);
+							}
+							self.delText = '删除';
+						})
+						.catch(function(error) {
+							console.log(error);
+						})
+				},
+				// 取消删除
+				cancelDelete () {
+					this.handleClose();
+				}
+			},
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+.weui_uploader_input_wrp > div{width:100%!important;height:100%!important;opacity:0}
+.weui_uploader_input_wrp .webuploader-element-invisible{position:absolute;left:0;top:0;width:100%;height:100%;}
+.weui_uploader_file{position:relative;}
+.weui_uploader_status .diyCancel{display:none;}
+.weui_uploader_file .diyCancel{display:none; position:absolute;top:0;right:2px;color:#fff;background:red;width:1em;height:1em;padding:0.2em;text-align:center;border-radius:50%;}
+.weui_uploader_file .diyCancel i{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);height: 1em;width: 1em;line-height: 14px;}
+
+
+
+
+
+
+
+
+
+.avi_diy_bg,.txt_diy_bg,.doc_diy_bg,.zip_diy_bg,.csv_diy_bg,.xls_diy_bg,.mp3_diy_bg,.pdf_diy_bg,.rar_diy_bg {
+	background-position:center;
+	background-repeat:no-repeat;
+}
+.avi_diy_bg {background-image:url(images/filebg/avi.png);}
+.video_diy_bg {
+	background-image:url(images/filebg/video.png);
+	background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.txt_diy_bg {background-image:url(images/filebg/txt.png);}
+.doc_diy_bg {background-image:url(images/filebg/doc.png);}
+.zip_diy_bg {background-image:url(images/filebg/zip.png);}
+.csv_diy_bg {background-image:url(images/filebg/csv.png);}
+.xls_diy_bg {background-image:url(images/filebg/xls.png);}
+.mp3_diy_bg {background-image:url(images/filebg/mp3.png);}
+.pdf_diy_bg {background-image:url(images/filebg/pdf.png);}
+.rar_diy_bg {background-image:url(images/filebg/rar.png);}

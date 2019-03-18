@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <title>订单列表</title>
+
+    <style>
+
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+        .invest-tab{
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin: 30px 15px 0 15px;
+        }
+        .invest-tab span{
+            padding-bottom: 10px;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+        .table-active{
+            border-bottom: 2px solid #0066FF;
+            color: #0066ff;
+        }
+        .new-create{
+            float: right;
+            margin-right: 15px;
+        }
+        .btn-upload{
+            text-align: center;
+            background: #333;
+            color: #fff;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 82px;
+            float: left;
+        }
+        .red-sp{
+            color: red;
+        }
+        .form-control-o{
+            border: none;
+            width: 150px;
+            display: inline-block;
+            border-right: 1px solid #ccc;
+            border-radius: 0;
+            height: 24px;
+            line-height: 24px;
+            outline: none;
+            position: relative;
+            top: 4px;
+            color: #555;
+            vertical-align: middle;
+            background-color: #fff;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .form-outer{
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0;
+            height: 34px;
+            background-color: #fff;
+            width: 200px;
+            float: left;
+        }
+        .form-outer span{
+            position: relative;
+            top: 5px;
+            right: -5px;
+        }
+        .padding-top-6{
+            padding-top: 6px;
+        }
+        .wdt-200{
+            width: 200px;
+            display: inline-block;
+        }
+        .margin-50{
+            margin-right: 50px;
+        }
+        .select-items{
+            float: left;
+            margin: 0;
+            width: 560px;
+            padding: 0;
+        }
+        .li-item{
+            list-style: none;
+            float: left;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            /* padding: 0; */
+            height: 30px;
+            background-color: #fff;
+            width: 154px;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            position: relative;
+            line-height: 30px;
+            padding-left: 10px;
+        }
+        .li-item span{
+            color: red;
+            position: absolute;
+            right: 8px;
+            top: 0px;
+            cursor: pointer;
+        }
+        .li-item div{
+            display: inline-block;
+            width: 120px;
+        }
+        .item-all li{cursor: pointer}
+        .padding-top-0{
+            padding-top: 0;
+            margin-bottom: 35px;
+        }
+        .dn{
+            display: none!important;
+        }
+        #selectItems{
+            z-index: 9999;
+            top: 67px;
+        }
+        #selectItems .modal-dialog{
+            z-index: 100000;
+        }
+        .item-active{
+            background: #428bca;
+            border: 1px solid #428bca;
+            color: #fff;
+        }
+        .zi-hou{
+            float: left;
+            color: #666;
+            position: relative;
+            top: 6px;
+            left: 10px;
+        }
+        .alert-success{
+            display: none;
+            text-align: center;
+            position: fixed;
+            left: 44%;
+            z-index: 10000;
+            top: 54px;
+            width: 360px;
+        }
+        .right-12{
+            right: -12px!important;
+        }
+        .wth100{
+            width: 100px;
+            margin-top: 6px;
+            float: left;
+        }
+        .wth200{
+            width: 200px;
+            float: left;
+        }
+        .item-all{
+            padding-left: 35px;
+        }
+        .ell{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .layui-table-body {
+            overflow: initial!important;
+        }
+        .pass-audit{
+            margin-right: 15px;
+        }
+        #refuse_audit_comment{
+            width: 100%;
+            height: 60px;
+            border-radius: 3px;
+        }
+        .marr-20{
+            margin-right: 20px;
+        }
+        .modal-footer{
+            margin-top: 0!important;
+            border-top:none;
+            text-align:center;
+        }
+        .modal-header{
+            border-bottom:none;
+        }
+        .message-audit{
+            width: 100%;
+            text-align: center;
+        }
+        .color-success{
+            background: #edf7fc;
+            border: 1px solid #aeceff;
+            padding: 5px;
+            border-radius: 4px;
+            color: #0066ff;
+        }
+        .color-fail{
+            background: #fff3eb;
+            border: 1px solid #ffcba9;
+            padding: 5px;
+            border-radius: 4px;
+            color: #ff7c7a;
+        }
+</style>
+</head>
+<body class="layui-bg-cyan">
+<div class="innerContent" id="coinAudit">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">订单列表</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="invest-tab">
+            <span class="table-active">待审核</span>
+            <span>审核通过</span>
+            <span>审核驳回</span>
+            <!--<span>待支付收益</span>-->
+        </div>
+        <div class="form-group row">
+
+            <div class="col-lg-2">
+                <input class="form-control" id="mixSearch"  name="walletAddr" type="text" placeholder="用户ID / 昵称">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+            </table>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">在这里添加一些文本</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default marr-20" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+<div class="alertTip" id="languageSet"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+<script type="text/html" id="barDemo">
+    <a href="javascript:void(0);" class="pass-audit" targetId={{d.id}}>通过</a>
+    <a href="javascript:void(0);" class="refuse-audit" targetId={{d.id}}>驳回</a>
+</script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/coinAudit/coinAudit.js"></script>
+</body>
+</html>

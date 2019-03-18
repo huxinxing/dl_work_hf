@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <!--<link href="/css/items/moneySituation.css" rel="stylesheet" media="screen">-->
+    <title>资金概况</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        #transFlowTable_wrapper{
+            position: relative;
+        }
+        li{list-style: none}
+        .user-flag{
+            display: flex;
+            margin-left: 15px;
+            color: #555;
+        }
+        .user-flag span{
+            width: 100px;
+            height: 34px;
+            line-height: 34px;
+            border: 1px solid #e8e8e8;
+            text-align: center;
+            cursor: pointer;
+        }
+        .user-flag span:first-child{
+            border-radius: 3px 0 0 3px;
+            border-right: none;
+        }
+        .user-flag span:last-child{
+            border-radius: 0px 3px 3px 0;
+        }
+        .form-group{
+            margin-top: 20px;
+            margin-left: 0;
+            display: flex;
+        }
+        .title-every{
+            background: #f0f2f5;
+            overflow: hidden;
+        }
+        .title-every h5{
+            border-left: 3px solid #0066FF;
+            padding-left: 10px;
+            padding-bottom: 3px;
+            padding-top: 3px;
+            margin: 7px 0 7px 10px;
+        }
+        .content{
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+        .bootstrap-admin-panel-content {
+            padding: 15px 0 15px 0!important;
+        }
+        .publish-item,.get-investment{
+            display: flex;
+            margin-top: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+        }
+        .publish-name,.get-investment-name{
+            color: #999;
+            padding-left: 10px;
+            padding-right: 30px;
+            border-right: 1px dashed #ccc;
+            width: 70px;
+        }
+        .get-investment{
+            margin-bottom: 45px;
+        }
+        .publish-num{
+            line-height: 40px;
+            font-size: 16px;
+            padding-left: 24px;
+        }
+        .get-investment-ul{
+            padding-left: 24px;
+        }
+        .get-investment-ul ul{
+            margin-bottom: 0;
+        }
+        .get-investment-ul li{
+            margin-right: 160px;
+            float: left;
+        }
+        .li-name{
+            color: #999;
+            margin-bottom: 2px;
+        }
+        .li-num{
+            font-size: 16px;
+        }
+        .invest-box{
+            width: 496px;
+            height: 140px;
+            border: 1px solid #ccc;
+            padding: 8px;
+            margin-right: 20px;
+        }
+        .mrt-30{
+            margin-top: 30px;
+            display: flex;
+        }
+        .invest-box li{
+            float: left;
+            margin-top: 20px;
+            font-size: 12px;
+            height: 17px;
+            margin-right: 30px;
+            color: #9999A9;
+        }
+        #invest_circle{
+            width: 100%;
+            height: 235px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+        .day-tab{
+            margin: 30px auto;
+            width: 160px;
+            display: flex;
+        }
+        .day-tab span{
+            border: 1px solid #e9edf2;
+
+            width: 50px;
+            text-align: center;
+            height: 30px;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .day-tab span:first-child{
+            border-radius: 5px 0 0 5px;
+        }
+        .day-tab span:last-child{
+            border-radius: 0 5px 5px 0;
+        }
+        .mid-t{
+            border-left: none!important;
+            border-right: none!important;
+        }
+        .active-day{
+            color: #fff;
+            background: #20A0FF;
+        }
+        .invest-tab{
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        .invest-tab span{
+            padding-bottom: 11px;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+        .table-active{
+            border-bottom: 2px solid #0066FF;
+            color: #0066ff;
+        }
+        .user-active{
+            color: #0066ff;
+        }
+        #box2 li:last-child{
+            width: auto;
+        }
+        .red-cl{
+            color: red;
+        }
+        .total-1{
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .pay-change{
+            margin-left: 20px;
+            color: #9999A9;
+            font-size: 14px;
+            display: inline-block;
+            font-weight: normal;
+        }
+        .dn,#information,.dataTables_length,.dataTables_paginate.paging_bootstrap{display: none}
+        .attention{padding-bottom: 30px}
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">资金概况</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="form-group row" style="margin-top:20px;margin-left: 0px;">
+            <div class="user-flag">
+                <span class="user-active">全部</span>
+                <span>只看平台用户</span>
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeStart"  name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeEnd"  name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+        </div>
+        <div class="content">
+            <div class="part-1">
+                <div class="title-every">
+                    <h5>总览</h5>
+                </div>
+                <div class="publish-item">
+                    <div class="publish-name">发布<br>项目</div>
+                    <div class="publish-num">-</div>
+                </div>
+                <div class="get-investment">
+                    <div class="get-investment-name">获得<br>投资</div>
+                    <div class="get-investment-ul">
+                        <ul>
+                            <li>
+                                <div class="li-name">总计(usdx)</div>
+                                <div class="li-num" id="to_invest">-</div>
+                            </li>
+                            <li>
+                                <div class="li-name">USDX</div>
+                                <div class="li-num" id="usdx_invest">-</div>
+                            </li>
+                            <li>
+                                <div class="li-name">ETH</div>
+                                <div class="li-num" id="eth_invest">-</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="part-2">
+                <div class="title-every">
+                    <h5>收支统计</h5>
+                </div>
+                <div class="mrt-30">
+                    <div class="invest-box" id="box1">
+                        <div>已收资金(usdx)</div>
+                        <div class="total-1">-</div>
+                        <ul>
+                            <li>投资本金：<span class="invest-stake">-</span></li>
+                            <li>认购费：<span class="sales-charge">-</span></li>
+                            <li class="mrt-0">服务费：<span class="service-charge">-</span></li>
+                            <li>基金公司绩效佣金：<span class="fund">-</span></li>
+                            <li>代收税费：<span class="invest-taxes">-</span></li>
+                            <li>手续费：<span class="draw-fee">-</span></li>
+                            <!--<li>总计：<span class="total-1">-</span></li>-->
+                        </ul>
+                    </div>
+                    <div class="invest-box" id="box2">
+                        <div>已支付资金(usdx)</div>
+                        <div class="total-1"><span class="total-income">-</span><div class="pay-change">= <span class="total-bcb">-</span>BCB</div></div>
+                        <ul>
+                            <li>本金：<span class="my-mo">-</span></li>
+                            <li>保底收益：<span class="my-income">-</span></li>
+                            <li>额外收益：<span class="extra-income">-</span></li>
+                            <li>项目返点：<span class="item-return">-</span></li>
+                            <li>体验金收益：<span class="bbin-s">-</span></li>
+                            <li>加息收益：<span class="rateCoupon-s">-</span></li>
+                            <!--<li>总计：<span class="total-income">-</span> = <span class="total-bcb">-</span>BCB</li>-->
+                        </ul>
+                    </div>
+                    <!--<div class="invest-box" id="box3">
+                        <div>待支付收益(usdx)</div>
+                        <ul >
+                            <li>保底收益：<span class="my-income">-</span></li>
+                            <li>额外收益：<span class="extra-income">-</span></li>
+                            <li>项目返点：<span class="item-return">-</span></li>
+                            <li></li>
+                            <li>总计：<span class="total-income">-</span></li>
+                        </ul>
+                    </div>-->
+                </div>
+                <div id="invest_circle"></div>
+            </div>
+            <div class="part-3">
+                <div class="title-every">
+                    <h5>收支趋势</h5>
+                </div>
+                <div class="day-tab">
+                    <span class="active-day">7天</span>
+                    <span class="mid-t">15天</span>
+                    <span>30天</span>
+                </div>
+                <div id="line_trend" style="height: 310px;width: 100%"></div>
+                <div class="table-list">
+                    <div class="invest-tab">
+                        <span class="table-active">已收资金</span>
+                        <span>已支付资金</span>
+                        <!--<span>待支付收益</span>-->
+                    </div>
+                    <div class="bootstrap-admin-panel-content" style="width:100%;">
+                        <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+                            <thead>
+
+                            </thead>
+                        </table>
+                        <table class="table table-bordered table-hover data-table" id="transFlowTable2" cellspacing="0" style="width:100%;">
+                            <thead>
+
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="attention"><span class="red-cl">*说明：</span>提币手续费未计入总收益中</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/items/moneySituation.js"></script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <!-- Bootstrap -->
+    <!--<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/videolist.css" rel="stylesheet" media="screen">-->
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <link href="/css/items/orderListDetail.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <header>
+        <div class="title-all">
+            <div class="d-title fl">订单详情</div>
+        </div>
+    </header>
+    <div class="content">
+        <div id="box" class="box1">
+            <div class="box1-left">
+                <h4>订单信息</h4>
+                <ul class="left-ul">
+                    <li>
+                        <label>订单编号：</label><span>-</span>
+                    </li>
+                    <li>
+                        <label>订单状态：</label><span class="orange" id="status_order">-</span>
+                    </li>
+                    <li class="time-left">
+                        <label>剩余时间：</label><span>-</span>
+                    </li>
+                    <li>
+                        <label>起息时间：</label><span>-</span>
+                    </li>
+                    <li>
+                        <label>到期时间：</label><span>-</span>
+                    </li>
+                    <li>
+                        <label>回款方式：</label><span>-</span>
+                    </li>
+                    <li>
+                        <label>结算币种：</label><span>-</span>
+                    </li>
+                    <li class="deal-state dn">
+                        <label>处理状态：</label><span class="orange">-</span>
+                    </li>
+                </ul>
+                <button id="changeState" class="dn">切换状态 </button>
+            </div>
+            <div class="box1-right">
+                <div class="box1-right-top">
+                    <h4>订单收益</h4>
+                    <ul id="boxRightTop">
+                        <li>
+                            <div class="s-title">总计(usdx)</div>
+                            <div class="s-num">-</div>
+                        </li>
+                        <li class="keepMy">
+                            <div class="s-title">保底收益(usdx)</div>
+                            <div class="s-num">-</div>
+                        </li>
+                        <li class="keepHi">
+                            <div class="s-title">超额收益(usdx)</div>
+                            <div class="s-num">-</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="box1-right-bottom">
+                    <ul>
+                        <li>
+                            <label>投资金额：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>认购费：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>认购费率：</label><span>-</span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <label>理财币种：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>起息价格：</label><span>-</span>
+                        </li>
+                        <li >
+                            <label id="price_cur">当前价格：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label id="rate_cur">当前收益率：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>保底收益率：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>超额收益率：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>保底收益：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>超额收益：</label><span>-</span>
+                        </li>
+                        <li>
+                            <label>本人分佣：</label><span>-</span>
+                        </li>
+                        <li class="width-init">
+                            <label>资金担保机构分佣：</label><span>-</span>
+                        </li>
+                        <li class="width-init">
+                            <label>基金公司绩效佣金：</label><span>-</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+            </table>
+        </div>
+    </div>
+    <script type="text/html" id="barDemo">
+        <a href="javascript:void(0);" class="showAgents" lay-event="detail" id={{d.txId}}>查看</a>
+    </script>
+</body>
+<script type="text/javascript" src="/../js/vendors/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/../vendors/layUI/layui.js"></script>
+<script type="text/javascript" src="/../js/orderManage/orderListDetail.js"></script>
+</html>

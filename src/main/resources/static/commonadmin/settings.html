@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>设置</title>
+    <style>
+        #volatyWrapper input[type=number]{
+            -moz-appearance:textfield;
+        }
+        #volatyWrapper input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <!--<div class="panel panel-default bootstrap-admin-no-table-panel">-->
+        <!--<div class="panel-heading">-->
+            <!--<div class="text-muted bootstrap-admin-box-title">兑换比例设置</div>-->
+        <!--</div>-->
+        <!--<div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">-->
+            <!--<form class="form-horizontal" id="myform">-->
+                <!--<input name="projectUuid" id="projectUuid" type="hidden" />-->
+                <!--<fieldset class="field">-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="control-label" for="A">usdt/cny</label>-->
+                        <!--<input type="number" name="A" id="A" required/>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="control-label" for="B">美元/cny</label>-->
+                        <!--<input type="number" name="B" id="B"/>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" id="volatyWrapper">-->
+                        <!--<label class="control-label" for="v">Volatility</label>-->
+                        <!--<input type="number" name="volatility" id="v" placeholder=" -0.15~0.15"/>-->
+                        <!--<div style="margin: 20px 0px 0px 60px;">-->
+                            <!--<button type="button" id="cal" class="btn btn-primary" style="height: 28px;line-height: 14px">计算</button>-->
+                            <!--<button type="button" id="submit" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</fieldset>-->
+            <!--</form>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="panel panel-default bootstrap-admin-no-table-panel">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">允许代理提币设置</div>
+        </div>
+        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+            <form class="form-horizontal">
+                <input name="projectUuid" type="hidden" />
+                <fieldset>
+                    <div class="form-group" style="margin-left: 30px">
+                        <label class="control-label"><input type="checkbox" id="allowWithdraw" name="allowWithdraw">    允许提币</label>
+                        <button type="button" id="submit2" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default bootstrap-admin-no-table-panel">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">实名认证设置</div>
+        </div>
+        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+            <form class="form-horizontal">
+                <input name="projectUuid" type="hidden" />
+                <fieldset>
+                    <div class="form-group" style="margin-left: 30px">
+                        <label class="control-label"><input type="checkbox" id="isCertification" name="isCertification">  需要实名</label>
+                        <button type="button" id="submit3" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default bootstrap-admin-no-table-panel">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">是否显示投资担保机构比例设置</div>
+        </div>
+        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+            <form class="form-horizontal">
+                <input name="projectUuid" type="hidden" />
+                <fieldset>
+                    <div class="form-group" style="margin-left: 30px">
+                        <label class="control-label"><input type="checkbox" id="isShow" name="isShow">    显示投资担保机构比例设置</label>
+                        <button type="button" id="submit6" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default bootstrap-admin-no-table-panel">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">设置谷歌验证</div>
+        </div>
+        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+            <form class="form-horizontal">
+                <input name="projectUuid" type="hidden" />
+                <fieldset>
+                    <div class="form-group" style="margin-left: 30px">
+                        <input type="input" readonly="readonly" id="googleSecret" name="googleSecret">
+                        <button type="button" id="googleReset" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" > 重置谷歌验证</button>
+                    </div>
+                    <div class="form-group" style="margin-left: 30px">
+                        <button type="button" id="submit4" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <!--20180525zhw 设置短信发送渠道-->
+    <div class="panel panel-default bootstrap-admin-no-table-panel">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">设置短信发送渠道</div>
+        </div>
+        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+            <form class="form-horizontal">
+                <input name="projectUuid" type="hidden" />
+                <fieldset>
+                    <div class="form-group" style="margin-left: 30px">
+                        <select id="smsChannel" name="smsChannel" class="form-control" style="width: 178px;display: inline-block">
+                            <option value="" selected="selected">请选择</option>
+                            <option value="幻光">幻光</option>
+                            <option value="云片">云片</option>
+                        </select>
+                        <button type="button" onclick="saveSmsChannel()" id="submit5" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-default bootstrap-admin-no-table-panel">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">设置支持语种</div>
+        </div>
+        <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+            <form class="form-horizontal">
+                <input name="projectUuid" type="hidden" />
+                <fieldset>
+                    <div class="form-group" style="margin-left: 30px">
+                        <input type="input" id="langs" name="langs">
+                    </div>
+                    <div class="form-group" style="margin-left: 30px">
+                        <button type="button" id="submit7" class="btn btn-primary" style="margin-left: 10px;height: 28px;line-height: 14px" >提交</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="alertTip" id="setting"></div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#submit4').click(function(){
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/googleSecret/set",
+                "dataType": "json",
+                "data": {
+                    "googleSecret":$("#googleSecret").val(),
+                    "id":"",
+                    "projectId":1
+                },
+                "success": function(data) {
+                    $('#setting').slideDown();
+                    $('#setting').text("提交成功");
+                    setTimeout(function () {
+                        $('#setting').slideUp();
+                    },2000);
+                }
+            });
+        });
+
+        $('#submit6').click(function() {
+            var isChecked = $('input[name="isShow"]').prop('checked');
+            var allowShow = isChecked ? 1 : 0;
+            console.log(allowShow);
+            $.ajax({
+                "headers": {
+                    "Authorization": localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/sys/isShow/set",
+                "dataType": "json",
+                "data": {allowShow: allowShow},
+                "success": function (data) {
+                    $('#setting').slideDown();
+                    $('#setting').text("提交成功");
+                    setTimeout(function () {
+                        $('#setting').slideUp();
+                    }, 2000);
+                }
+            });
+        });
+
+
+
+
+
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "get",
+            "url": "/admin/sys/googleSecret/get",
+            "dataType": "json",
+            "success": function(data) {
+                console.log("111111");
+                var allow = data.data.isShowSuperiorRateSet;
+
+                $('input[name="googleSecret"]').val(data.data.googleSecret);
+                $('input[name="isShow"]').prop('checked', !!allow);
+            }
+        });
+
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "get",
+            "url": "/admin/sys/langs/get",
+            "dataType": "json",
+            "success": function(data) {
+                console.log(data.data)
+                $('input[name="langs"]').val(data.data);
+            }
+        });
+
+
+
+        $("#googleReset").bind("click",function(){
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/sys/googleSecret/reset",
+                "dataType": "json",
+                "success": function(data) {
+                    $('input[name="googleSecret"]').val(data.data);
+                }
+            });
+        });
+
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "get",
+            "url": "/admin/sys/volatility/get",
+            "dataType": "json",
+            "success": function(data) {
+                $('input[name="volatility"]').val(data.data);
+            }
+        });
+
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "get",
+            "url": "/admin/sys/allowWithdraw/get",
+            "dataType": "json",
+            "success": function(data) {
+                var allow = (data.data.isAllowWithdraw!='0')?false:true;
+                $('input[name="allowWithdraw"]').prop('checked', allow?false:true);
+
+
+                var isCertification = (data.data.isCertification!='0')?false:true;
+                $('input[name="isCertification"]').prop('checked', isCertification?false:true);
+
+                var isService = (data.data.isService!='0')?false:true;
+                $('input[name="isService"]').prop('checked', isService?false:true);
+            }
+        });
+
+        $('#A').keyup(function () {
+            if($(this).val()==''){
+                $(this).val('');
+            }
+        });
+        $('#B').keyup(function () {
+            if($(this).val()==''){
+                $(this).val('');
+            }
+        })
+        $('#cal').click(function(){
+            var A = $('input[name="A"]').val();
+            var B = $('input[name="B"]').val();
+            if(A=='') {
+                debugger
+                $('#setting').slideDown();
+                $('#setting').text("请输入usdt/cny 值");
+                setTimeout(function () {
+                    $('#setting').slideUp();
+                },2000);
+                return false;
+            }
+            if(B==''){
+                $('#setting').slideDown();
+                $('#setting').text("请输入美元/cny 值");
+                setTimeout(function () {
+                    $('#setting').slideUp();
+                },2000);
+                return false;
+            }
+            var fa = parseFloat(A);
+            var fb = parseFloat(B);
+            if(fa<0){
+                $('#setting').slideDown();
+                $('#setting').text("只能输入正数");
+                setTimeout(function () {
+                    $('#setting').slideUp();
+                },2000);
+                return;
+            }
+            if(fb<0){
+                $('#setting').slideDown();
+                $('#setting').text("只能输入正数");
+                setTimeout(function () {
+                    $('#setting').slideUp();
+                },2000);
+                return;
+            }
+            $('input[name="volatility"]').val(((fa-fb)/fb).toFixed(7));
+        });
+        $('#submit').click(function(){
+            var volatility = $('input[name="volatility"]').val();
+            if(volatility==''){
+                $('#setting').slideDown();
+                $('#setting').text("比例值不能为空，请输入上面两值进行计算");
+                setTimeout(function () {
+                    $('#setting').slideUp();
+                },2000);
+                return false;
+            }
+            var fv = parseFloat(volatility);
+            if(fv>=-0.15 && fv<=0.15){
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "url": "/admin/sys/volatility/set",
+                    "dataType": "json",
+                    "data": {volatility:fv},
+                    "success": function(data) {
+                        $('#setting').slideDown();
+                        $('#setting').text("提交成功");
+                        setTimeout(function () {
+                            $('#setting').slideUp();
+                        },2000);
+                    }
+                });
+            }else {
+                $('#setting').slideDown();
+                $('#setting').text("比例值不在区间[-0.15,0.15]之间，请重新计算!");
+                setTimeout(function () {
+                    $('#setting').slideUp();
+                },2000);
+                return false;
+            }
+        });
+
+        $('#submit2').click(function(){
+            var isChecked = $('input[name="allowWithdraw"]').prop('checked');
+            var allowWithdraw = isChecked?1:0;
+
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/allowWithdraw/set",
+                "dataType": "json",
+                "data": {allowWithdraw:allowWithdraw},
+                "success": function(data) {
+                    $('#setting').slideDown();
+                    $('#setting').text("提交成功");
+                    setTimeout(function () {
+                        $('#setting').slideUp();
+                    },2000);
+                }
+            });
+
+        });
+
+        $('#submit3').click(function(){
+            var isChecked = $('input[name="isCertification"]').prop('checked');
+            var isCertification = isChecked?1:0;
+
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/isCertification/set",
+                "dataType": "json",
+                "data": {isCertification:isCertification},
+                "success": function(data) {
+                    $('#setting').slideDown();
+                    $('#setting').text("提交成功");
+                    setTimeout(function () {
+                        $('#setting').slideUp();
+                    },2000);
+                }
+            });
+
+        });
+
+        $('#submit7').click(function(){
+            var langs = $('input[name="langs"]').val();
+
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/langs/set",
+                "dataType": "json",
+                "data": {langs:langs},
+                "success": function(data) {
+                    $('#setting').slideDown();
+                    $('#setting').text("提交成功");
+                    setTimeout(function () {
+                        $('#setting').slideUp();
+                    },2000);
+                }
+            });
+
+        });
+
+
+        getSmsChannel();
+    });
+
+    /**
+     * 20180525zhw 初始化短信渠道
+     */
+    function getSmsChannel() {
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "get",
+            "url": "/admin/sys/smsChannel/get",
+            "dataType": "json",
+            "success": function(data) {
+                $('#smsChannel').val(data.data.smsChannel);
+            }
+        });
+    }
+
+    /**
+     * 20180525zhw 保存短信渠道
+     */
+    function saveSmsChannel() {
+        var smsChannel = $("#smsChannel").val();
+        if(smsChannel==''||smsChannel==undefined){
+            $('#setting').slideDown();
+            $('#setting').text("请选择一个短信渠道");
+            setTimeout(function () {
+                $('#setting').slideUp();
+            },2000);
+            return false;
+        }
+
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "post",
+            "url": "/admin/sys/smsChannel/set",
+            "dataType": "json",
+            "data": {"smsChannel":smsChannel},
+            "success": function(data) {
+                $('#setting').slideDown();
+                if(data.status!="ok"){
+                    $('#setting').text("保存失败");
+                }else{
+                    $('#setting').text("提交成功");
+                    setTimeout(function () {
+                        $('#setting').slideUp();
+                    },2000);
+                }
+            }
+        });
+    }
+
+
+
+
+</script>
+</body>
+</html>

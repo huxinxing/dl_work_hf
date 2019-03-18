@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户详情</title>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/css/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/css/videolist.css" rel="stylesheet" media="screen">
+    <link href="/css/items/usersDetail.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<header>
+    <div class="title-all">
+        <div class="d-title fl">用户详情</div>
+    </div>
+    <div class="d-sinle">
+        <div><span class="font-bold">UID:</span><span class="user-id">-</span></div>
+        <div><span class="font-bold">昵称:</span><span class="user-name">-</span></div>
+        <div style="position: relative;"><span class="font-bold" style="position:absolute">钱包地址:</span><span class="user-address" style="display:inline-block;margin-left: 84px">-</span></div>
+        <div><span class="font-bold">用户层级:</span><span class="user-level">-</span></div>
+        <div><span class="font-bold">代理比例:</span><span class="user-rate">-</span></div>
+    </div>
+</header>
+<div class="content">
+    <div class="invest-list">
+        <div class="invest-tab">
+            <span class="table-active">投资收益</span>
+            <span>代理收益</span>
+            <span>我的下级</span>
+        </div>
+        <div class="of-hidden">
+            <div class="d-sinle font-bold mrb20 tab-left-1 fl">
+                <div><span>投资项目数:</span><span class="item-amount">-</span></div>
+                <div><span>投资金额:</span><span class="invest-money">-</span>USDX</div>
+                <div><span>收益合计:</span><span class="income-to">-</span>USDX</div>
+            </div>
+            <div class="d-sinle font-bold mrb20 tab-left-2 dn fl">
+                <div><span>收益合计：</span><span class="item-amount-total">-</span>BCB</div>
+            </div>
+            <div class="fr tab-right-12 mrb20">
+                <div class="col-lg-2">
+                    <input class="form-control" id="createTimeStart"  name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+                </div>
+                <div class="col-lg-2">
+                    <input class="form-control" id="createTimeEnd"  name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+                </div>
+                <div class="col-lg-2">
+                    <input class="form-control dn" id="walletAddr"  name="itemId" type="text" placeholder="项目名称/ID">
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable1" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th rowspan="2">项目编号</th>
+                    <th rowspan="2">项目名称</th>
+                    <th rowspan="2">时间</th>
+                    <th rowspan="2">投资金额（USDX）</th>
+                    <th rowspan="2"><span class="red-cl">*</span>认购费(usdx)</th>
+                    <th rowspan="2"><span class="red-cl">*</span>保底收益(usdx)</th>
+                    <th colspan="5" rowspan="1">超额收益(usdx)</th>
+                    <th rowspan="2"><span class="red-cl">*</span>体验金收益(usdx)</th>
+                    <th rowspan="2"><span class="red-cl">*</span>加息券收益(usdx)</th>
+                </tr>
+                <tr>
+                    <th rowspan="1">总收益(usdx)</th>
+                    <th rowspan="1">上级分佣(usdx)</th>
+                    <th rowspan="1">税费(usdx)</th>
+                    <th rowspan="1">基金公司分佣(usdx)</th>
+                    <th rowspan="1"><span class="red-cl">*</span>本人分佣(usdx)</th>
+                </tr>
+                </thead>
+            </table>
+            <table class="table table-bordered table-hover data-table" id="transFlowTable2" cellspacing="0" style="width:100%;">
+                <thead>
+                </thead>
+            </table>
+            <table class="table table-bordered table-hover data-table" id="transFlowTable3" cellspacing="0" style="width:100%;">
+                <thead>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="agentsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLabel" class="modal-title">
+                    <div class="com-title"></div><!--<span class="single-title">-</span>-->
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-hover data-table" id="transFlowTable4" cellspacing="0" style="width:100%;">
+                    <thead>
+
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/../js/vendors/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/../js/vendors/dataTables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/js/echarts.js"></script>
+<script type="text/javascript" src="/../js/items/usersDetail.js"></script>
+</html>

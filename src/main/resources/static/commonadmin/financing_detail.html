@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目管理</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        a{
+            cursor: pointer;
+        }
+        .ztree li span.button.ico_open{margin-right:2px;  vertical-align:top; *vertical-align:middle; background-image:url("../images/ztreeColse.gif") }
+        .ztree li span.button.ico_close{margin-right:2px;  vertical-align:top; *vertical-align:middle; background-image:url("../images/ztreeSpan.png")}
+        .ztree li span.button.ico_docu{margin-right:2px;  vertical-align:top; *vertical-align:middle; background-image:url("../images/ztreeSpan.png")}
+         #information {
+             float: left;
+         }
+
+        #information>div{
+            padding-top: 4px;
+        }
+        #tableBottomWra{
+            float: left;
+        }
+        #tableBottomWra>div {
+            padding-top: 4px;
+        }
+        .bootstrap-admin-panel-content {
+            padding-bottom: 0px;
+        }
+        #editProjectModal .form-horizontal .form-group{
+            margin-left: 0;
+            margin-right: 0;
+        }
+        #projectDetailModal .col-lg-2.control-label{
+            padding-right: 0px;
+        }
+        #projectDetailModal .form-horizontal .form-group{
+            margin-left: 0;
+            margin-right: 0;
+        }
+        #editProjectModal .col-lg-2.control-label{
+            padding-right: 0px;
+        }
+        .languageWrapper .col-lg-2.control-label {
+            padding-right: 0px;
+        }
+        .languageParent .col-lg-2.control-label {
+            padding-right: 0px;
+        }
+        .btn-group.bootstrap-select.show-tick {
+            width: 540px;
+        }
+        .red-sp{
+            color: red;
+        }
+        .no-input{
+            padding-top: 7px;
+            color: #999;
+        }
+        .btn-upload,.btn-upload-ETH{
+            text-align: center;
+            background: #333;
+            color: #fff;
+            height: 34px;
+            line-height: 34px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            width: 60px;
+        }
+        .margin-50{
+            margin-right: 50px;
+        }
+        .padding-top-6{
+            padding-top: 6px;
+        }
+        .padding-top-6 input{
+            position: relative;
+            top:1px;
+        }
+        .form-control{
+            background: #fff!important;
+        }
+        li{
+            list-style: none;
+        }
+        #type_lan {
+            float: right;
+            margin-bottom: 0;
+            margin-right: 30px;
+        }
+        .lan-li{
+            margin-right: 15px;
+            float: left;
+        }
+        .lan-li label{
+            font-weight: normal;
+        }
+        .lan-li input{
+            position: relative;
+            top: 2px;
+            margin-right: 5px;
+        }
+        #languageModal .modal-header{
+            overflow: hidden;
+        }
+        #lan_title{
+            float: left;
+        }
+        .form-horizontal .form-group{
+            margin-right: 0;
+        }
+        #languageModal h5{
+            margin-left: 47px;
+            padding-left: 10px;
+            border-left: 2px solid #0066FF;
+            margin-bottom: 22px;
+            margin-top: 25px;
+        }
+        .cn-show label{
+            padding-top: 0!important;
+            width: 134px;
+        }
+        .cn-show .form-group>div{
+            width: 560px;
+            display: inline-block;
+        }
+        .cn-show .form-group:last-child{
+            position: relative;
+        }
+        .cn-show .form-group:last-child>label{
+            position: absolute;
+            top: 0px;
+        }
+        .cn-show .form-group:last-child>div{
+            margin-left: 139px;
+        }
+        .cn-show h5{
+            margin-top: 8px!important;
+        }
+        .dn{
+            display: none!important;
+        }
+        .ell{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .alert-success{
+            display: none;
+            text-align: center;
+            position: fixed;
+            left: 44%;
+            z-index: 10000;
+            top: 54px;
+            width: 360px;
+        }
+        #minMoney,#maxMoney{
+            display: inline-block;
+            width: 154px;
+        }
+        #item_tag span{
+            display: inline-block;
+            margin-right: 20px;
+            width: 74px;
+            height: 32px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+            text-align: center;
+            line-height: 32px;
+            cursor: pointer;
+        }
+        .item-active{
+            border: 1px solid #199ED8!important;
+            background: #199ED8!important;
+            color: #fff;
+        }
+        #token_show,#token_show_ETH{
+            width: 200px;
+            display: inline-block;
+        }
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent" style="margin-bottom: 20px" id="financing_detail">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">项目列表</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="invest-tab">
+            <span class="table-active">募集中</span>
+            <span>待开启</span>
+            <span>募集暂停</span>
+            <span>募集结束</span>
+            <!--<span>待支付收益</span>-->
+        </div>
+
+        <div class="form-group row">
+            <div class="col-lg-2" style="width: 250px">
+                <input type="text" class="form-control" placeholder="项目名称 / ID" id="financing"/>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="btn_search_1">查询</button>
+            </div>
+            <div class="btn btn-info new-create" id="newProject" style="float: right;margin-right: 15px;">+新建项目</div>
+        </div>
+
+
+        <!--<div class="bootstrap-admin-panel-content" style="width:100%;position: relative">
+            <div class="row" >
+                &lt;!&ndash;<div style="position: absolute;left: 600px;bottom: 16px;"><button class="btn btn-info" id="btn_search_1">搜索</button></div>&ndash;&gt;
+                <div style="position: absolute;right: 15px;bottom: 16px;">
+                    <button class="btn btn-info" id="newProject">新建项目</button>
+                </div>
+                <div class="panel panel-default bootstrap-admin-no-table-panel">
+                    <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                &lt;!&ndash;<div class="form-group">
+                                    <label class="col-lg-1 control-label" style="width: 90px;" for="financingStatus">理财状态</label>
+                                    <div class="col-lg-2" style="width: 250px">
+                                        <select class="combobox form-control" name="status" id="financingStatus">
+                                            <option value="0" >待开启</option>
+                                            <option value="1" selected="selected">募集中</option>
+                                            <option value="2">募集暂停</option>
+                                            <option value="3">募集结束</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2" style="width: 250px">
+                                        <input type="text" class="form-control" placeholder="项目名称 / ID" id="financing"/>
+                                    </div>
+
+                                </div>&ndash;&gt;
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <div class="bootstrap-admin-panel-content" style="width:100%">
+            <table class="table table-bordered table-hover data-table" id="tableProject" cellspacing="0" style="width: 100%;">
+                <thead>
+                <tr>
+                    <th>项目ID</th>
+                    <th>项目名称</th>
+                    <th>理财币种</th>
+                    <th>理财额度</th>
+                    <th>理财期限</th>
+                    <th>年化收益</th>
+                    <th>单笔限额</th>
+                    <th>发布时间</th>
+                    <th>BCB价格</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="alertTip"></div>
+    <div id="dollarModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left: 100px;width: 400px;height: 220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div>
+                        <a id="saveId" uid="uid"></a>
+                        <div style="margin-bottom: 10px;">请输入要设置的美元价格(USD)：</div>
+                        <input type="text" class="form-control" id="dollarVal">
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default confirmDollar">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alertTip" id="languageSet"></div>
+    <div class="alert alert-success" role="alert" id="success"></div>
+
+    <div id="newProjectModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 660px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabl" class="modal-title">创建新项目</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 534px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal" id="myformProjet">
+                            <input name="projectUuid" id="myprojecti" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;border-bottom: 1px solid #cccccc;margin-bottom: 10px;">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>项目名称</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" id="itemName" class="form-control activityName" placeholder="请输入中文项目名称">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>理财说明</label>
+                                            <div class="col-lg-10">
+                                                <textarea name="attentions" id="attentions" class="form-control textarea-wysihtml5 attentionEvent" style="width: 100%; height: 100px" placeholder="请输入中文理财说明"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>理财币种</label>
+                                            <div class="col-lg-6">
+                                                <select class="combobox form-control" name="status" id="coinType">
+                                                    <option value="BCB" selected="selected">BCB</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>理财金额</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="请输入数字" id="amount" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">单笔限投金额</label>
+                                            <!--<div class="col-lg-2">
+                                                <input type="text" class="form-control" id="minMoney" placeholder="最小值"/>
+                                            </div>一-->
+                                            <div class="col-lg-7">
+                                                <input type="text" class="form-control" id="minMoney" placeholder="最小值" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                                -
+                                                <input type="text" class="form-control" id="maxMoney" placeholder="最大值" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                            </div>
+                                            <div class="col-lg-3 no-input">不输入表示不限</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>支付币种</label>
+                                            <div class="col-lg-6 padding-top-6">
+                                                <input type="checkbox" class="check_select" id="usdx_coin" value="USDX"/>
+                                                <label for="usdx_coin" class="margin-50">USDX</label>
+                                                <input type="checkbox" class="check_select" id="eth_coin" value="ETH"/>
+                                                <label for="eth_coin">ETH</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group dn upload-box" id="upload_usdx">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>钱包地址</label>
+                                            <div class="col-lg-10">
+                                                <span>USDX：</span>
+                                                <input type="text" class="form-control ell" id="token_show" placeholder="请上传钱包地址描述文件" readonly/>
+                                                <input type="file" class="form-control dn" id="file_upload" name="file_upload"/>
+                                                <div class="btn-upload">上传</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group dn upload-box" id="upload_eth">
+                                            <label class="col-lg-2 control-label" id="eth_label"><span class="red-sp">*</span>钱包地址</label>
+                                            <div class="col-lg-10">
+                                                <span style="width: 54px;display: inline-block;text-align: right;">ETH：</span>
+                                                <input type="text" class="form-control ell" id="token_show_ETH" placeholder="请上传钱包地址描述文件" readonly/>
+                                                <input type="file" class="form-control dn" id="file_upload_ETH" name="file_upload"/>
+                                                <div class="btn-upload-ETH">上传</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>理财期限</label>
+                                            <div class="col-lg-4">
+                                                <input type="text" class="form-control" id="unitNum" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select class="combobox form-control" name="status" id="frozenUnit">
+                                                    <option value="年" selected="selected">年</option>
+                                                    <option value="月">月</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>项目标签</label>
+                                            <div class="col-lg-10" id="item_tag">
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>年化收益率%</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="请输入数字" id="yearRate" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')" />
+                                            </div>
+                                        </div>
+                                        <!--<div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>用户保底收益率%</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" id="userMinimumRate" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                            </div>
+                                        </div>-->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>超额收益基金<br>公司返点比例%</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" id="backRate"  placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>认购费%</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" id="subscriptionFee" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 20px">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>认购费折扣%</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" id="subscriptionFeeRate" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveProject">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--适配语言弹窗-->
+    <div id="languageModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 660px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="lan_title" class="modal-title">修改语言</h4>
+                    <ul id="type_lan"></ul>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 534px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <input name="projectUuid" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;border-bottom: 1px solid #cccccc;margin-bottom: 10px;">
+                                        <div class="cn-show">
+                                            <h5>中文</h5>
+                                            <div>
+                                                <div class="form-group">
+                                                    <label class="control-label">项目名称：</label>
+                                                    <div id="cn_title">项目名称</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">理财说明：</label>
+                                                    <div id="cn_attention">项目名称</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="lan_detail"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="editLanguage">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/vendors/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="/js/items/itemManage.js"></script>
+</body>
+</html>

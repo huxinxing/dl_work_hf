@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>理财收益提币审核</title>
+    <style>
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        .bootstrap-admin-panel-content {
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">理财收益提币审核列表</div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%">
+            <div class="row">
+                <div class="panel panel-default bootstrap-admin-no-table-panel">
+                    <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+                        <form class="form-horizontal">
+                            <input name="projectUuid" id="projectUuid" type="hidden" />
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-lg-1 control-label" style="width: 62px;" for="status">状态</label>
+                                    <div class="col-lg-2">
+                                        <select class="combobox form-control" name="status" id="status">
+                                            <option value="0" selected="selected">未审核</option>
+                                            <option value="1">已审核</option>
+                                            <option value="2">交易已确认</option>
+                                            <option value="3">已拒绝</option>
+                                        </select>
+                                    </div>
+                                    <label class="col-lg-1 control-label" for="userName">用户</label>
+                                    <div class="col-lg-2">
+                                        <input class="text form-control" type="text" name="userName" id="userName"/>
+                                    </div>
+                                    <label class="col-lg-1 control-label" for="reviewerName">审核人</label>
+                                    <div class="col-lg-2">
+                                        <input  class="text form-control" type="text" name="reviewerName" id="reviewerName"/>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <button type="button" id="submit" class="btn btn-primary" style="margin-left: 10px;" onclick="search()">查询</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%">
+            <table class="table table-bordered table-hover data-table" id="agentsTable" cellspacing="0" style="width:100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>创建时间</th>
+                    <th>用户</th>
+                    <th>用户ID</th>
+                    <th>代币类型</th>
+                    <th>金额</th>
+                    <th>交易ID</th>
+                    <th>确认次数</th>
+                    <th>确认时间</th>
+                    <th>状态</th>
+                    <th>审核时间</th>
+                    <th>审核人</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="alertTip" id="acceptAudit"></div>
+</div>
+<script>
+    $(function(){
+        $('#status').change(function () {
+            oTable.ajax.reload();
+        });
+
+        oTable = $('#agentsTable').DataTable({
+            "bJQueryUI": true,
+            "iDisplayStart":0,
+            "iDisplayLength":10,
+            "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+            "sDom":'<".example_processing"r><".tablelist"t><"#information"i>lp',
+            "searching":false,
+            "bDestroy":true,
+            "scrollX":true,
+            "bRetrieve":true,
+            "bStateSave":false,
+            "bServerSide": true,
+            "fnServerData": retrieveData,
+            "sAjaxSource": "/admin/financing/withdraw/list",
+            "bFilter": true,
+            "bLengthChange": true,
+            "bProcessing": true,
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                var tx='<a href="https://etherscan.io/tx/'+aData[6]+'" target="_blank">'+aData[6]+'</a>';
+                $('td:eq(6)', nRow).html(tx);
+
+                if(aData[9] == '未审核'){
+                    var op = '<a href="javascript:void(0);" onclick="approval(\''+aData[0]+'\',1)">审核同意</a>';
+                    op=op+'<a href="javascript:void(0);" style="margin-left: 10px" onclick="approval(\''+aData[0]+'\', 3)">审核拒绝</a>';
+                    $('td:eq(12)', nRow).html(op);
+                }
+            },
+            "oLanguage": {
+                "sProcessing": "正在获取数据，请稍后...",
+                "sLengthMenu": "每页显示 _MENU_ 条",
+                "sZeroRecords": "目前还没有代理收益提币记录！",
+                "sInfoEmpty": "记录数为0",
+                "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条",
+                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                "sSearch": "搜索 ",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "最后一页"
+                }
+            },
+            "initComplete": function(settings, json) {}
+        });
+        function retrieveData( sSource, aoData, fnCallback ) {
+            //aoData.push( { "name": "pid", "value":$('input[name="apid"]').val()||'1'} );
+
+            // 附加查询数据
+            var status = $('#status').val();
+            var userName = $('input[name="userName"]').val();
+            var reviewerName = $('input[name="reviewerName"]').val();
+
+            aoData.push({"name":"status", "value":status});
+            aoData.push({"name":"userName", "value":userName});
+            aoData.push({"name":"reviewerName", "value":reviewerName});
+
+
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "contentType": "application/json",
+                "url": sSource,
+                "dataType": "json",
+                "data": JSON.stringify(aoData),
+                "success": function(resp) {
+                    fnCallback(resp);
+                }
+            });
+        }
+    })
+
+    function approval(id,type){
+        if(type == 1){
+            layer.confirm('是否确定同意审核？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "url": "/admin/financing/approval",
+                    "dataType": "json",
+                    "data": {id:id,type:type},
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            layer.closeAll();
+                            oTable.draw(false);
+                        }else{
+                            if(data.message.substr(0,7)=="不是有效的金额"){
+                                layer.closeAll();
+                                $('#acceptAudit').slideDown();
+                                $('#acceptAudit').text("不是有效的金额");
+                                setTimeout(function () {
+                                    $('#acceptAudit').slideUp();
+                                },2000);
+                            }else {
+                                layer.closeAll();
+                                var tipMessage = '错误：'+data.message;
+                                $('#acceptAudit').slideDown();
+                                $('#acceptAudit').text(tipMessage);
+                                setTimeout(function () {
+                                    $('#acceptAudit').slideUp();
+                                },2000);
+                            }
+
+                        }
+                    }
+                });
+            }, function(){});
+        } else if(type == 3){
+            layer.confirm('是否确定拒绝审核？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "url": "/admin/financing/approval",
+                    "dataType": "json",
+                    "data": {id:id,type:type},
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            layer.closeAll();
+                            oTable.draw(false);
+                        }else{
+                            if(data.message.substr(0,7)=="不是有效的金额"){
+                                layer.closeAll();
+                                $('#acceptAudit').slideDown();
+                                $('#acceptAudit').text("不是有效的金额");
+                                setTimeout(function () {
+                                    $('#acceptAudit').slideUp();
+                                },2000);
+                            }else {
+                                layer.closeAll();
+                                var tipMessage = '错误：'+data.message;
+                                $('#acceptAudit').slideDown();
+                                $('#acceptAudit').text(tipMessage);
+                                setTimeout(function () {
+                                    $('#acceptAudit').slideUp();
+                                },2000);
+                            }
+                        }
+                    }
+                });
+            }, function(){});
+        }
+
+    }
+
+    function search(){
+        oTable.ajax.reload();
+    }
+</script>
+</body>
+</html>

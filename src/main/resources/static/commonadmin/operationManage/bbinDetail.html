@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>体验金详情</title>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <!--<link href="/css/DT_bootstrap.css" rel="stylesheet" media="screen">-->
+    <link href="/css/videolist.css" rel="stylesheet" media="screen">
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <link href="/css/items/bbinDetail.css" rel="stylesheet" media="screen">
+</head>
+<body>
+<header>
+    <div class="invest-tab">
+        <span class="table-active">体验金详情</span>
+        <span>领取列表</span>
+    </div>
+</header>
+<div class="content">
+    <div class="box-0">
+        <form class="form-horizontal" id="myformProjet">
+            <fieldset>
+                <div class="languageWrapper">
+                    <div class="row dymaticSpecial" style="/* position: relative; *//* margin-left: 0px; *//* margin-right: 0px; *//* border-bottom: 1px solid #cccccc; *//* margin-bottom: 10px; */">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>体验金额</label>
+                            <div class="form-outer">
+                                <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_1" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                                <span>usdx</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>体验时长</label>
+                            <div class="form-outer">
+                                <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_2" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                                <span class="right-12">天</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>适用项目</label>
+                            <ul class="select-items">
+                                <li class="btn-upload">选择项目</li>
+                            </ul>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>使用条件</label>
+                            <div class="form-outer">
+                                <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_3" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                                <span>usdx</span>
+                            </div>
+                            <div class="zi-hou">满足此购买额度才能使用</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>有效期</label>
+                            <div class="col-lg-6 padding-top-6">
+                                <input type="radio" class="btn-radio" id="fixed_day" value="固定天数" name="fixed">
+                                <label for="fixed_day" class="margin-50">固定天数</label>
+                                <input type="radio" class="btn-radio" id="fixed_date" value="固定日期" name="fixed">
+                                <label for="fixed_date">固定日期</label>
+                            </div>
+                        </div>
+                        <div class="form-group padding-top-0">
+                            <label class="col-lg-2 control-label"></label>
+                            <div class="change-box">
+                                <div class="form-outer" id="select_num">
+                                    <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_4" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                                    <span class="right-12">天</span>
+                                </div>
+                                <div class="zi-hou">自用户领取之后开始计算</div>
+                            </div>
+                            <div class="col-lg-10 dn change-box" id="select_time">
+                                <input class="form-control wdt-200" id="createTimeStart" name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+                                <input class="form-control wdt-200" id="createTimeEnd" name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>创建时间</label>
+                            <div class="createTime">- -</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>状态</label>
+                            <select class="combobox form-control status" id="status_bbinDetail">
+                                <option value="1">已开启</option>
+                                <option value="0">已关闭</option>
+                            </select>
+                            <!--<div class="status">已开启</div>-->
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <div class="btn-all">
+            <div class="btn-save btn-black">保存修改</div>
+            <!--<div class="btn-stop btn-black">关闭</div>-->
+        </div>
+    </div>
+    <div class="box-0 dn">
+        <!-- 查询条件 -->
+        <div class="form-group row">
+
+            <div class="fl padding-left-0">
+                <input class="form-control" id="walletAddr"  name="walletAddr" type="text" placeholder="用户ID">
+            </div>
+            <label class="fl" style="width: 70px;padding-right: 0px;margin-top: 7px;text-align: center;" for="paymentType">状态</label>
+            <div class="col-lg-1" style="padding: 0px;">
+                <select class="combobox form-control" name="paymentType" id="paymentType">
+                    <option value="0" selected="selected">未激活</option>
+                    <option value="1">计息中</option>
+                    <option value="2">已使用</option>
+                    <option value="3">已过期</option>
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <!--<table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+                &lt;!&ndash;<thead>
+                <tr>
+                    <th>用户ID</th>
+                    <th>用户昵称</th>
+                    <th>领取时间</th>
+                    <th>状态</th>
+                </tr>
+                </thead>&ndash;&gt;
+            </table>-->
+            <table class="layui-hide" id="transFlowTable" style="width: 100%"></table>
+        </div>
+    </div>
+</div>
+<!--选择项目-->
+<div id="selectItems" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content" style="height: 330px;width: 610px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 id="myModalLab2" class="modal-title">选择项目</h4>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px;height: 200px;width:607px;overflow-y: auto;overflow-x: hidden">
+                <div class="row">
+                    <ul class="item-all"></ul>
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveItems">保存</button>
+                <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">在这里添加一些文本</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default marr-20" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary confirm">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div class="alertTip"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+</body>
+<script type="text/javascript" src="/../js/vendors/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/vendors/layUI/layui.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/../js/operationManage/bbinDetail.js"></script>
+</html>

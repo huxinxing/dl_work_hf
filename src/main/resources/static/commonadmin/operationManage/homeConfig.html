@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <title>首页配置</title>
+
+    <style>
+        .select-items li,.item-all li{list-style: none;float:left}
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+        .invest-tab{
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin: 30px 15px 0 15px;
+        }
+        .invest-tab span{
+            padding-bottom: 10px;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+        .table-active{
+            border-bottom: 2px solid #0066FF;
+            color: #0066ff;
+        }
+        .new-create{
+            float: right;
+            margin-right: 15px;
+        }
+        .btn-upload,.btn-upload-new{
+            text-align: center;
+            background: #333;
+            color: #fff;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 82px;
+            float: left;
+        }
+        .red-sp{
+            color: red;
+        }
+        .form-control-o{
+            border: none;
+            width: 150px;
+            display: inline-block;
+            border-right: 1px solid #ccc;
+            border-radius: 0;
+            height: 24px;
+            line-height: 24px;
+            outline: none;
+            position: relative;
+            top: 4px;
+            color: #555;
+            vertical-align: middle;
+            background-color: #fff;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .form-outer{
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0;
+            height: 34px;
+            background-color: #fff;
+            width: 200px;
+            float: left;
+        }
+        .form-outer span{
+            position: relative;
+            top: 5px;
+            right: -5px;
+        }
+        .padding-top-6{
+            padding-top: 6px;
+        }
+        .wdt-200{
+            width: 200px;
+            display: inline-block;
+        }
+        .margin-50{
+            margin-right: 50px;
+        }
+        .select-items{
+            float: left;
+            margin: 0;
+            width: 560px;
+            padding: 0;
+        }
+        .li-item{
+            list-style: none;
+            float: left;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            /* padding: 0; */
+            height: 30px;
+            background-color: #fff;
+            width: 154px;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            position: relative;
+            line-height: 30px;
+            padding-left: 10px;
+        }
+        .li-item span{
+            color: red;
+            position: absolute;
+            right: 8px;
+            top: 0px;
+            cursor: pointer;
+        }
+        .li-item div{
+            display: inline-block;
+            width: 120px;
+        }
+        .item-all li{cursor: pointer}
+        .padding-top-0{
+            padding-top: 0;
+            margin-bottom: 35px;
+        }
+        .dn{
+            display: none!important;
+        }
+        #selectItems{
+            z-index: 9999;
+            top: 67px;
+        }
+        #selectItems .modal-dialog{
+            z-index: 100000;
+        }
+        .item-active{
+            background: #428bca;
+            border: 1px solid #428bca;
+            color: #fff;
+        }
+        .zi-hou{
+            float: left;
+            color: #666;
+            position: relative;
+            top: 6px;
+            left: 10px;
+        }
+        .alert-success{
+            display: none;
+            text-align: center;
+            position: fixed;
+            left: 44%;
+            z-index: 10000;
+            top: 54px;
+            width: 360px;
+        }
+        .right-12{
+            right: -12px!important;
+        }
+        .wth100{
+            width: 100px;
+            margin-top: 6px;
+            float: left;
+        }
+        .wth200{
+            width: 200px;
+            float: left;
+        }
+        .item-all{
+            padding-left: 35px;
+        }
+        .ell{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .layui-table-body {
+            overflow: initial!important;
+        }
+        #upOrDown,#iosOrAndroid,.stime,.etime{
+            width: 150px;
+            float: left;
+            margin-right: 15px;
+        }
+        #upOrDown{
+            margin-left: 15px;
+        }
+        .stime,.etime{
+            width: 200px;
+        }
+        .fl{
+            float: left;
+        }
+        .modal-header {
+            border-bottom: 0;
+        }
+        .modal-footer {
+            border-top: 0;
+            text-align: center;
+            margin-top: 0;
+        }
+        .marr-20 {
+            margin-right: 20px;
+        }
+        .modal-single .modal-dialog {
+            width: 500px;
+        }
+        .modal-single .modal-body {
+            text-align: center;
+            height: 80px;
+            line-height: 60px;
+        }
+
+        #token_show,#token_show_gift{
+            height: 60px;
+            position: relative;
+        }
+        #token_show p{
+            position: absolute;
+            left: 12px;
+            top: 3px;
+            font-size: 14px;
+            text-align: center;
+            color: #999;
+        }
+        #token_show img,#token_show_gift img{
+            border: 1px solid #ccc;
+        }
+        .color-orange{
+            color: #ff6600;
+        }
+        .tis{
+            color: #999;
+        }
+    </style>
+</head>
+<body class="layui-bg-cyan">
+<div class="innerContent" id="homeConfig">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">首页配置</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="invest-tab">
+            <span class="table-active">banner</span>
+            <span>新人体验金</span>
+            <span>新人见面礼图片</span>
+        </div>
+        <div class="form-group row">
+            <select class="form-control" id="upOrDown">
+                <option value="0">全部</option>
+                <option value="1" selected="selected">已上架</option>
+                <option value="2">已下架</option>
+            </select>
+            <select class="form-control" id="iosOrAndroid">
+                <option value="0" selected="selected">不限端口</option>
+                <option value="ios">ios</option>
+                <option value="android">android</option>
+            </select>
+            <div class="stime fl">
+                <input class="form-control" id="createTimeStart"  name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+            </div>
+            <div class="etime fl">
+                <input class="form-control" id="createTimeEnd"  name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+            <div class="btn btn-info new-create">+新增</div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;" id="table_all">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;"></table>
+        </div>
+    </div>
+    <!--banner新增-->
+    <div id="newProjectModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 465px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabl" class="modal-title">轮播图</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 340px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal" id="myformProjet">
+                            <input name="projectUuid" id="myprojecti" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>图片</label>
+                                            <div class="col-lg-6">
+                                                <div type="text" class="form-control ell" id="token_show" placeholder="将图片拖到此处或者点击上传按钮">
+                                                    <p class="tis">将图片拖到此处或者点击上传按钮</p>
+                                                </div>
+                                                <input type="file" class="form-control dn" id="file_upload" name="file_upload"/>
+                                            </div>
+                                            <div class="col-lg-1 btn-upload">上传</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>标题</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="输入标题" id="title" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>开始时间</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="选择时间" id="startTime" autocomplete="off" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>结束时间</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="选择时间" id="endTime" autocomplete="off" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">跳转页面</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="输入跳转页面地址" id="toAddr" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp"></span>权重</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="输入数字，权重越高，排序越靠前" id="quanz" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveProject">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--新人体验金新增-->
+    <div id="" class="modal fade modal-box">
+        <div class="modal-dialog" style="width: 500px;height: 260px">
+            <div class="modal-content" style="margin-left: 100px;width: 500px;height: 260px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLab3" class="modal-title">新人体验金</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;overflow: hidden;">
+                    <div class="form-group">
+                        <label class="wth100 control-label"><span class="red-sp">*</span>选择体验金</label>
+                        <div class="wth200">
+                            <select class="combobox form-control" name="status" id="select_user"></select>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                    <div style="color: #999;margin-left: 26px;margin-top: 15px;">说明：只能存在一张上架状态的体验金券，若继续新增体验金，则原在线体验金将自动下架</div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default confirmUserType">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--banner新增-->
+    <div id="gift_modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 465px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="gift_title" class="modal-title">轮播图</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 240px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal" id="gift_title_form">
+                            <input name="projectUuid" id="gift_title_projectUuid" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>图片</label>
+                                            <div class="col-lg-6">
+                                                <div type="text" class="form-control ell" id="token_show_gift" placeholder="将图片拖到此处或者点击上传按钮">
+                                                    <p class="tis">将图片拖到此处或者点击上传按钮</p>
+                                                </div>
+                                                <input type="file" class="form-control dn" id="file_upload_gift" name="file_upload_gift"/>
+                                            </div>
+                                            <div class="col-lg-1 btn-upload-new">上传</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>标题</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="输入标题" id="title_new" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveProject_new">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--上架or下架-->
+    <!-- 模态框（Modal） -->
+    <div class="modal fade modal-single" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">在这里添加一些文本</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default marr-20" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+<div class="alertTip" id="languageSet"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+<!--if(d.id < 100)-->
+<script type="text/html" id="barDemo_banner">
+    {{#  if(d.status == "已下架"){ }}
+        {{#  if(new Date(d.validityEndTime.replace(/-/g,"/"))>new Date()){ }}
+        <a href="javascript:void(0);" class="pull-on" lay-event="detail" pid={{d.typeId}}>上架</a>
+        {{#  } }}
+    {{#  } else { }}
+    <a href="javascript:void(0);" class="pull-off" lay-event="detail" pid={{d.typeId}}>下架</a>
+    {{#  } }}
+    {{#  if(new Date(d.validityEndTime.replace(/-/g,"/"))>new Date()){ }}
+    <a style="margin-left: 15px;" href="javascript:void(0);" class="home-update" pid={{d.typeId}}>修改</a>
+    {{#  } }}
+</script>
+<script type="text/html" id="barDemo">
+    {{#  if(d.status == "已下架"){ }}
+    <!--<a href="javascript:void(0);" class="pull-on" lay-event="detail" pid={{d.geId}}>上架</a>-->
+    {{#  } else { }}
+    <a href="javascript:void(0);" class="pull-off" lay-event="detail" pid={{d.geId}}>下架</a>
+    {{#  } }}
+</script>
+<script type="text/html" id="barDemo_hc">
+    {{#  if(d.hcNewManStatus == "已下架"){ }}
+    <a href="javascript:void(0);" class="pull-on" lay-event="detail" pid={{d.hcNewManId}}>上架</a>
+    {{#  } else { }}
+    <a href="javascript:void(0);" class="pull-off" lay-event="detail" pid={{d.hcNewManId}}>下架</a>
+    {{#  } }}
+</script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/operationManage/homeConfig.js"></script>
+</body>
+</html>

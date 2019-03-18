@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <title>加息券</title>
+
+    <style>
+        #information {
+            float: left;
+        }
+        .select-items li,.item-all li{list-style: none;float:left}
+        #information>div{
+            padding-top: 4px;
+        }
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+        .invest-tab{
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin: 30px 15px 0 15px;
+        }
+        .invest-tab span{
+            padding-bottom: 10px;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+        .table-active{
+            border-bottom: 2px solid #0066FF;
+            color: #0066ff;
+        }
+        .new-create{
+            float: right;
+            margin-right: 15px;
+        }
+        .btn-upload,.btn-import{
+            text-align: center;
+            background: #333;
+            color: #fff;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 82px;
+            float: left;
+        }
+        .btn-import{
+            margin-left: 115px;
+        }
+        .red-sp{
+            color: red;
+        }
+        .form-control-o{
+            border: none;
+            width: 150px;
+            display: inline-block;
+            border-right: 1px solid #ccc;
+            border-radius: 0;
+            height: 24px;
+            line-height: 24px;
+            outline: none;
+            position: relative;
+            top: 4px;
+            color: #555;
+            vertical-align: middle;
+            background-color: #fff;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .form-outer{
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0;
+            height: 34px;
+            background-color: #fff;
+            width: 200px;
+            float: left;
+        }
+        .form-outer span{
+            position: relative;
+            top: 5px;
+            right: -5px;
+        }
+        .padding-top-6{
+            padding-top: 6px;
+        }
+        .wdt-200{
+            width: 200px;
+            display: inline-block;
+        }
+        .margin-50{
+            margin-right: 50px;
+        }
+        .select-items{
+            float: left;
+            margin: 0;
+            width: 560px;
+            padding: 0;
+        }
+        .li-item{
+            list-style: none;
+            float: left;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            /* padding: 0; */
+            height: 30px;
+            background-color: #fff;
+            width: 154px;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            position: relative;
+            line-height: 30px;
+            padding-left: 10px;
+        }
+        .li-item span{
+            color: red;
+            position: absolute;
+            right: 8px;
+            top: 0px;
+            cursor: pointer;
+        }
+        .li-item div{
+            display: inline-block;
+            width: 120px;
+        }
+        .item-all li{cursor: pointer}
+        .padding-top-0{
+            padding-top: 0;
+            margin-bottom: 35px;
+        }
+        .dn{
+            display: none!important;
+        }
+        #selectItems{
+            z-index: 9999;
+            top: 67px;
+        }
+        #selectItems .modal-dialog{
+            z-index: 100000;
+        }
+        .item-active{
+            background: #428bca;
+            border: 1px solid #428bca;
+            color: #fff;
+        }
+        .zi-hou{
+            float: left;
+            color: #666;
+            position: relative;
+            top: 6px;
+            left: 10px;
+        }
+        .alert-success{
+            display: none;
+            text-align: center;
+            position: fixed;
+            left: 44%;
+            z-index: 10000;
+            top: 54px;
+            width: 360px;
+        }
+        .right-12{
+            right: -12px!important;
+        }
+        .wth100{
+            width: 100px;
+            margin-top: 6px;
+            float: left;
+        }
+        .wth200{
+            width: 200px;
+            float: left;
+        }
+        .item-all{
+            padding-left: 35px;
+        }
+        .ell{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .layui-table-body {
+            overflow: initial!important;
+        }
+        .right-0{
+            right: 0!important;
+        }
+        #amount_0{
+            border-right: none;
+            width: 100%;
+        }
+        .form-group:after{
+            clear: both;content:'';display:block;width:0;height:0;visibility:hidden;
+        }
+        .export-tmpl{
+            float: left;
+            position: relative;
+            top: 5px;
+            margin-left: 15px;
+            color: #0066ff;
+            cursor: pointer;
+        }
+        #excel_name{
+            float: left;
+            position: relative;
+            top: 5px;
+            margin-left: 15px;
+            width: 150px;
+            text-align:left;
+        }
+        .excel-div{
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent" id="rateCoupon">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">加息券</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="invest-tab">
+
+            <span class="table-active">已开启</span>
+            <span>已关闭</span>
+            <!--<span>待支付收益</span>-->
+        </div>
+        <div class="form-group row">
+
+            <div class="col-lg-2">
+                <input class="form-control" id="walletAddr"  name="walletAddr" type="text" placeholder="ID">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+            <div class="btn btn-info new-create">+新增</div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+            </table>
+        </div>
+    </div>
+    <!--新增-->
+    <div id="newProjectModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 424px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabl" class="modal-title">新增加息券</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 304px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal" id="myformProjet">
+                            <input name="projectUuid" id="myprojecti" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;border-bottom: 1px solid #cccccc;margin-bottom: 10px;">
+                                        <!--<div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span> 加息券名称</label>
+                                            <div class="form-outer">
+                                                <input type="text" class="form-control-o border-right-none" placeholder="请输入名称" id="amount_0" />
+                                            </div>
+                                        </div>-->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>加息利率</label>
+                                            <div class="form-outer">
+                                                <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_1" />
+                                                <span class="right-0">百分比</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>加息时长</label>
+                                            <div class="form-outer">
+                                                <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_2" />
+                                                <span class="right-12">天</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>适用项目</label>
+                                            <ul class="select-items">
+                                                <li class="btn-upload">选择项目</li>
+                                            </ul>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>有效期</label>
+                                            <div class="col-lg-6 padding-top-6">
+                                                <input type="radio" class="btn-radio" id="fixed_day" value="固定天数" name="fixed" />
+                                                <label for="fixed_day" class="margin-50">固定天数</label>
+                                                <input type="radio" class="btn-radio" id="fixed_date" value="固定日期" name="fixed" />
+                                                <label for="fixed_date">固定日期</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group padding-top-0">
+                                            <label class="col-lg-2 control-label"></label>
+                                            <div class="change-box">
+                                                <div class="form-outer" id="select_num">
+                                                    <input type="text" class="form-control-o" placeholder="请输入数字" id="amount_4" />
+                                                    <span class="right-12">天</span>
+                                                </div>
+                                                <div class="zi-hou">自用户领取之后开始计算</div>
+                                            </div>
+                                            <div class="col-lg-10 dn change-box" id="select_time">
+                                                <input class="form-control wdt-200" id="createTimeStart"  name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+                                                <input class="form-control wdt-200" id="createTimeEnd"  name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveProject">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--选择项目-->
+    <div id="selectItems" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 330px;width: 610px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLab2" class="modal-title">选择项目</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 200px;width:607px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <ul class="item-all"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveItems">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="issueModal" class="modal fade">
+        <div class="modal-dialog" style="width: 500px;height: 260px">
+            <div class="modal-content" style="margin-left: 100px;width: 500px;height: 260px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLab3" class="modal-title">发放加息券</h4>
+                </div>
+                <div class="modal-body" style="text-align: center;overflow: hidden;min-height: 141px;">
+                    <div class="form-group">
+                        <label class="wth100 control-label"><span class="red-sp">*</span>用户类型</label>
+                        <div class="wth200">
+                            <select class="combobox form-control" name="status" id="select_user">
+                                <option value="0" selected="selected">新用户</option>
+                                <option value="1">全部用户</option>
+                                <option value="2">指定用户</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="excel-div dn">
+                        <div class="btn-import">导入表格</div>
+                        <input type="file" class="form-control dn" id="excel_upload" name="excel_upload"/>
+                        <div class="export-tmpl">导出模板</div>
+                        <div id="excel_name" class="ell">-</div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default confirmUserType">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alertTip" id="languageSet"></div>
+    <div class="alert alert-success" role="alert" id="success"></div>
+</div>
+
+<script type="text/html" id="barDemo">
+    <a href="javascript:void(0);" class="showAgents-bbin" lay-event="detail" id={{d.icId}}>详情</a>
+    {{#  if($('.table-active').index() == 0){ }}
+    <a style="margin-left: 15px;" href="javascript:void(0);" class="showIssue" tradeId={{d.icId}}>发放</a>
+    {{#  } }}
+</script>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/operationManage/rateCoupon.js"></script>
+</body>
+</html>

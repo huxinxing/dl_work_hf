@@ -1,0 +1,46 @@
+.table .textcenter{ text-align:center;}
+.textcenter a{display:inline-block; width:36px;text-align:center;}
+.dataTables_length{top:auto; left:280px;margin:0;padding-top:4px;}
+.dataTables_length select{ width:auto;margin-top:3px;}
+.dataTables_filter,.dataTables_length{float:left;position:relative!important;left:auto;margin-right:10px;}
+.dataTables_paginate{float:right;position:relative;}
+div.dataTables_wrapper .ui-widget-header{overflow:hidden;}
+.table .dataTables_empty{text-align:center;padding: 3em 0;}
+
+.dataTables_wrapper .dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 40px;
+    margin-left: -50%;
+    margin-top: -25px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: white;
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(25%, rgba(199, 219, 243, 0.9)), color-stop(75%, rgba(199, 219, 243, 0.9)), color-stop(100%, rgba(255, 255, 255, 0)));
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(199, 219, 243, 0.9) 25%, rgba(199, 219, 243, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(199, 219, 243, 0.9) 25%, rgba(199, 219, 243, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+    background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(199, 219, 243, 0.9) 25%, rgba(199, 219, 243, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+    background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(199, 219, 243, 0.9) 25%, rgba(199, 219, 243, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(199, 219, 243, 0.9) 25%, rgba(199, 219, 243, 0.9) 75%, rgba(255, 255, 255, 0) 100%);
+}
+.tablelist{min-height:120px;overflow: auto;}  			
+.table tbody td .hiddenLabel{display:none;}
+.table th,.table td{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+@media (max-width: 800px) {	
+	.table-change{width:auto!important;} 
+	.table-change td{white-space:normal;}
+	.table-change thead,.table-change .textcenter{display:none;}
+	.table-change .ck{border-top: 1px solid #75A3F3;border-bottom: 2px solid #75A3F3;}
+	.tablestyle1 .sorting_1, .tablestyle1 .sorting_asc{padding-left:8px;}
+	.table-change tbody td,.table-change thead th{float:left;width:100%!important;box-sizing: border-box;text-align:left;}
+	.table-change tbody td .hiddenLabel{display:inline-block;width:40%;font-weight: 600;}
+}
+@media (max-width: 600px) {	
+	.dataTables_filter{width:43%;}	
+	.dataTables_filter label{font-size:0}
+	.dataTables_filter input[type="search"]{width:100%;font-size:14px;padding: 17px 0 17px 40px;box-sizing:border-box;}	
+}

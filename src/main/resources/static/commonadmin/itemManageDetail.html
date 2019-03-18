@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目详情</title>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/css/videolist.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layer/theme/default/layer.css" rel="stylesheet" media="screen">
+    <link href="/css/items/itemManageDetail.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <header>
+        <div class="title-all">
+            <div class="d-title">项目详情</div>
+        </div>
+    </header>
+    <div class="content">
+        <div class="invest-list" id="lan_detail"></div>
+        <div class="line-dashed"></div>
+        <div class="input-detail">
+            <div class="form-group-input fl">
+                <label class="control-label"><span class="red-sp">*</span>理财币种</label>
+                <div class="">
+                    <select class="combobox1 form-control" name="status" id="coinType">
+                        <option value="BCB" selected="selected">BCB</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group-input fl">
+                <label class="control-label"><span class="red-sp">*</span>理财金额</label>
+                <div class="">
+                    <input type="text" class="form-control activityName" id="amount" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>
+            <div class="form-group-input fl mrt-9">
+                <label class="control-label po-top-10"><span class="red-tr">*</span>单笔最大<br>限额</label>
+                <div class="">
+                    <input type="text" class="form-control" id="minMoney" placeholder="最小值" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                    -
+                    <input type="text" class="form-control activityName" id="coinLimit" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>
+            <div class="form-group-input fl">
+                <label class="control-label"><span class="red-sp">*</span>理财期限</label>
+                <div class="">
+                    <input type="text" class="form-control"  style="width: 150px" id="freezeNumber" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')"/>
+                </div>
+                <select class="combobox form-control" name="status" id="freezeUnit">
+                    <option value="年" selected="selected">年</option>
+                    <option value="月">月</option>
+                </select>
+
+            </div>
+            <div class="form-group-input fl mrt-9">
+                <label class="control-label po-top-10"><span class="red-sp">*</span>年化收益<br>率%</label>
+                <div class="">
+                    <input type="text" class="form-control activityName" id="AnnualRate" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>
+            <!--<div class="form-group-input fl mrt-9">
+                <label class="control-label po-top-10"><span class="red-sp">*</span>用户保底<br>收益率%</label>
+                <div class="">
+                    <input type="text" class="form-control activityName"id="TotalRate" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>-->
+            <div class="form-group-input fl mrt-9">
+                <label class="control-label po-top-10"><span class="red-sp">*</span>基金公司<br>返点%</label>
+                <div class="">
+                    <input type="text" class="form-control activityName" id="FoundationRate" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>
+            <div class="form-group-input fl">
+                <label class="control-label"><span class="red-sp">*</span>认购费%</label>
+                <div class="">
+                    <input type="text" class="form-control activityName" id="subscriptionFee" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>
+            <div class="form-group-input fl mrt-9">
+                <label class="control-label po-top-10"><span class="red-sp">*</span>认购费折<br>扣%</label>
+                <div class="">
+                    <input type="text" class="form-control activityName" id="DiscountRate" placeholder="请输入数字" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')" oninput="this.value=this.value.replace(/[^\d\.]/g,'')">
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="form-group-input fl">
+                <label class="control-label"><span class="red-sp">*</span>支付币种</label>
+                <div class="padding-top-6 langague-type">
+                    <input type="checkbox" class="check_select" id="usdx_coin" value="USDX"/>
+                    <label for="usdx_coin" class="margin-50">USDX</label>
+                    <input type="checkbox" class="check_select" id="eth_coin" value="ETH"/>
+                    <label for="eth_coin">ETH</label>
+                </div>
+            </div>
+            <div class="form-group-input fl" style="width: auto;position: relative">
+                <label class="control-label fl"><span class="red-sp">*</span>钱包地址</label>
+                <div class="fr" style="float: right">
+                    <div class="dn upload-box" id="upload_usdx" style="display: block;margin-bottom: 20px;">
+                        <span>USDX：</span>
+                        <input type="text" class="form-control ell" id="token_show" placeholder="请上传钱包地址描述文件" readonly/>
+                        <input type="file" class="form-control dn" id="file_upload"/>
+                        <div class="btn-upload">上传</div>
+                    </div>
+                    <div class="dn upload-box" style="display: block" id="upload_eth">
+                        <span style="width: 54px;display: inline-block;text-align: right">ETH：</span>
+                        <input type="text" class="form-control ell" id="token_show_ETH" placeholder="请上传钱包地址描述文件" readonly/>
+                        <input type="file" class="form-control dn" id="file_upload_ETH" name="file_upload"/>
+                        <div class="btn-upload-ETH">上传</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div style="margin-top: 40px">
+            <label class="control-label"><span class="red-sp">*</span>项目状态</label>
+            <div class="" id="item_tag">
+
+            </div>
+        </div>
+
+        <div class="detail-state">
+            <div class="status-out">
+                <div class="status-in"><label>项目状态</label><div class="status" status>募集中</div></div>
+                <div class="publish-in"><label>发布时间</label><div class="publish-time">2018-5-26 11:00</div></div>
+            </div>
+            <div class="btn-all">
+                <div class="btn-save btn-black">保存修改</div>
+                <div class="btn-stop btn-black">暂停项目</div>
+                <div class="btn-start btn-black">启动项目</div>
+                <div class="btn-over btn-black">结束项目</div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">在这里添加一些文本</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default marr-20" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <div class="alertTip"></div>
+    <div class="alert alert-success" role="alert" id="success"></div>
+</body>
+<script type="text/javascript" src="/../js/vendors/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<!--<script type="text/javascript" src="/js/DT_bootstrap.js"></script>-->
+<script type="text/javascript" src="/../js/items/itemManageDetail.js"></script>
+</html>

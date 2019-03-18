@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>交易管理</title>
+    <style>
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        .bootstrap-admin-panel-content {
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">活动列表</div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%">
+            <div class="row">
+                <div class="panel panel-default bootstrap-admin-no-table-panel">
+                    <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-lg-1 control-label" style="width: 90px" for="status">活动状态</label>
+                                    <div class="col-lg-2">
+                                        <select class="combobox form-control" name="status" id="status">
+                                            <option value="0" selected="selected">初始状态</option>
+                                            <option value="1">上线</option>
+                                            <option value="2">结束</option>
+                                            <option value="-1">下线</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <button type="button" id="submit1" class="btn btn-primary" style="margin-left: 10px;" onclick="add()">新建活动</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="bootstrap-admin-panel-content" style="width:100%">
+            <table class="table table-bordered table-hover data-table" id="tradeTable" cellspacing="0" >
+                <thead>
+                <tr>
+                    <th>活动名称</th>
+                    <th>活动标签</th>
+                    <th>代币类型</th>
+                    <th>代币总量</th>
+                    <th>众筹比例</th>
+                    <th>机构投资者</th>
+                    <th>返币达成条件</th>
+                    <th>注意事项</th>
+                    <th>背景图片</th>
+                    <th>支持语言</th>
+                    <th>活动状态</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div id="agentsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="row">
+                <div class="panel panel-default bootstrap-admin-no-table-panel">
+                    <div class="panel-heading">
+                        <div class="text-muted bootstrap-admin-box-title">新增/编辑活动</div>
+                    </div>
+                    <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+                        <form class="form-horizontal" id="myform"  action="/admin/activity/save" method="post">
+                            <input name="projectUuid" id="projectUuid" type="hidden" />
+                            <fieldset>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="title">活动标题</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="title" type="text" name ="title">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="tag">活动标签</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="tag" type="text" name ="tag" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="freezeNumber">代币总量</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="freezeNumber" type="text" name ="freezeNumber">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">众筹比例</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="freezeUnit" type="text"  name ="freezeUnit">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">机构投资者</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" id="participation"  name="participation" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">返币达成条件</label>
+                                    <div class="col-lg-10">
+                                        <textarea class="form-control" id="incomeReachCondition"  name="incomeReachCondition" type="text" >
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">注意事项</label>
+                                    <div class="col-lg-10">
+                                        <textarea class="form-control" id="attentions"  name="attentions" type="text" >
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="lang">支持语言</label>
+                                    <div class="col-lg-10">
+                                        <select id="lang" name="lang" class="form-control">
+                                            <option value="cn" selected="selected">中文</option>
+                                            <option value="en">英文</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="backgroundUrl">背景墙：</label>
+                                    <div id="uploader-demo">
+                                        <div id="fileList" class="uploader-list"></div>
+                                        <div id="filePicker">选择图片</div>
+                                        <img id="bgurl" style="display:none">
+                                    </div>
+                                    <input type="hidden" id="backgroundUrl" name="backgroundUrl">
+                                </div>
+                                <button type="button" id="submit" class="btn btn-primary" style="margin-left:200px;margin-top:50px;">保存编辑</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alertTip" id="tradesPop"></div>
+</div>
+<script>
+    function add(){
+        $('#agentsModal').modal('show');
+    }
+    function search() {
+        oTable.ajax.reload();
+    }
+    $(function(){
+        oTable = $('#tradeTable').DataTable({
+            "bJQueryUI": true,
+            "sDom": '<".example_processing"r><".tablelist"t><"#information"i>lp',
+            "iDisplayStart":0,
+            "iDisplayLength":10,
+            "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+            "searching":false,
+            "bDestroy":true,
+            "bRetrieve":true,
+            "bStateSave":false,
+            "bServerSide": true,
+            "fnServerData": retrieveData,
+            "sAjaxSource": "/admin/activity/active/list",
+            "bFilter": true,
+            "bLengthChange": true,
+            "bProcessing": true,
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                var opts='';
+                opts = '<div style="width:100px;display:block;word-break: break-all;word-wrap: break-word;" >'+aData[5]+'</div>';
+                $('td:eq(5)', nRow).html(opts);
+                // opts='';
+                // opts+='<a href="https://etherscan.io/address/'+aData[3]+'" target="_blank">'+aData[3]+'</a>';
+                // $('td:eq(3)', nRow).html(opts);
+                // opts='';
+                // opts+='<a href="https://etherscan.io/address/'+aData[4]+'" target="_blank">'+aData[4]+'</a>';
+                // $('td:eq(4)', nRow).html(opts);
+                // opts='';
+                // opts+='<a href="https://etherscan.io/tx/'+aData[7]+'" target="_blank">查看</a>';
+                // $('td:eq(7)', nRow).html(opts);
+                return nRow;
+            },
+            "oLanguage": {
+                "sProcessing": "正在获取数据，请稍后...",
+                "sLengthMenu": "每页显示 _MENU_ 条",
+                "sZeroRecords": "目前还没有交易记录！",
+                "sInfoEmpty": "记录数为0",
+                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条",
+                "sSearch": "搜索 ",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "最后一页"
+                }
+            },
+            "initComplete": function(settings, json) {}
+        });
+        $('.innerContent').delegate('#status','change',function(){
+            oTable.page('first').draw(false);
+            return false;
+        }).delegate("#submit",'click',function () {
+            var freezeNumber = $("#freezeNumber").val();
+            var reg = /^[0-9]*$/;//数字验证
+            if (!reg.test(freezeNumber)) {
+                alert("代币总量必须为整数!");
+                return false;
+            }
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/activity/save",
+                "dataType": "json",
+                "data": $("#myform").serialize(),
+                "success": function(data) {
+                    $('#agentsModal').modal('hide');
+                    oTable.ajax.reload();
+                }
+            });
+        });
+        function retrieveData( sSource, aoData, fnCallback ) {
+            aoData.push( { "name": "status", "value":$('#status').val()||'0'} );
+            // aoData.push( { "name": "search", "value":$('#addressFrom').val()} );
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "contentType": "application/json",
+                "url": sSource,
+                "dataType": "json",
+                "data": JSON.stringify(aoData),
+                "success": function(resp) {
+                    fnCallback(resp);
+                }
+            });
+        }
+
+    });
+</script>
+</body>
+</html>

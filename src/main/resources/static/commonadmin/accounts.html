@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>后台账号管理</title>
+    <style>
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent" style="position: relative">
+    <!--<div style="position: fixed;width: 150px;left: 180px;bottom: 0;top: 50px;overflow: auto;">-->
+        <!--<div><ul id="planTree" class="ztree"></ul></div>-->
+    <!--</div>-->
+    <div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="text-muted bootstrap-admin-box-title">账号列表</div>
+                <button class="btn btn-xs btn-info" style="margin:0 auto;"id="add">新增账号</button>
+            </div>
+            <div class="bootstrap-admin-panel-content" style="width:100%">
+                <table class="table table-bordered table-hover data-table" id="accountTable" cellspacing="0" >
+                    <thead>
+                    <tr>
+                        <th>登录账号</th>
+                        <th>角色</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="accountModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabel" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="myform">
+                        <input type="hidden" id="aprole" name="aprole"/>
+                        <input type="hidden" id="apid" name="apid" />
+                        <input type="hidden" id="aid" name="aid">
+                        <div class="form-group row">
+                            <label class="col-lg-2" for="loginName">账号：</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="loginName" type="text" name ="loginName" readonly="true">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2" for="passwd">密码：</label>
+                            <div class="col-lg-10">
+                                <input class="form-control" id="passwd" type="password" name ="passwd">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2" for="astatus">状态：</label>
+                            <div class="col-lg-10">
+                                <select id="astatus" name="status" class="form-control">
+                                    <option value="1">启用</option>
+                                    <option value="0">禁用</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-2" >角色：</label>
+                            <div class="col-lg-10" id="roleDiv">
+                                <select id="role" name="role" class="form-control">
+                                    <!--<option value="2">管理员</option>-->
+                                    <!--<option value="3">审核人员</option>-->
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top:0;">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="submit">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alertTip">请在左侧人员分布树中选择上级....</div>
+</div>
+
+<script>
+    $(function(){
+        $("#add").click(function(){
+            // var pid = $("#aprole").val();
+            $('#aid').val('');
+            $('#loginName').attr('readonly',false);
+            $('#loginName').val('');
+            $('#passwd').val('');
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/role/queryAllRoles",
+                "dataType": "json",
+                "success": function(data) {
+                    var options='';
+                    for(var i=0;i<data.data.length;i++){
+                        options+='<option value="'+data.data[i].id+'">' + data.data[i].roleName + '</option>';
+                    }
+                    $('#role').html(options);
+                }
+            });
+
+            $('#myModalLabel').text('新增');
+            $("#accountModal").modal('show');
+        });
+        $("#submit").click(function(){
+            var accountName = $('#loginName').val();
+            var passwd = $('#passwd').val();
+                accountName =accountName.trim();
+                if(!passwd){
+                    $('.alertTip').slideDown();
+                    $('.alertTip').text("请输入密码");
+                    setTimeout(function () {
+                        $('.alertTip').slideUp();
+                    },2000);
+                }
+                if(passwd.length<6 || passwd.length>32){
+                    $('.alertTip').slideDown();
+                    $('.alertTip').text("密码长度为6到32位");
+                    setTimeout(function () {
+                        $('.alertTip').slideUp();
+                    },2000);
+                    return;
+                }
+            if(!accountName){
+                $('.alertTip').slideDown();
+                $('.alertTip').text("请输入账号");
+                setTimeout(function () {
+                    $('.alertTip').slideUp();
+                },2000);
+                return
+            }
+            if(accountName.length>15){
+                $('.alertTip').slideDown();
+                $('.alertTip').text("输入账号过长");
+                setTimeout(function () {
+                    $('.alertTip').slideUp();
+                },2000);
+                return
+            }
+            var data = $('#myform').serializeArray();
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/account/add",
+                "dataType": "json",
+                "data": data,
+                "success": function(data) {
+                    if(data.code == 1000){
+                        $('.alertTip').slideDown();
+                        $('.alertTip').text("用户已存在");
+                        setTimeout(function () {
+                            $('.alertTip').slideUp();
+                        },2000);
+                    }else if(data.code == 200){
+                        oTable.draw(false);
+                        $("#accountModal").modal('hide');
+                    }
+
+                }
+            });
+        });
+        $(".innerContent").on("click",".isAviliable", function(e) {
+            e.preventDefault();
+            var sval = $(this).attr("sval");
+            var aid = $(this).attr("aid");
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/account/status",
+                "dataType": "json",
+                "data": {aid:aid,sval:sval},
+                "success": function(data) {
+                    oTable.draw(false);
+
+                }
+            });
+        });
+        $(".innerContent").on("click",".edit", function() {
+            var aid = $(this).attr("aid");
+            $('#loginName').attr('readonly',true);
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "url": "/admin/sys/account/detail",
+                "dataType": "json",
+                "data": {aid:aid},
+                "success": function(data) {
+                    $("#aid").val(data.data.id);
+                    $("#loginName").val(data.data.loginName);
+                    $("#passwd").val(data.data.password);
+                    $("#astatus").val(data.data.status);
+                    // var html='<input type="hidden" name="role" id="role" /><input class="form-control" type="text" name="roleVal" id="roleVal"/>';
+                    // $("#roleDiv").html(html);
+                    var roleId = data.data.role;
+
+                    $.ajax({
+                        "headers": {
+                            "Authorization":localStorage.getItem("loginToken")
+                        },
+                        "type": "get",
+                        "url": "/role/queryAllRoles",
+                        "dataType": "json",
+                        "success": function(data) {
+                            var options='';
+                            for(var i=0;i<data.data.length;i++){
+                                if(roleId == data.data[i].id){
+                                    options+='<option value="'+data.data[i].id+'" selected="selected">' + data.data[i].roleName + '</option>';
+                                }else {
+                                    options+='<option value="'+data.data[i].id+'">' + data.data[i].roleName + '</option>';
+                                }
+                            }
+                            $('#role').html(options);
+
+                        }
+                    });
+
+                    // var rd = data.data.role=='1'?"管理员":(data.data.role=='2'?"管理员":(data.data.role=='3'?"审核人员":"运营人员"));
+                    // $("#roleVal").val(rd);
+                    // $("#role").val(data.data.role);
+                    $('#myModalLabel').text('编辑');
+                    $("#accountModal").modal('show');
+                }
+            });
+        }).delegate('.deleteAccount','click',function () {
+            var accoundId = $(this).attr('aid');
+            layer.confirm('是否确定要删除？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "contentType": "application/json",
+                    "type": "get",
+                    "url": "/admin/sys/account/deleteAccounts/"+accoundId,
+                    "dataType": "json",
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            layer.closeAll();
+                            oTable.draw(false);
+                        }
+                    }
+                })
+            }, function(){
+
+            });
+        });
+        var oTable = $('#accountTable').DataTable({
+            "bJQueryUI": true,
+            "iDisplayStart":0,
+            "iDisplayLength":10,
+            "sDom":'<".example_processing"r><".tablelist"t><"#information"i>lp',
+            "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+            "bDestroy":true,
+            "bRetrieve":true,
+            "bStateSave":false,
+            "bServerSide": true,
+            "fnServerData": retrieveData,
+            "sAjaxSource": "/admin/sys/account/list",
+            "bFilter": true,
+            "bLengthChange": true,
+            "bProcessing": true,
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                var opts ="";
+                if(aData[2]=="禁用") {
+                    opts+='<a href="javascript:void(0)" class="isAviliable" aid ="'+aData[4]+'" sval="1">启用</a>';
+                }else if(aData[2]=="启用") {
+                    opts+='<a href="javascript:void(0)" class="isAviliable" aid ="'+aData[4]+'" sval="0">禁用</a>';
+                }
+                opts +='<a href="javascript:void(0)" class="edit" aid="'+aData[4]+'" style="margin-left:20px;">编辑</a>'
+                opts +='<a href="javascript:void(0)" class="deleteAccount" aid="'+aData[4]+'" style="margin-left:20px;color: red;">删除</a>'
+                $('td:eq(4)', nRow).html(opts);
+            },
+            "oLanguage": {
+                "sProcessing": "正在获取数据，请稍后...",
+                "sLengthMenu": "每页显示 _MENU_ 条",
+                "sZeroRecords": "目前还没有账户记录！",
+                "sInfoEmpty": "记录数为0",
+                "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条",
+                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                "sSearch": "搜索 ",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "最后一页"
+                }
+            },
+            "initComplete": function(settings, json) {}
+        });
+        function retrieveData( sSource, aoData, fnCallback ) {
+            aoData.push( { "name": "pid", "value":$('input[name="apid"]').val()||'1'} );
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "contentType": "application/json",
+                "url": sSource,
+                "dataType": "json",
+                "data": JSON.stringify(aoData),
+                "success": function(resp) {
+                    fnCallback(resp);
+                }
+            });
+        }
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick-hover {
+	background: #00a2d4;
+}
+.webuploader-pick-disable {
+	opacity: 0.6;
+	pointer-events:none;
+}
+.webuploader-container{position:absolute;top:0;left:0;width:100px;background-color:#41CDFA;border-radius:4px;overflow:hidden;}
+.webuploader-pick{color:#fff;line-height:30px;text-align:center;}
+.webuploader-container > div{width:100%!important;height:100%!important;}
+.btnUpload{opacity:0;filter:alpha(opacity=0); }
+
+.parentFileBox .fileBoxUl li{line-height:0;}
+.parentFileBox .fileBoxUl li.service .diyCancel{display:none;}
+.parentFileBox .fileBoxUl li.browser .diyCancel,
+.parentFileBox .fileBoxUl li.service:hover .diyCancel{cursor:pointer;position:absolute;height:1.5em;right: -9px;top: -2px;color:#E51E18;z-index:30;}
+
+.parentFileBox .fileBoxUl li{display:inline-block;list-style:none;margin:0 10px 10px 0;position:relative;text-align:center;}
+.parentFileBox .fileBoxUl .viewThumb{display:inline-block;width:80px;height:80px;overflow:hidden;}
+.parentFileBox .fileBoxUl .viewThumb img{width:100%;height:100%;}
+.parentFileBox .fileBoxUl .audiolist{display:inline-block;width:200px;}
+
+.parentFileBox>.fileBoxUl>li>.diySuccess {
+	position:absolute;
+	width:32px;
+	height:32px;
+	top:2px;
+	right:2px;
+	cursor:pointer;
+	display:none;
+}
+.parentFileBox>.fileBoxUl>li>.diySuccess {background: url(images/check_alt.png) no-repeat right top;cursor: default;background-size: 24px 24px;}
+.parentFileBox>.fileBoxUl>li>.diyBar {
+	top:0;
+	left:0;
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	line-height:80px;
+	background:url(images/bgblack.png);
+	display:none;
+	z-index:20;
+}
+.parentFileBox>.fileBoxUl>li>.diyBar>.diyProgressText {
+	font-size:14px;
+	text-align:center;
+	color:#FFF;
+	position:relative;
+	z-index:99;
+}
+.parentFileBox>.fileBoxUl>li>.diyBar>.diyProgress {
+	position:absolute;
+	left:0;
+	top:35%;
+	height:24px;
+	width:100%;
+	background-color:#09F;
+	filter:alpha(opacity=70);
+	-moz-opacity:0.7;
+	opacity:0.7;
+	z-index:97;
+}
+.parentFileBox>.fileBoxUl>li .diyFileName {
+	display:block;  
+	position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    line-height: 18px;
+    padding: 5px 0;
+    text-align: center;
+    color: #000;
+    font-size: 10px;
+    opacity: .9;
+    word-break: break-all;
+    transform: translateY(100%);white-space: nowrap;
+    overflow:hidden;text-overflow:ellipsis;
+}
+
+.avi_diy_bg,.txt_diy_bg,.doc_diy_bg,.zip_diy_bg,.csv_diy_bg,.xls_diy_bg,.mp3_diy_bg,.pdf_diy_bg,.rar_diy_bg {
+	background-position:center;
+	background-repeat:no-repeat;
+}
+.avi_diy_bg {
+	background-image:url(images/filebg/avi.png);
+}
+.video_diy_bg {
+	background-image:url(images/filebg/video.png);
+	background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.txt_diy_bg {
+	background-image:url(images/filebg/txt.png);
+}
+.doc_diy_bg {
+	background-image:url(images/filebg/doc.png);
+}
+.zip_diy_bg {
+	background-image:url(images/filebg/zip.png);
+}
+.csv_diy_bg {
+	background-image:url(images/filebg/csv.png);
+}
+.xls_diy_bg {
+	background-image:url(images/filebg/xls.png);
+}
+.mp3_diy_bg {
+	background-image:url(images/filebg/mp3.png);
+}
+.pdf_diy_bg {
+	background-image:url(images/filebg/pdf.png);
+}
+.rar_diy_bg {
+	background-image:url(images/filebg/rar.png);
+}

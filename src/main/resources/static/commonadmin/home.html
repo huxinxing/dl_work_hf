@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="innerContent">
+    <div class="welcome" style="text-align: center;font-size: 20px;font-weight: bold;margin-top: 50px">欢迎来到数字谷理财后台管理系统</div>
+</div>
+<script>
+    $(function () {
+        var loginName = localStorage.getItem("loginName");
+        loginName = "欢迎"+ loginName +"来到数字谷理财后台管理系统";
+
+        $('.welcome').text(loginName)
+    })
+</script>
+</body>
+</html>

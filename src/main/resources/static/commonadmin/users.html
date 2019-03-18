@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户管理</title>
+    <style>
+        a{
+            cursor: pointer;
+        }
+        #DataTables_Table_1_processing {
+            top: 64%;
+        }
+
+        #userDetail .modal-dialog .modal-content{
+            width: 900px;
+            height: 675px;
+        }
+        #userDetail .modal-dialog .modal-body {
+            padding: 0;
+            margin-top: 10px;
+        }
+        #userDetail .modal-dialog .modal-header{
+            background-color: #F2F2F2;
+            border-bottom: 2px solid #FC984D
+        }
+        #userDetail .itemWrapper{
+            display: inline-block;
+            margin-left: 20px;
+            color: #333333;
+        }
+        #dataTable thead tr{
+            background-color: #cccccc;
+        }
+
+        #dataTable .dataTables_paginate{
+            display: none;
+        }
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        #investWra {
+            float: left;
+        }
+        #investWra>div{
+            padding-top: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <!-- 树形表格 -->
+        <div class="form-group row" style="margin-top:20px;margin-left: 0px;">
+            <div class="col-lg-2">
+                <input class="form-control" id="userId"  name="userId" type="text" placeholder="按UserID查询" >
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="codeID"  name="codeID" type="text" placeholder="按CodeID查询" >
+            </div>
+            <div class="col-lg-2" id="mobileNumberWrapper">
+                <input class="form-control" id="mobileNumber"  name="mobileNumber" type="text" placeholder="按手机号查询" >
+            </div>
+            <div class="col-lg-4">
+                <input class="form-control" id="walletAddr"  name="walletAddr" type="text" placeholder="按钱包地址查询">
+            </div>
+            <div class="col-lg-2">
+                <button onclick="search()" class="btn btn-primary">查询</button>
+            </div>
+        </div>
+
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table id="mainTable" class="table table-bordered table-hover data-table" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>UserID</th>
+                    <th>CodeID</th>
+                    <th>昵称</th>
+                    <th>注册时间</th>
+                    <th>层级</th>
+                    <th>理财返点</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div id="walletModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabel" class="modal-title"><span id="projectN"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                        <th>类型</th>
+                        <th>地址</th>
+                        <th>状态</th>
+                        </thead>
+                        <tbody class="walletTable">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="checkMobileNumber" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-lg-2">手机号</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" readonly type="text" id="phoneNumber" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="discountRateModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left: 100px;width: 400px;height: 220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div>
+                        <a id="userUuid" uid="uid"></a>
+                        <div style="margin-bottom: 10px;">请输入要设置的折扣比例(0-100)</div>
+                        <input type="text" class="form-control" id="discountRateVal">
+                        <div class="tip" style="text-align: left;color: red;display: none">设置的比例不符合规范！！</div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default confirmDiscountRate">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="financingRateModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left: 100px;width: 400px;height: 220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div>
+                        <a id="saveFinancingId" uid="uid"></a>
+                        <div style="margin-bottom: 10px;">请输入要设置的返点比例(0-5)</div>
+                        <input type="text" class="form-control" id="financingRateVal">
+                        <div class="tip" style="text-align: left;color: red;display: none">设置的比例不符合规范！！</div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default confirmFinancingRate">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="changeProxy" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left: 100px;width: 400px;height: 220px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div>
+                        <a id="proxyId" uid="uid"></a>
+                        <div style="margin-bottom: 10px;">请输入上级ID号(ID为0时设置成1级代理)：</div>
+                        <input type="text" class="form-control" id="changeProxyVal">
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top: 0px">
+                    <button type="button" class="btn btn-default confirmProxy">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alertTip" id="tipMessage"></div>
+
+    <!--20180524zhw添加获取理财弹出框-->
+    <div id="userInvestFinancingModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 700px;width: 943px;margin-left: -200px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="height: 586px;width: 936px;overflow: auto">
+                    <div>
+                        <div id="containerFinancing" style="height:300px;">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="text-muted bootstrap-admin-box-title">项目列表</div>
+                            </div>
+                            <div class="bootstrap-admin-panel-content" style="width:100%">
+                                <table class="table table-bordered table-hover data-table" id="projectInvestFinancing" cellspacing="0" >
+                                    <thead>
+                                    <tr>
+                                        <th>项目名称</th>
+                                        <th>代币币种(BCB)</th>
+                                        <th>数量</th>
+                                        <th>结算币种(USDX)</th>
+                                        <th>总金额</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--add by wenqiang 新增代理收益查看，可以显示出代理收益总额、已提现记录、余额-->
+    <div id="agencyBenefits" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 700px;width: 943px;margin-left: -200px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body" style="height: 586px;width: 936px;overflow: auto">
+                    <div>
+                        <div style="margin-bottom: 10px;">代理收益总额：<label id ="agencyBenefitsTotal"></label></div>
+                        <div style="margin-bottom: 10px;">余额：<label id ="balance"></label></div>
+                    </div>
+
+                    <div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="text-muted bootstrap-admin-box-title">提现记录</div>
+                            </div>
+                            <div class="bootstrap-admin-panel-content" style="width:100%">
+                                <table class="table table-bordered table-hover data-table" id="presentRecode" cellspacing="0" >
+                                    <thead>
+                                    <tr>
+                                        <th>提现时间</th>
+                                        <th>提现金额</th>
+                                        <th>提现币种</th>
+                                        <th>审核状态</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="userDetail" style="margin-left: -300px" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>用户详情</div>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top: -22px">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div style="background-color: #f2f2f2;padding-left: 10px;height: 35px;line-height: 35px">个人信息</div>
+                        <div style="margin-top: 10px">
+                            <div class="itemWrapper">ID:<span id="idWrapper"></span></div>
+                            <div class="itemWrapper">昵称：<span id="nameWrapper"></span></div>
+                            <div class="itemWrapper">注册时间：<span id="dateWrapper"></span></div>
+                            <div class="itemWrapper">代理级别：<span id="proxyWrapper"></span></div>
+                            <div class="itemWrapper">返点比例：<span id="rateWrapper"></span></div>
+                            <div style="margin-top: 10px">
+                                <div class="itemWrapper">钱包地址：<span id="moneyWrapper"></span></div>
+                                <div class="itemWrapper">国家编码：<span id="nationWrapper"></span></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div style="margin: 10px 0px;border-bottom: 1px solid #f2f2f2">
+                        <div style="background-color: #f2f2f2;padding-left: 10px;height: 35px;line-height: 35px">我的上级</div>
+                        <ol class="breadcrumb" style="background-color: #ffffff">
+                            <li> <a id="proxy1" style="cursor: pointer" title="1" userId="">  </a> </li>
+                            <li> <a id="proxy2" style="cursor: pointer;" title="2" userId="">  </a> </li>
+                            <li> <a id="proxy3" style="cursor: pointer" title="3" userId="">  </a> </li>
+                            <li> <a id="proxy4" style="cursor: pointer;" title="4" userId="">  </a> </li>
+                            <li> <a id="proxy5" style="cursor: pointer" title="5" userId="">  </a> </li>
+                        </ol>
+                    </div>
+                    <div style="height: 316px;">
+                        <div style="background-color: #f2f2f2;padding-left: 10px;height: 35px;line-height: 35px">我的下级</div>
+                        <div style="padding: 0px 10px;">
+                            <table id="dataTable" class="table table-bordered table-hover data-table" cellspacing="0" >
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>CODEID</th>
+                                    <th>昵称</th>
+                                    <th>投资额ETH(本人)</th>
+                                    <!--<th>投资额USDX(本人)</th>-->
+                                    <th>投资额ETH(下级)</th>
+                                    <!--<th>投资额USDX(下级)</th>-->
+                                    <th>代理收益(本人)</th>
+                                    <th>代理收益(下级)</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+
+<script type="text/javascript">
+    jQuery.browser={};(function(){jQuery.browser.msie=false; jQuery.browser.version=0;if(navigator.userAgent.match(/MSIE ([0-9]+)./)){ jQuery.browser.msie=true;jQuery.browser.version=RegExp.$1;}})();
+    function search() {
+        oTable.ajax.reload();
+    }
+
+    $(function(){
+        var userId;
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/user/permissionButtonList",
+                "dataType": "json",
+                "data":{},
+                "success": function(data) {
+                    if(data.data.length>0){
+                        $('#mobileNumberWrapper').css('display','block');
+                        oTable = $('#mainTable').DataTable({
+                        "bJQueryUI": true,
+                        "iDisplayStart":0,
+                        "iDisplayLength":10,
+                        "sDom":'<".example_processing"r><".tablelist"t><"#information"i>lp',
+                        "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+                        "searching":false,
+                        "bDestroy":true,
+                        "bRetrieve":true,
+                        "bStateSave":false,
+                        "bServerSide": true,
+                        "fnServerData": retrieveData,
+                        "autoWidth":false,
+                        "sAjaxSource": "/admin/user/tree/list",
+                        "bFilter": true,
+                        "bLengthChange": true,
+                        "bProcessing": true,
+                        "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                            var lian = '';
+                            lian += '<a style="margin-left:20px;cursor: pointer" uid="'+aData[0]+'" class="idFlag">'+aData[0]+'</a>';
+                            var html = '';
+                            html+= '<a class="checkMobileNumber" userid="'+aData[0]+'" uname="'+aData[2]+'">查看手机号</a>';
+                            html+= '<a class="wallets" style="margin-left:20px;" userid="'+aData[0]+'" uname="'+aData[2]+'">钱包地址</a>';
+                            html+='<a class="investFinancingPro" style="margin-left:20px;" uid="'+aData[0]+'">查看投资</a>';
+                            html+='<a class="agencyBenefits" style="margin-left:20px;" uid="'+aData[0]+'">代理收益</a>';
+                            html+='<a  style="margin-left:20px;" href="javascript:void(0);" class="financingRateSet" uid="'+aData[0]+'">返点设置</a>';
+                            html+='<a  style="margin-left:20px;" href="javascript:void(0);" class="discountRateSet" uid="'+aData[0]+'">折扣比例设置</a>';
+                            html+='<a  style="margin-left:20px;" href="javascript:void(0);" class="parentSet" uid="'+aData[0]+'">更换上级代理</a>';
+                            $('td:eq(0)', nRow).html(lian);
+                            $('td:eq(6)', nRow).html(html);
+                            return nRow;
+                            },
+                        "oLanguage": {
+                            "sProcessing": "正在获取数据，请稍后...",
+                            "sLengthMenu": "每页显示 _MENU_ 条",
+                            "sZeroRecords": "目前还没有用户记录！",
+                            "sInfoEmpty": "记录数为0",
+                            "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                            "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条",
+                            "sSearch": "搜索 ",
+                            "oPaginate": {
+                                "sFirst": "第一页",
+                                "sPrevious": "上一页",
+                                "sNext": "下一页",
+                                "sLast": "最后一页"
+                            }
+                        },
+                        "initComplete": function(settings, json) {}
+                    });
+                 }else {
+                    $('#mobileNumberWrapper').css('display','none');
+                    oTable = $('#mainTable').DataTable({
+                    "bJQueryUI": true,
+                    "iDisplayStart":0,
+                    "iDisplayLength":10,
+                    "sDom":'<".example_processing"r><".tablelist"t><"#information"i>lp',
+                    "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+                    "searching":false,
+                    "bDestroy":true,
+                    "bRetrieve":true,
+                    "bStateSave":false,
+                    "bServerSide": true,
+                    "fnServerData": retrieveData,
+                    "autoWidth":false,
+                    "sAjaxSource": "/admin/user/tree/list",
+                    "bFilter": true,
+                    "bLengthChange": true,
+                    "bProcessing": true,
+                    "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                        var lian = '';
+                        lian += '<a style="margin-left:20px;cursor: pointer" uid="'+aData[0]+'" class="idFlag">'+aData[0]+'</a>';
+                        var html = '';
+                        html+= '<a class="wallets" style="margin-left:20px;" userid="'+aData[0]+'" uname="'+aData[2]+'">钱包地址</a>';
+                        html+='<a class="investFinancingPro" style="margin-left:20px;" uid="'+aData[0]+'">查看投资</a>';
+                        html+='<a class="agencyBenefits" style="margin-left:20px;" uid="'+aData[0]+'">代理收益</a>';
+                        html+='<a  style="margin-left:20px;" href="javascript:void(0);" class="financingRateSet" uid="'+aData[0]+'">返点设置</a>';
+                        html+='<a  style="margin-left:20px;" href="javascript:void(0);" class="discountRateSet" uid="'+aData[0]+'">折扣比例设置</a>';
+                        html+='<a  style="margin-left:20px;" href="javascript:void(0);" class="parentSet" uid="'+aData[0]+'">更换上级代理</a>';
+                        $('td:eq(0)', nRow).html(lian);
+                        $('td:eq(6)', nRow).html(html);
+                        return nRow;
+                        },
+                    "oLanguage": {
+                        "sProcessing": "正在获取数据，请稍后...",
+                        "sLengthMenu": "每页显示 _MENU_ 条",
+                        "sZeroRecords": "目前还没有用户记录！",
+                        "sInfoEmpty": "记录数为0",
+                        "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                        "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条",
+                        "sSearch": "搜索 ",
+                        "oPaginate": {
+                            "sFirst": "第一页",
+                            "sPrevious": "上一页",
+                            "sNext": "下一页",
+                            "sLast": "最后一页"
+                        }
+                    },
+                    "initComplete": function(settings, json) {}
+                });
+             }
+            }
+        })
+
+        function retrieveData( sSource, aoData, fnCallback ) {
+            var userId = $('input[name="userId"]').val();
+            var walletAddr = $('input[name="walletAddr"]').val();
+            var codeId = $('input[name="codeID"]').val();
+            var mobileNumber = $('input[name="mobileNumber"]').val();
+            aoData.push( { "name": "userId", "value": userId} );
+            aoData.push( { "name": "walletAddr", "value": walletAddr} );
+            aoData.push( { "name": "codeId", "value":codeId} );
+            aoData.push( { "name": "mobileNumber", "value":mobileNumber} );
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "contentType": "application/json",
+                "url": sSource,
+                "dataType": "json",
+                "data": JSON.stringify(aoData),
+                "success": function(resp) {
+                    fnCallback(resp);
+                }
+            });
+        }
+
+
+        $('.breadcrumb a').click(function(){
+            var usid = $(this).attr('userId');
+            console.log(usid);
+            getData(usid);
+        });
+
+        $('.innerContent').delegate('.discountRateSet','click',function(){
+            $('.tip').css('display','none');
+            var uid = $(this).attr('uid');
+            $('#userUuid').attr('uid',uid);
+            $('#discountRateVal').val('');
+            $('#discountRateModal').modal('show')
+        }).delegate('.financingRateSet','click',function(){
+            $('.tip').css('display','none');
+            var uid=$(this).attr('uid');
+            $('#saveFinancingId').attr('uid',uid);
+            $('#financingRateVal').val('');
+            $('#financingRateModal').modal('show')
+        }).delegate('.checkMobileNumber','click',function(){
+            var userId = $(this).attr("userid");
+            console.log(userId)
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/user/checkMobileNumber",
+                "dataType": "json",
+                "data":{userId:userId},
+                "success": function(data) {
+                    console.log(data);
+                    console.log(data.data)
+                    $('#phoneNumber').val('+'+data.data.countryCode+' '+data.data.mobileNumber);
+                    $('#checkMobileNumber').modal('show');
+                }
+            })
+        }).delegate('.wallets','click',function(){
+            var userid = $(this).attr("userid");
+            var uname = $(this).attr("uname");
+            $("#projectN").html(uname+"--钱包地址：");
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/user/wallets",
+                "dataType": "json",
+                "data":{userId:userid},
+                "success": function(data) {
+                    var wallets = data.data;
+                    var trs ='';
+                    $.each(wallets,function(index,wallet){
+                        trs+='<tr>';
+                        trs+='<td>'+(wallet.type=="3"?"以太币":"其他币")+'</td>';
+                        trs+='<td>'+wallet.token+'</td>';
+                        var status =wallet.status=='1'?'有效':'无效';
+                        trs+='<td>'+status+'</td>';
+                        trs+='<td><a  href="javascript:void(0);" onclick="unbind(\''+wallet.id+'\')">解绑钱包</a></td>';
+                        trs+='</tr>'
+                    });
+                    $(".walletTable").html(trs);
+                    $("#walletModal").modal('show');
+                }
+            });
+        }).delegate('.parentSet','click',function(){
+            var uid = $(this).attr('uid');
+            $('#proxyId').attr('uid',uid);
+            $('#changeProxyVal').val('');
+            $('#changeProxy').modal('show');//
+        }).delegate('.confirmFinancingRate','click',function () {
+            var uid = $('#saveFinancingId').attr('uid');
+            var rate = $('#financingRateVal').val();
+            $('.tip').css('display','none');
+            if (rate) {
+                // var reg =/^[0-1]$|^0\.[0-9]+$/;
+                if(!isNaN(rate) && rate >= 0 && rate <= 5 ){
+                    $.ajax( {
+                        "headers": {
+                            "Authorization":localStorage.getItem("loginToken")
+                        },
+                        "type": "post",
+                        "url": "/admin/user/financingRate/set",
+                        "dataType": "json",
+                        "data": {uid:uid,financingRate:rate},
+                        "success": function(data) {
+                            var text;
+                            if(data.code == '200'){
+                                text = "设置成功！";
+                                $('#financingRateModal').modal('hide')
+                            }else{
+                                text = data.message;
+                            }
+                            $('#tipMessage').slideDown();
+                            $('#tipMessage').text(text);
+                            setTimeout(function () {
+                                $('#tipMessage').slideUp();
+                            },2000);
+                            oTable.draw(false);
+                        }
+                    });
+                }else {
+                    $('.tip').css('display','block')
+                }
+            }
+        }).delegate('.confirmDiscountRate','click',function () {
+            var uid = $('#userUuid').attr('uid');
+            var rate = $('#discountRateVal').val();
+            $('.tip').css('display','none');
+            if(rate) {
+                var reg = new RegExp("^(\\d|[1-9]\\d|100)$");
+                if(reg.test(rate)){
+                    console.log("qqqq");
+                    $.ajax( {
+                        "headers": {
+                            "Authorization":localStorage.getItem("loginToken")
+                        },
+                        "type": "post",
+                        "url": "/admin/user/userDiscountRateSet",
+                        "dataType": "json",
+                        "data": {userId:uid, userDiscountRate:rate},
+                        "success": function(data) {
+                            var text;
+                            if(data.code == 200){
+                                text = "设置成功！";
+                                $('#discountRateModal').modal('hide')
+                            }else{
+                                text = data.message;
+                            }
+                            $('#tipMessage').slideDown();
+                            $('#tipMessage').text(text);
+                            setTimeout(function () {
+                                $('#tipMessage').slideUp();
+                            },2000);
+                            oTable.draw(false);
+                        }
+                    });
+                }else {
+                    $('.tip').css('display','block')
+                }
+            }
+        }).delegate('.idFlag','click',function () {
+
+            var uid=$(this).attr('uid');
+            getData(uid);
+            $("#userDetail .dataTables_paginate").css('display','none');
+            $("#userDetail").modal('show');
+
+        }).delegate('.confirmProxy','click',function () {
+            var uid = $('#proxyId').attr('uid');
+            var pid = $('#changeProxyVal').val();
+            if(uid == pid){
+                $('#tipMessage').slideDown();
+                $('#tipMessage').text("上级代理不能是自己！");
+                setTimeout(function () {
+                    $('#tipMessage').slideUp();
+                },2000);
+                return
+            }
+            if(pid) {
+                $.ajax( {
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "url": "/admin/user/agent/parent/set",
+                    "dataType": "json",
+                    "data": {userId:uid,parentId:pid},
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            text = '更换成功';
+                            $('#changeProxy').modal('hide');
+                        }else{
+                            text = data.message
+                        }
+                        $('#tipMessage').slideDown();
+                        $('#tipMessage').text(text);
+                        setTimeout(function () {
+                            $('#tipMessage').slideUp();
+                        },2000);
+                        oTable.draw(false);
+                    }
+                });
+            }else {
+                $('#tipMessage').slideDown();
+                $('#tipMessage').text("请输入上级ID号");
+                setTimeout(function () {
+                    $('#tipMessage').slideUp();
+                },2000);
+            }
+        }).delegate('.financing','click',function () {
+            $('#userInvestModal').modal('show');
+            userId = $(this).attr('uid');
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                url:"/admin/project/user/invest/rate",
+                type: "post",
+                dataType: "json",
+                data:{userId:userId},
+                success: function (data) {
+                    var showData = [];
+                    if(data.status != 'error'){
+                        $.each(data.data, function (key, value) {
+                            var valueInfo = value.split("_");
+                            if ("ETH" == valueInfo[0]) {
+                                showData.push([key+"("+valueInfo[1]+"ETH)", parseFloat(valueInfo[1])]);
+                            } else if ("USDX" == valueInfo[0]) {
+                                showData.push([key+"("+valueInfo[2]+"USDX)", parseFloat(valueInfo[1])]);
+                            }
+                        });
+                        $('#container').highcharts({
+                            credits: {
+                                enabled:false
+                            },
+                            chart: {
+                                type: 'pie',
+                                options3d: {
+                                    enabled: true,
+                                    alpha: 45
+                                }
+                            },
+                            title: {
+                                text: '项目投资图'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    innerSize: 100,
+                                    depth: 45
+                                }
+                            },
+                            series: [{
+                                name: '币数',
+                                data: showData
+                            }]
+                        });
+                    }
+                }
+            });
+            bTable = $('#projectInvest').DataTable({
+                "filter": false,
+                "destroy" : true,
+                "bJQueryUI": true,
+                "iDisplayStart":0,
+                "iDisplayLength":10,
+                "sDom":'<".example_processing"r><".tablelist"t><"#investWra"i>lp',
+                "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+                "bDestroy":true,
+                "bRetrieve":true,
+                "bStateSave":false,
+                "bServerSide": true,
+                "fnServerData": acceptData,
+                "sAjaxSource": "/admin/project/user/invest/list",
+                "bFilter": true,
+                "bLengthChange": true,
+                "bProcessing": true,
+                "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                },
+                "oLanguage": {
+                    "sProcessing": "正在获取数据，请稍后...",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "目前还没有项目投资记录！",
+                    "sInfoEmpty": "记录数为0",
+                    "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条数据",
+                    "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                    "sSearch": "搜索 ",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "最后一页"
+                    }
+                },
+                "initComplete": function(settings, json) {}
+            });
+
+            bTable.page('first').draw(false);
+            function acceptData( sSource, aoData, fnCallback ) {
+                aoData.push( { "name": "userId", "value":userId});
+                $.ajax( {
+                    "headers":  {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "contentType": "application/json",
+                    "url": sSource,
+                    "dataType": "json",
+                    "data": JSON.stringify(aoData),
+                    "success": function(resp) {
+                        fnCallback(resp);
+                    }
+                });
+            }
+        }).delegate('.investFinancingPro','click',function () {
+            //20180524 zhw添加 处理点击投资理财按钮
+            $('#userInvestFinancingModal').modal('show');
+            var userId = $(this).attr('uid');
+            showFinancingPieChart(userId);//画理财饼状图
+            initFinancingTable(userId);//画理财表格
+
+        }).delegate('.agencyBenefits','click',function () {
+            $('#agencyBenefits').modal('show');
+            userId = $(this).attr('uid');
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                url:"/admin/project/user/agencyBenefits/list",
+                type: "post",
+                dataType: "json",
+                data:{userId:userId},
+                success: function (data) {
+                    var agencyBenefitsTotal = 0;
+                    var balance = 0;
+                    if(data.status != 'error'){
+                        $.each(data.data, function (key, value) {
+                            if ("agencyBenefitsTotal" == key) {
+                                agencyBenefitsTotal = value;
+                            } else if ("balance" == key) {
+                                balance = value;
+                            }
+                        });
+                        $("#agencyBenefitsTotal").html(agencyBenefitsTotal+"BCB");
+                        $("#balance").html(balance+"BCB");
+                    }
+                }
+            });
+            bTable = $('#presentRecode').DataTable({
+                "bJQueryUI": true,
+                "iDisplayStart":0,
+                "iDisplayLength":10,
+                "sDom":'<".example_processing"r><".tablelist"t><"#investWra"i>lp',
+                "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+                "bDestroy":true,
+                "bRetrieve":true,
+                "bStateSave":false,
+                "bServerSide": true,
+                "fnServerData": acceptData,
+                "sAjaxSource": "/admin/project/user/presentRecode/list",
+                "bFilter": true,
+                "bLengthChange": true,
+                "bProcessing": true,
+                "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                },
+                "oLanguage": {
+                    "sProcessing": "正在获取数据，请稍后...",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "目前还没有项目投资记录！",
+                    "sInfoEmpty": "记录数为0",
+                    "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条数据",
+                    "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                    "sSearch": "搜索 ",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "最后一页"
+                    }
+                },
+                "initComplete": function(settings, json) {}
+            });
+
+            bTable.page('first').draw(false);
+            function acceptData( sSource, aoData, fnCallback ) {
+                aoData.push( { "name": "userId", "value":userId});
+                $.ajax( {
+                    "headers":  {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "contentType": "application/json",
+                    "url": sSource,
+                    "dataType": "json",
+                    "data": JSON.stringify(aoData),
+                    "success": function(resp) {
+                        fnCallback(resp);
+                    }
+                });
+            }
+        })
+    });
+
+    function getData(id) {
+        // $('.breadcrumb').html('');
+        $.ajax( {
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "post",
+            "url": "/admin/user/userInfoDetail?timestamp="+Date(),
+            "dataType": "json",
+            "data":{userId:id},
+            "success": function(data) {
+                $('#idWrapper').text(data.data.userInfoperson.userId);
+                $('#nameWrapper').text(data.data.userInfoperson.displayName);
+                $('#dateWrapper').text(data.data.userInfoperson.createTime);
+                $('#proxyWrapper').text(data.data.userInfoperson.agentLevel);
+                $('#rateWrapper').text(data.data.userInfoperson.scale);
+                $('#moneyWrapper').text(data.data.userInfoperson.listWallet[0]);
+                $('#nationWrapper').text(data.data.userInfoperson.countryCode);
+                switch (data.data.userInfoparentList.length){
+                    case 0:
+                        $('#proxy2').css({'display':'none'});
+                        $('#proxy3').css({'display':'none'});
+                        $('#proxy4').css({'display':'none'});
+                        $('#proxy5').css({'display':'none'});
+                        $('#proxy1').css({'display':'none'});
+                        break;
+                    case 1:
+                        $('#proxy2').css({'display':'none'});
+                        $('#proxy3').css({'display':'none'});
+                        $('#proxy4').css({'display':'none'});
+                        $('#proxy5').css({'display':'none'});
+                        $('#proxy1').css({'display':'inline-block'});
+                        break;
+                    case 2:
+                        $('#proxy2').css({'display':'inline-block'});
+                        $('#proxy3').css({'display':'none'});
+                        $('#proxy4').css({'display':'none'});
+                        $('#proxy5').css({'display':'none'});
+                        $('#proxy1').css({'display':'inline-block'});
+                        break;
+                    case 3:
+                        $('#proxy2').css({'display':'inline-block'});
+                        $('#proxy3').css({'display':'inline-block'});
+                        $('#proxy4').css({'display':'none'});
+                        $('#proxy5').css({'display':'none'});
+                        $('#proxy1').css({'display':'inline-block'});
+                        break;
+                    case 4:
+                        $('#proxy2').css({'display':'inline-block'});
+                        $('#proxy3').css({'display':'inline-block'});
+                        $('#proxy4').css({'display':'inline-block'});
+                        $('#proxy5').css({'display':'none'});
+                        $('#proxy1').css({'display':'inline-block'});
+                        break;
+                    case 5:
+                        $('#proxy2').css({'display':'inline-block'});
+                        $('#proxy3').css({'display':'inline-block'});
+                        $('#proxy4').css({'display':'inline-block'});
+                        $('#proxy5').css({'display':'none'});
+                        $('#proxy1').css({'display':'inline-block'});
+                        break;
+
+                }
+                for(var i=0;i<data.data.userInfoparentList.length;i++){
+
+                    if(data.data.userInfoparentList[i].displayAgentLevel == $('#proxy1').attr('title')){
+                        $('#proxy1').text(data.data.userInfoparentList[i].userId+'(一级代理)');
+                        $('#proxy1').attr('userId',data.data.userInfoparentList[i].userId);
+                    }
+                    if(data.data.userInfoparentList[i].displayAgentLevel == $('#proxy2').attr('title')){
+                        $('#proxy2').text(data.data.userInfoparentList[i].userId+'(二级代理)');
+                        $('#proxy2').attr('userId',data.data.userInfoparentList[i].userId);
+                    }
+                    if(data.data.userInfoparentList[i].displayAgentLevel == $('#proxy3').attr('title')){
+                        $('#proxy3').text(data.data.userInfoparentList[i].userId+'(三级代理)');
+                        $('#proxy3').attr('userId',data.data.userInfoparentList[i].userId);
+                    }
+                    if(data.data.userInfoparentList[i].displayAgentLevel == $('#proxy4').attr('title')){
+                        $('#proxy4').text(data.data.userInfoparentList[i].userId+'(四级代理)');
+                        $('#proxy4').attr('userId',data.data.userInfoparentList[i].userId);
+                    }
+                    if(data.data.userInfoparentList[i].displayAgentLevel == $('#proxy5').attr('title')){
+                        $('#proxy5').text(data.data.userInfoparentList[i].userId+'(五级代理)');
+                        $('#proxy5').attr('userId',data.data.userInfoparentList[i].userId);
+                    }
+                }
+
+
+                console.log(data.data.userInfochildList);
+                var modalTable;
+                if($('#dataTable').hasClass('dataTable')) {
+                    modalTable = $('#dataTable').dataTable();
+                    modalTable.fnClearTable(); //清空一下table
+                    modalTable.fnDestroy(); //还原初始化了的datatable
+                }
+                modalTable = $('#dataTable').DataTable({
+                    "bJQueryUI": true,
+                    "iDisplayStart":0,
+                    "iDisplayLength":5,
+                    "paging": true,
+                    "info": false,
+                    "bAutoWidth": false,
+                    "bPaginate": true,
+                    data:data.data.userInfochildList,
+                    columns: [
+                        { data: 'userId'},
+                        { data: 'code'},
+                        { data: 'displayName'},
+                        { data: 'investTatolSelf'},
+                        //{ data: 'investUsdxTatolSelf'},
+                        { data: 'investTatolLevel'},
+                        //{ data: 'investUsdxTatolLevel'},
+                        { data: 'agentsTatolSelf'},
+                        { data: 'agentsTatolLevel'}
+
+                    ],
+                    "columnDefs":[{
+                        "targets": [0], // 目标列位置，下标从0开始
+                        "data": "userId", // 数据列名
+                        "render": function(data, type, full) { // 返回自定义内容
+                            return "<a id='lowLevel' style='cursor: pointer;' onclick=\"clickthis('"+data+"')\" lowid='"+full.id+"'>" + data + "</a>";
+                        }
+                    }],
+                    // "pageLength": 5,
+                    "bDestroy":true,
+                    "bSort": false,
+                    "bRetrieve":true,
+                    "bStateSave":false,
+                    "bFilter": false,
+                    "bLengthChange": false,
+                    "bProcessing": false
+                });
+            }
+        });
+
+    };
+
+
+
+    function clickthis(val) {
+        getData(val);
+    }
+
+
+
+    function unbind(id){
+        $.ajax( {
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type": "post",
+            "url": "/admin/user/wallet/unbind",
+            "dataType": "json",
+            "data": {id:id},
+            "success": function(data) {
+                if(data.code === '200'){
+                    // alert(data.message);
+                    $('#tipMessage').slideDown();
+                    $('#tipMessage').text("操作成功");
+                    setTimeout(function () {
+                        $('#tipMessage').slideUp();
+                    },2000);
+
+                }else{
+                    $('#tipMessage').slideDown();
+                    $('#tipMessage').text("操作失败");
+                    setTimeout(function () {
+                        $('#tipMessage').slideUp();
+                    },2000);
+                }
+                oTable.draw(false);
+            },
+            "error":function (data) {
+                $('#tipMessage').slideDown();
+                $('#tipMessage').text("操作失败");
+                setTimeout(function () {
+                    $('#tipMessage').slideUp();
+                },2000);
+            }
+        });
+    }
+
+    /**
+     * 20180524zhw添加绘制理财饼状图
+     * @param userid
+     */
+    function showFinancingPieChart(userId) {
+        $.ajax({
+            "headers": {
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            url:"/admin/financing/user/invest/rate",
+            type: "post",
+            dataType: "json",
+            data:{userId:userId},
+            success: function (data) {
+                var showData = [];
+                if(data.status != 'error'){
+                    $.each(data.data, function (key, value) {
+                        //0.121921483BCB_1.000000004USDX
+                        var valueInfo = value.split("_");
+                            showData.push([key+"("+valueInfo[1]+")", parseFloat(valueInfo[1])]);
+                    });
+                    $('#containerFinancing').highcharts({
+                        credits: {
+                            enabled:false
+                        },
+                        chart: {
+                            type: 'pie',
+                            options3d: {
+                                enabled: true,
+                                alpha: 45
+                            }
+                        },
+                        title: {
+                            text: '理财投资图'
+                        },
+                        plotOptions: {
+                            pie: {
+                                innerSize: 100,
+                                depth: 45
+                            }
+                        },
+                        series: [{
+                            name: '币数',
+                            data: showData
+                        }]
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 20180524zhw 添加 绘制理财统计表格
+     * @param userIdArgu
+     */
+    function initFinancingTable(userIdArgu) {
+        debugger;
+        var bTable = $('#projectInvestFinancing').dataTable();
+        if (bTable != 'undefined') {
+            bTable.fnClearTable(false);
+            bTable.fnDestroy();
+        }
+
+        var bTableFinancing = $('#projectInvestFinancing').DataTable({
+                "filter": false,
+                "destroy" : true,
+                "bJQueryUI": true,
+                "iDisplayStart":0,
+                "iDisplayLength":1,
+                "sDom":'<".example_processing"r><".tablelist"t><"#investWra"i>lp',
+                "lengthMenu": [ 1,10, 15, 20, 25, 50, 100],
+                "bDestroy":true,
+                "bRetrieve":true,
+                "bStateSave":false,
+                "bServerSide": true,
+                "fnServerData": acceptData,
+                "sAjaxSource": "/admin/financing/user/invest/list",
+                "bFilter": true,
+                "bLengthChange": true,
+                "bProcessing": true,
+                "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                },
+                "columns": [
+                    {"data": "title"},
+                    {"data": "coinType"},
+                    {"data": "coinAmount"},
+                    {"data": "usdxCoinType"},
+                    {"data": "usdxAmount"}
+                ],
+                "oLanguage": {
+                    "sProcessing": "正在获取数据，请稍后...",
+                    "sLengthMenu": "每页显示 _MENU_ 条",
+                    "sZeroRecords": "目前还没有项目投资记录！",
+                    "sInfoEmpty": "记录数为0",
+                    "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条数据",
+                    "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                    "sSearch": "搜索 ",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "最后一页"
+                    }
+                },
+                "initComplete": function(settings, json) {}
+            });
+
+        bTableFinancing.page('first').draw(false);
+            function acceptData( sSource, aoData, fnCallback ) {
+                aoData.push( { "name": "userId", "value":userIdArgu});
+                $.ajax( {
+                    "headers":  {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "type": "post",
+                    "contentType": "application/json",
+                    "url": sSource,
+                    "dataType": "json",
+                    "data": JSON.stringify(aoData),
+                    "success": function(resp) {
+                        if(resp.status != 'error'){
+                            fnCallback(resp.data);
+                        }
+                    }
+                });
+            }
+    }
+
+
+
+
+</script>
+</body>
+</html>

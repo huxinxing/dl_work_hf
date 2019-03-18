@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>首页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+    <!--add-->
+    <link href="/css/bootstrap-admin-theme.css" rel="stylesheet" media="screen">
+    <link href="/css/datepicker.fixes.css" rel="stylesheet" media="screen">
+    <link href="/css/webuploader.css" rel="stylesheet" media="screen">
+    <link href="/js/vendors/uniform/themes/default/css/uniform.default.min.css" rel="stylesheet" media="screen">
+    <link href="/css/uniform.default.fixes.css" rel="stylesheet" media="screen">
+    <link href="/js/vendors/chosen.min.css" rel="stylesheet" media="screen">
+    <link href="/js/vendors/bootstrap-wysihtml5-rails-b3/vendor/assets/stylesheets/bootstrap-wysihtml5/core-b3.css" rel="stylesheet" media="screen">
+    <link href="/css/videolist.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layer/theme/default/layer.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-select.min.css" rel="stylesheet" media="screen">
+    <!-- Bootstrap Admin Theme -->
+    <!-- Datatables -->
+    <link href="/css/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <!--<link href="/css/zTreeStyle.css" rel="stylesheet" media="screen">-->
+    <link href="/css/easyui/easyui.css" rel="stylesheet" media="screen">
+    <link href="/css/leftMenu.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <!-- <link rel="stylesheet" href="/js/layui/css/layui.css" media="all"> -->
+    <link rel="stylesheet" href="/css/element.ui.css">
+    <link rel="stylesheet" href="/css/element.ui.me.css">
+
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/js/html5shiv.js"></script>
+    <script type="text/javascript" src="/js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .icon.glyphicon-minus {
+            font-family: 'Glyphicons Halflings';
+        }
+        body.modal-open{
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body class="bootstrap-admin-with-small-navbar">
+<div class="container">
+    <nav class="navbar navbar-default navbar-inverse navbar-fixed-top " role="navigation">
+        <div class="container">
+            <div class="row">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" id="logoClick">数字谷理财后台管理系统</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:void(0);" id="modifyPass">修改密码</a></li>
+                                <li><a href="javascript:void(0);" id="logout">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div>
+        </div>
+    </nav>
+    <div class="contentWrapper">
+        <div class="menuWrapper">
+            <div id="tree"></div>
+        </div>
+        <div class="mainContent">
+            <div class="innerContent">
+                <div class="welcome" style="text-align: center;font-size: 20px;font-weight: bold;margin-top: 50px">欢迎来到数字谷理财后台管理系统</div>
+            </div>
+        </div>
+        <div id="pull-push" onclick="pullUp()">&lt;&lt;收起</div>
+    </div>
+</div>
+
+
+<!--<div class="container" style="margin-top:50px;">-->
+    <!--&lt;!&ndash; left, vertical navbar & content &ndash;&gt;-->
+    <!--<div class="row">-->
+        <!--&lt;!&ndash; left, vertical navbar &ndash;&gt;-->
+
+        <!--<div class="col-md-2 bootstrap-admin-col-left">-->
+            <!---->
+            <!---->
+        <!--</div>-->
+        <!--<div class="mainContent">-->
+            <!--<div class="innerContent">-->
+                <!--<div style="font-size: 20px;text-align: center">欢迎来到数字谷理财后台管理系统</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;欢迎来到系统管理员界面&ndash;&gt;-->
+    <!--</div>-->
+<!--</div>-->
+<script type="text/javascript" src="/js/vendors/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/twitter-bootstrap-hover-dropdown.min.js"></script>
+<script type="text/javascript" src="/js/vendors/dataTables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/js/jquery.form.min.js"></script>
+<script type="text/javascript" src="/js/vendors/uniform/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="/js/custom.js"></script>
+<script type="text/javascript" src="/vendors/tree/bootstrap-treeview.js"></script>
+<script type="text/javascript" src="/js/vendors/jquery.base64.js"></script>
+<script type="text/javascript" src="/js/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="/js/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="/js/hightchart/highcharts.js"></script>
+<script type="text/javascript" src="/js/hightchart/highcharts-3d.js"></script>
+<script type="text/javascript" src="/js/hightchart/exporting.js"></script>
+<script type="text/javascript" src="/js/hightchart/highcharts-zh_CN.js"></script>
+<script type="text/javascript" src="/js/echarts.js"></script>
+<script type="text/javascript" src="/js/hightchart/dark-unica.js"></script>
+<script type="text/javascript" src="/js/jquery.ztree.all.min.js"></script>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap-select.min.js"></script>
+<script src="/js/axios.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/element.ui.js"></script>
+<script type="text/javascript" src="/vendors/layUI/layui.js"></script>
+<script>
+    //收起展开
+    var isPush = false;
+    function pullUp() {
+        console.log("----pullUp---");
+        isPush = !isPush;
+        if(isPush){
+            $(".menuWrapper").width(1);
+            $(".mainContent").css("margin-left", "0px");
+            $("#pull-push").css({"color":"#34495e","left":"10px"});
+            $("#pull-push").text("展开>>");
+        }else {
+            $(".menuWrapper").width(190);
+            $(".mainContent").css("margin-left", "190px");
+            $("#pull-push").css({"color":"#ffffff","left":"140px"});
+            $("#pull-push").text("<<收起");
+        }
+
+    }
+    //选中/取消父节点时选中/取消所有子节点
+    function getChildNodeIdArr(node) {
+        var ts = [];
+        if (node.nodes) {
+            for (x in node.nodes) {
+                ts.push(node.nodes[x].nodeId);
+                if (node.nodes[x].nodes) {
+                    var getNodeDieDai = getChildNodeIdArr(node.nodes[x]);
+                    for (j in getNodeDieDai) {
+                        ts.push(getNodeDieDai[j]);
+                    }
+                }
+            }
+        } else {
+            ts.push(node.nodeId);
+        }
+        return ts;
+    }
+    //选中所有子节点时选中父节点
+    function setParentNodeCheck(node) {
+        var parentNode = $("#tree").treeview("getNode", node.parentId);
+        if (parentNode.nodes) {
+            var checkedCount = 0;
+            for (x in parentNode.nodes) {
+                if (parentNode.nodes[x].state.checked) {
+                    checkedCount ++;
+                } else {
+                    break;
+                }
+            }
+            if (checkedCount === parentNode.nodes.length) {
+                $("#tree").treeview("checkNode", parentNode.nodeId);
+                setParentNodeCheck(parentNode);
+            }
+        }
+    }
+    $.ajaxSetup({
+       error: function (XMLHttpRequest, textStatus, errorThrown) {
+           if(XMLHttpRequest.status==302){
+               layer.alert(JSON.parse(XMLHttpRequest.responseText).message, {
+                   skin: 'layui-layer-molv' //样式类名
+                   ,closeBtn: 0
+               }, function(){
+                   window.location.href="/login.html";
+               });
+           }
+           if(XMLHttpRequest.status==401){
+               layer.alert(JSON.parse(XMLHttpRequest.responseText).message, {
+                   skin: 'layui-layer-molv' //样式类名
+                   ,closeBtn: 0
+               }, function(){
+                   layer.closeAll();
+               });
+           }
+       }
+    });
+
+    $(function () {
+        var loginName = localStorage.getItem("loginName");
+        loginName = "欢迎"+ loginName +"来到数字谷理财后台管理系统";
+
+        $('.welcome').text(loginName)
+        $.ajax({
+            "headers":{
+                "Authorization":localStorage.getItem("loginToken")
+            },
+            "type":"get",
+            "url":"/admin/user/tableList",
+            "dataType":"json",
+            "success":function(data){
+                var datas = data.data.nodes;
+                for(var i=0;i<datas.length;i++){
+                    if(datas[i].nodes.length<1){
+                        delete datas[i].nodes;
+                    }else if(datas[i].nodes.length>0) {
+                        var currNode = datas[i].nodes;
+                        for (var j = 0; j < currNode.length; j++) {
+                            if (currNode[j].nodes < 1) {
+                                delete currNode[j].nodes;
+                            }
+                        }
+                    }
+                }
+                var length= datas.length;
+                var html = "";
+                $.ajax({
+                    "headers": {
+                        "Authorization": localStorage.getItem("loginToken")
+                    },
+                    "type": "get",
+                    "url": "/admin/url/getUrl"+"?url="+encodeURIComponent($.base64.encode(datas[0].href)),
+                    "dataType": "text",
+                    "success": function (data) {
+                        $('.mainContent').html(data)
+                    }
+                })
+
+                $('#tree').treeview({
+                    data: datas,         // 数据源
+                    showCheckbox: false,   //是否显示复选框
+                    highlightSelected: true,    //是否高亮选中
+                    multiSelect: false,    //多选
+                    backColor:'#34495E',
+                    // emptyIcon:'glyphicon-minus',
+                    onhoverColor:'#D1DBE5',
+                    collapsed:true,
+                    levels : 0,
+                    enableLinks : false,//必须在节点属性给出href属性
+                    color: "#010A0E",
+                    onNodeChecked : function (event,node) {
+                        var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                        if (selectNodes) { //子节点不为空，则选中所有子节点
+                            $('#tree').treeview('checkNode', [selectNodes, { silent: true }]);
+                        }
+                    },
+                    onNodeUnchecked : function(event, node) { //取消选中节点
+                        var selectNodes = getChildNodeIdArr(node); //获取所有子节点
+                        if (selectNodes) { //子节点不为空，则取消选中所有子节点
+                            $('#tree').treeview('uncheckNode', [selectNodes, { silent: true }]);
+                        }
+                    },
+
+                    onNodeExpanded : function(event, data) {
+                        console.log(event)
+                    },
+
+                    onNodeSelected: function (event, data) {
+                        if(data.href){
+                            $.ajax({
+                                "headers": {
+                                    "Authorization": localStorage.getItem("loginToken")
+                                },
+                                "type": "get",
+                                "url": "/admin/url/getUrl"+"?url="+encodeURIComponent($.base64.encode(data.href)),
+                                "dataType": "text",
+                                "success": function (data) {
+                                    $('.mainContent').html(data)
+                                }
+                            })
+                        }
+
+                    }
+
+                });
+
+                $(document).on('click','.list-group-item',function (event) {
+                    /*if ($(event.currentTarget).children(".glyphicon").hasClass("glyphicon-plus") || $(event.target).children(".glyphicon").hasClass("glyphicon-minus"))
+                    {
+                        $(event.currentTarget).children(".glyphicon")[0].click();
+                        event.preventDefault()
+                        // $(event.target).children(".glyphicon").trigger('click');
+                    }*/
+                    var targe = event.currentTarget;
+                    //找到当前节点id
+                    var nodeid = $(targe).attr('data-nodeid');
+                    var tree = $('#tree');
+                    //获取当前节点对象
+                    var node = tree.treeview('getNode', nodeid);
+
+                    if(node.state.expanded){
+                        //处于展开状态则折叠
+                        tree.treeview('collapseNode', node.nodeId);
+                    } else {
+                        //展开
+                        tree.treeview('expandNode', node.nodeId);
+                    }
+
+                })
+                $(document).on('click','.glyphicon',function (event) {
+                  event.stopPropagation()
+                })
+
+            }
+            // ,
+            // "error":function (data) {
+            //     if(data.status==302){
+            //         layer.alert(JSON.parse(data.responseText).message, {
+            //             skin: 'layui-layer-molv' //样式类名
+            //             ,closeBtn: 0
+            //         }, function(){
+            //             window.location.href="/login.html";
+            //         });
+            //     }
+            //
+            // }
+        });
+    })
+</script>
+</body>
+</html>

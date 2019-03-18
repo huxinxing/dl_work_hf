@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <title>全部用户</title>
+    <style>
+        .select-items li,.item-all li{list-style: none;float:left}
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+            position: relative;
+        }
+        .layui-table-body {
+            overflow: initial!important;
+        }
+        .form-group:after{
+            clear: both;content:'';display:block;width:0;height:0;visibility:hidden;
+        }
+        .s-tip{
+            position: absolute;
+            bottom: -27px;
+        }
+        #setModal .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="layui-bg-cyan">
+<div class="innerContent" id="allUser">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">全部用户</div>
+        </div>
+        <div class="form-group row">
+
+            <div class="col-lg-2">
+                <input class="form-control" id="uidWalletAddr" type="text" placeholder=" UID / 手机号 / 钱包地址">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+            </table>
+        </div>
+    </div>
+    <!--钱包地址-->
+    <div id="walletModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabel" class="modal-title"><span id="projectN"></span></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                        <th>类型</th>
+                        <th>地址</th>
+                        </thead>
+                        <tbody class="walletTable">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--手机号-->
+    <div id="checkMobileNumber" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label class="col-lg-2">手机号</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" readonly type="text" id="phoneNumber" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--设置-->
+    <div id="setModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 524px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabl" class="modal-title">设置</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 400px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="form-group">
+                        <div style="border-left: 3px solid #0066ff;padding-left: 10px;">返点设置</div>
+                        <div class="" style="margin-top:18px">
+                            <input type="text" id="return_rate" class="form-control" placeholder="请输入要设置的返点比例(0-5)，限一位小数">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="border-left: 3px solid #0066ff;padding-left: 10px;">折扣比例设置</div>
+                        <div class="" style="margin-top:18px">
+                            <input type="text" id="discount_rate" class="form-control" placeholder="请输入要设置的折扣比例(0-100)，限一位小数">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div style="border-left: 3px solid #0066ff;padding-left: 10px;">更换上级代理</div>
+                        <div class="" style="margin-top:18px">
+                            <input type="text" id="change_leader" class="form-control" placeholder="请输入上级ID号(ID为0时设置成1级代理)">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveSetting">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alertTip" id="languageSet"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+<script type="text/html" id="oper_user">
+    <a href="javascript:void(0);" id="user_detail" lay-event="detail" targetId={{d.userId}} targetStep={{d.step}}>数据</a>
+    {{#  if(d.checkPhonePermission == 1){ }}
+    <a style="margin-left: 15px;" href="javascript:void(0);" id="user_phoneNum" targetId={{d.userId}}>查看手机号</a>
+    {{#  } }}
+    <a style="margin-left: 15px;" href="javascript:void(0);"  id="user_addr" targetId={{d.userId}} targetName={{d.displayName}}>钱包地址</a>
+    <a style="margin-left: 15px;" href="javascript:void(0);" id="user_set" targetId={{d.userId}}>设置</a>
+</script>
+<script type="text/javascript" src="/js/userManage/allUser.js"></script>
+</body>
+</html>

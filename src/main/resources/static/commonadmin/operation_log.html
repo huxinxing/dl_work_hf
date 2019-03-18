@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <title>日志记录</title>
+    <style>
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        .bootstrap-admin-panel-content {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">日志记录</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="form-group row" style="margin-top:20px;margin-left: 0px;">
+            <label class="col-lg-1 control-label" style="padding-top: 6px;width: 90px" for="actionType">操作类型</label>
+            <div class="col-lg-2">
+                <select class="combobox form-control" name="actionType" id="actionType" >
+                    <option value="" selected="selected">全部</option>
+                    <option value="增加" >增加</option>
+                    <option value="更新">更新</option>
+                    <option value="删除">删除</option>
+                    <option value="其它">其它</option>
+                </select>
+            </div>
+
+            <label class="col-lg-1 control-label" style="width: 90px;padding-top: 6px" for="commentDescribe">所属模块</label>
+                <div class="col-lg-2">
+                    <select class="combobox form-control" name="commentDescribe" id="commentDescribe">
+                        <option value="" selected="selected">全部</option>
+                        <option value="项目管理" >项目管理</option>
+                        <option value="用户管理" >用户管理</option>
+                        <option value="代理收益提币审核">代理收益提币审核</option>
+                        <option value="未绑定地址打币">未绑定地址打币</option>
+                        <option value="设置管理">设置管理</option>
+                        <option value="系统管理">系统管理</option>
+                        <option value="个人中心">个人中心</option>
+                    </select>
+                </div>
+          <label class="col-lg-1 control-label" for="createTimeStart" style="width: 90px;padding-top: 6px">开始时间</label>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeStart"  name="createTimeStart" type="text" >
+            </div>
+            <label class="col-lg-1 control-label" for="createTimeEnd" style="width: 90px;padding-top: 6px">结束时间</label>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeEnd"  name="createTimeEnd" type="text" >
+            </div>
+        </div>
+
+        <div class="form-group row" style="margin-top:20px;margin-left: 0px;">
+
+            <label class="col-lg-1 control-label" for="parameterContext" style="width: 90px;padding-top: 6px">内容</label>
+            <div class="col-lg-2">
+                <input class="form-control" id="parameterContext"  name="parameterContext" type="text" >
+            </div>
+
+             <label class="col-lg-1 control-label" for="operatorName" style="width: 90px;padding-top: 6px">操作人员</label>
+            <div class="col-lg-2">
+                <input class="form-control" id="operatorName"  name="operatorName" type="text">
+            </div>
+
+
+              <!--  <label class="col-lg-1 control-label" > </label>-->
+                <div class="col-lg-1">
+                    <button onclick="search()" class="btn btn-primary">查询</button>
+                </div>
+            </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="logTable" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>操作类型</th>
+                    <th>所属模块</th>
+                    <th>内    容</th>
+                    <th>操作人员</th>
+                    <th>操作时间</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    function search() {
+        oTable.ajax.reload();
+    }
+
+    $(function(){
+        oTable = $('#logTable').DataTable({
+            "bJQueryUI": true,
+            "iDisplayStart":0,
+            "iDisplayLength":10,
+            "sDom":'<".example_processing"r><".logWrapper"t><"#information"i>lp',
+            "lengthMenu": [ 10, 15, 20, 25, 50, 100],
+            "searching":false,
+            "bDestroy":true,
+            "scrollX": true,
+            "bRetrieve":true,
+            "bStateSave":false,
+            "bServerSide": true,
+            "fnServerData": retrieveData,
+            "autoWidth":false,
+            "sAjaxSource": "/admin/sys/operationLoglist",
+            "bFilter": true,
+            "bLengthChange": true,
+            "bProcessing": true,
+            "oLanguage": {
+                "sProcessing": "正在获取数据，请稍后...",
+                "sLengthMenu": "每页显示 _MENU_ 条",
+                "sZeroRecords": "目前还没有日志记录！",
+                "sInfoEmpty": "记录数为0",
+                "sInfo": "第 _START_ 到 _END_条 /共 _TOTAL_ 条",
+                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                "sSearch": "搜索 ",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "最后一页"
+                }
+            },
+            "initComplete": function(settings, json) {}
+        });
+        function retrieveData( sSource, aoData, fnCallback ) {
+            var actionType = $('#actionType').val();
+            var commentDescribe = $('#commentDescribe').val();
+            var parameterContext = $('input[name="parameterContext"]').val();
+            var operatorName = $('input[name="operatorName"]').val();
+            var createTimeStart = $('input[name="createTimeStart"]').val();
+            var createTimeEnd = $('input[name="createTimeEnd"]').val();
+            var enddate = new Date((createTimeEnd).replace(/-/g,"/"));
+            var startTime = new Date((createTimeStart).replace(/-/g,"/"));
+            if(startTime !=null && enddate!=null && enddate < startTime)
+                {   layer.msg('结束时间不能早于开始时间');
+                   // return false;
+                }
+            aoData.push( { "name": "commentDescribe", "value": commentDescribe} );
+            aoData.push( { "name": "parameterContext", "value": parameterContext} );
+            aoData.push( { "name": "actionType", "value": actionType} );
+            aoData.push( { "name": "operatorName", "value": operatorName} );
+            aoData.push( { "name": "createTimeStart", "value":createTimeStart} );
+            aoData.push( { "name": "createTimeEnd", "value":createTimeEnd} );
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "post",
+                "contentType": "application/json",
+                "url": sSource,
+                "dataType": "json",
+                "data": JSON.stringify(aoData),
+                "success": function(resp) {
+                    fnCallback(resp);
+                }
+            });
+        }
+        //开始时间
+        $("#createTimeStart").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',//日期的格式
+            startDate:'1900-01-01',//选择器的开始日期
+            autoclose:true,//日期选择完成后是否关闭选择框
+            bootcssVer:2,//显示向左向右的箭头
+            language:'zh_CN',//语言
+            minView: "hour",//表示日期选择的最小范围，默认是hour
+        });
+
+        $("#createTimeEnd").datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss',//日期的格式
+            startDate:'1900-01-01',//选择器的开始日期
+            autoclose:true,//日期选择完成后是否关闭选择框
+            bootcssVer:2,//显示向左向右的箭头
+            language:'zh_CN',//语言
+            minView: "hour",//表示日期选择的最小范围，默认是hour
+        });
+
+        $('#trandQuerybyServer').click(function () {
+            $('.data-table').DataTable('refresh', {url: '/admin/trade/trans/flow'});
+        });
+    })
+</script>
+</body>
+</html>

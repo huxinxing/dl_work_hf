@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>消息中心</title>
+</head>
+<body>
+	<div class="messageCenter" id="messageCenter">
+		<div class="panel-heading">
+			<div class="text-muted bootstrap-admin-box-title">消息中心列表</div>
+		</div>
+		<div class="b-inputWrapper" style="padding-top: 10px;">
+			<!-- <el-input placeholder="userId" v-model.trim="searchForm.userId"></el-input> -->
+			<el-input placeholder="消息内容" v-model.trim="searchForm.message"></el-input>
+			<el-select v-model="searchForm.extraType" placeholder="额外消息类型">
+				<!-- <el-option label="1" value="1"></el-option>
+				<el-option label="2" value="2"></el-option> -->
+				<el-option v-for="(list, index) in extraTypeList" :key="index" :label="list.label" :value="list.value"></el-option>
+			</el-select>
+			<el-input placeholder="额外信息" v-model.trim="searchForm.extraValue"></el-input>
+			<!-- <el-date-picker
+				v-model="searchForm.createTime"
+				type="datetime"
+				placeholder="选择日期时间">
+			</el-date-picker> -->
+			<el-date-picker
+				v-model="searchForm.createTime"
+				type="daterange"
+				range-separator="至"
+				start-placeholder="开始日期"
+				end-placeholder="结束日期">
+			</el-date-picker>
+			<el-select v-model="searchForm.state" placeholder="状态">
+				<el-option label="已发送" value="true"></el-option>
+				<el-option label="未发送" value="false"></el-option>
+			</el-select>
+			<el-button type="primary" size="middle" @click="search(1)">搜索</el-button>
+			<el-button type="primary" @click="addMonitoring()">添加</el-button>
+		</div>
+		<div class="tableWrapper">
+			<el-table
+				:data="tableData"
+				border
+				style="width:100%" highlight-current-row>
+				<el-table-column
+					prop="userId"
+					label="userId"
+					min-width="100"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					prop="title"
+					label="标题"
+					min-width="60"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					prop="message"
+					label="消息内容"
+					min-width="160"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					label="额外消息类型"
+					prop="extraTypeName"
+					min-width="60"
+					align="center"
+				>
+				</el-table-column>
+				<el-table-column
+					prop="extraValue"
+					label="额外信息"
+					min-width="160"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					prop="createFormatTime"
+					label="时间"
+					min-width="80"
+					align="center"
+				></el-table-column>
+				<el-table-column
+					prop="stateName"
+					label="状态"
+					min-width="60"
+					align="center"
+				></el-table-column>
+			</el-table>
+			<div class="block-me">
+				<el-pagination
+					@size-change="handleSizeChange"
+					@current-change="currentPageChange"
+					:current-page="curPage"
+					:page-sizes="[10, 20, 30, 40]"
+					:page-size="dataNumber"
+					layout="total, sizes, prev, pager, next, jumper"
+					:total="totalpages"
+				>
+				</el-pagination>
+			</div>
+		</div>
+		<div class="addMonitoring">
+			<el-dialog title="添加" :visible.sync="addMonitoringShow" :before-close="handleClose">
+				<!-- <div class="memberWrapper">
+					<span class="labelSpan necessary">推送对象的id</span>
+					<el-input type="text" v-model.trim="addForm.targetId" placeholder="请输入推送对象的id"></el-input>
+				</div> -->
+				<div class="memberWrapper">
+					<span class="labelSpan necessary">消息标题</span>
+					<el-input type="text" v-model.trim="addForm.title" placeholder="请输入消息标题"></el-input>
+				</div>
+				<div class="memberWrapper">
+					<span class="labelSpan necessary">消息内容</span>
+					<el-input type="text" v-model.trim="addForm.message" placeholder="请输入消息内容"></el-input>
+				</div>
+				<div class="memberWrapper">
+					<span class="labelSpan necessary">额外信息类型</span>
+					<!-- <el-input type="text" v-model.trim="addForm.message" placeholder="请输入消息内容"></el-input> -->
+					<el-select v-model="addForm.extraType" placeholder="额外消息类型">
+						<el-option v-for="(list, index) in extraTypeList" :key="index" :label="list.label" :value="list.value"></el-option>
+					</el-select>
+				</div>
+				<div class="memberWrapper">
+					<span class="labelSpan necessary">额外信息</span>
+					<!-- <el-input type="text" v-model.trim="addForm.extraValue" placeholder="请输入额外信息"></el-input> -->
+					<el-input type="textarea" v-model.trim="addForm.extraValue" placeholder="请输入额外信息"></el-input>
+				</div>
+				<!-- <div class="memberWrapper">
+					<span class="labelSpan necessary">选择日期时间</span>
+					<el-date-picker
+						v-model="addForm.data"
+						type="datetime"
+						placeholder="选择日期时间">
+					</el-date-picker>
+				</div> -->
+				<div class="btnWrapper">
+					<el-button type="info" @click="cancel">取消</el-button>
+					<el-button :disabled="addIsShow" type="primary" @click="confirmMonitoring">{{addText}}</el-button>
+				</div>
+			</el-dialog>
+		</div>
+	</div>
+	<script>
+		var MC_VM = new Vue({
+			el: '#messageCenter',
+			data: {
+				tableData: [],
+				searchForm: {
+					// userId: null,
+					message: null,
+					extraType: null,
+					extraValue: null,
+					createTime: null,
+					"state": null,
+					"pageNum": 0,
+					"pageSize": 10
+				},
+				addForm: {
+					// targetId: '',
+					title: '',
+					message: '',
+					extraType: '',
+					extraValue: '',
+					// data: '',
+					"state": false,
+					"pageNum": 0,
+					"pageSize": 10
+				},
+				extraTypeList: [
+					{value: 1, label: 'H5链接'},
+					{value: 2, label: '订单成功'},
+					{value: 3, label: '订单将到期'}
+				],
+				curPage: 1,
+				dataNumber: 10,
+				totalpages: null,
+				addMonitoringShow: false,
+				addIsShow: false,
+				addText: '添加'
+			},
+			mounted () {
+				this.search();
+			},
+			methods: {
+				// 格式化时间
+				formatTime (date) {
+					var tempDate = new Date(date);
+					var Y = tempDate.getFullYear() + '-';
+					var M = (tempDate.getMonth() + 1 < 10 ? '0' + (tempDate.getMonth() + 1) : tempDate.getMonth() + 1) + '-';
+					var D = tempDate.getDate() + ' ';
+					var h = (tempDate.getHours() < 10 ? '0' + tempDate.getHours() : tempDate.getHours()) + ':';
+					var m = (tempDate.getMinutes() < 10 ? '0' + tempDate.getMinutes() : tempDate.getMinutes()) + ':';
+					var s = (tempDate.getSeconds() < 10 ? '0' + tempDate.getSeconds() : tempDate.getSeconds());
+					return Y + M + D + h + m + s;
+				},
+				search (index) {
+					var self = this;
+					var data = {};
+					data.title = self.searchForm.title;
+					data.message = self.searchForm.message;
+					data.extraType = self.searchForm.extraType;
+					data.extraValue = self.searchForm.extraValue;
+					data.state = self.searchForm.state;
+					data.pageNum = self.searchForm.pageNum;
+					data.pageSize = self.searchForm.pageSize;
+					if(self.searchForm.createTime) {
+						data.from = self.searchForm.createTime[0];
+						data.to = self.searchForm.createTime[1];
+						// console.log(data.from);
+						// console.log(data.from.getTime());
+						if(data.from.getTime() > data.to.getTime()) {
+							this.$message('请选择正确的时间区间');
+							return;
+						} else {
+							data.from = new Date(data.from).getTime();
+							data.to = new Date(data.to).getTime();
+							if(data.from == data.to) {
+								data.to += 86400000;
+							}
+							// console.log(data.from);
+							// console.log(data.to);
+						}
+					}
+					axios.post('/push/list',
+						data,
+						{
+							headers: {"Authorization": localStorage.getItem("loginToken")}
+						})
+						.then(function(response) {
+							self.tableData = response.data.list;
+							self.totalpages = response.data.total;
+							var len = response.data.list.length;
+							for(var i = 0; i < len; i++) {
+								self.tableData[i].stateName = self.tableData[i].state ? '已发送' : '未发送';
+                                self.tableData[i].extraTypeName = self.tableData[i].extraType == 1 ? 'H5链接':
+																	self.tableData[i].extraType == 2 ? '订单成功':
+																										'订单将到期';
+								// self.tableData[i].extraTypeName = self.tableData[i].extraType == 1 ? 'H5链接' : (self.tableData[i].extraType == 1 ? '订单成功' : '订单将到期');
+								self.tableData[i].createFormatTime = self.formatTime(self.tableData[i].createTime);
+							}
+							// if(index == 1) {
+							// 	self.searchForm.targetId = null;
+							// 	self.searchForm.message = null;
+							// 	self.searchForm.extraType = null;
+							// 	self.searchForm.extraValue = null;
+							// 	self.searchForm.createTime = null;
+							// 	self.searchForm.state = null;
+							// }
+						})
+						.catch(function(error) {
+							console.log(error);
+						})
+				},
+				addMonitoring () {
+					this.addMonitoringShow = true;
+				},
+				// 改变每页条数查询
+				handleSizeChange (val) {
+					this.searchForm.pageSize = val;
+					this.search();
+				},
+				// 改变当前页查询
+				currentPageChange (val) {
+					this.searchForm.pageNum = val - 1;
+					this.search();
+				},
+				handleClose () {
+					if(this.addText == '正在保存') {
+						this.$message('正在保存，请勿进行其他操作');
+						return;
+					}  else {
+						this.addMonitoringShow = false;
+						// this.addForm.targetId = '';
+						this.addForm.title = '';
+						this.addForm.message = '';
+						this.addForm.extraType = '';
+						this.addForm.extraValue = '';
+						this.addForm.data = '';
+						this.addForm.state = false;
+					}
+				},
+				cancel () {
+					this.handleClose();
+				},
+				confirmMonitoring () {
+					var self = this;
+					var addForm = {};
+					for(var attr in self.addForm) {
+						addForm[attr] = self.addForm[attr];
+					}
+					if(!addForm.title) {
+						self.$message('请输入消息标题');
+						return;
+					} else if(!addForm.message){
+						self.$message('请输入消息内容');
+						return;
+					} else if (!addForm.extraType) {
+						self.$message('请输入额外信息类型');
+						return;
+					} else if (!addForm.extraValue) {
+						self.$message('请输入额外信息');
+						return;
+					/*} else if (!addForm.data) {
+						self.$message('请选择日期');
+						return;*/
+					} else {
+						addForm.extraValue = JSON.stringify({"web_url": addForm.extraValue});
+						this.addText = '正在保存'
+						axios.post('/push/add',
+							addForm,
+							{
+								headers: {"Authorization": localStorage.getItem("loginToken")}
+							})
+							.then(function(response) {
+								if(response.data.status == 'success') {
+									self.$message(response.data.message);
+									self.addText = '确定';
+									self.handleClose();
+									self.search();
+								} else {
+									self.addText = '确定';
+									self.$message(response.data.message);
+								}
+							})
+							.catch(function(error) {
+								console.log(error)
+							})
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>

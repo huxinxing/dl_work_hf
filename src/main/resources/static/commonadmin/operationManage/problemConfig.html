@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <title>常见问题配置</title>
+
+    <style>
+        #information {
+            float: left;
+        }
+        .select-items li,.item-all li{list-style: none;float:left}
+        #information>div{
+            padding-top: 4px;
+        }
+        .panel-default .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+        .invest-tab{
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin: 30px 15px 0 15px;
+        }
+        .invest-tab span{
+            padding-bottom: 10px;
+            margin-right: 50px;
+            cursor: pointer;
+        }
+        .table-active{
+            border-bottom: 2px solid #0066FF;
+            color: #0066ff;
+        }
+        .new-create{
+            float: right;
+            margin-right: 15px;
+        }
+        .btn-upload,.btn-import{
+            text-align: center;
+            background: #333;
+            color: #fff;
+            height: 32px;
+            line-height: 32px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 82px;
+            float: left;
+        }
+        .btn-import{
+            margin-left: 115px;
+        }
+        .red-sp{
+            color: red;
+        }
+        .form-control-o{
+            border: none;
+            width: 150px;
+            display: inline-block;
+            border-right: 1px solid #ccc;
+            border-radius: 0;
+            height: 24px;
+            line-height: 24px;
+            outline: none;
+            position: relative;
+            top: 4px;
+            color: #555;
+            vertical-align: middle;
+            background-color: #fff;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        .form-outer{
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 0;
+            height: 34px;
+            background-color: #fff;
+            width: 200px;
+            float: left;
+        }
+        .form-outer span{
+            position: relative;
+            top: 5px;
+            right: -5px;
+        }
+        .padding-top-6{
+            padding-top: 6px;
+        }
+        .wdt-200{
+            width: 200px;
+            display: inline-block;
+        }
+        .margin-50{
+            margin-right: 50px;
+        }
+        .select-items{
+            float: left;
+            margin: 0;
+            width: 560px;
+            padding: 0;
+        }
+        .li-item{
+            list-style: none;
+            float: left;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            /* padding: 0; */
+            height: 30px;
+            background-color: #fff;
+            width: 154px;
+            float: left;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            position: relative;
+            line-height: 30px;
+            padding-left: 10px;
+        }
+        .li-item span{
+            color: red;
+            position: absolute;
+            right: 8px;
+            top: 0px;
+            cursor: pointer;
+        }
+        .li-item div{
+            display: inline-block;
+            width: 120px;
+        }
+        .item-all li{cursor: pointer}
+        .padding-top-0{
+            padding-top: 0;
+            margin-bottom: 35px;
+        }
+        .dn{
+            display: none!important;
+        }
+        #selectItems{
+            z-index: 9999;
+            top: 67px;
+        }
+        #selectItems .modal-dialog{
+            z-index: 100000;
+        }
+        .item-active{
+            background: #428bca;
+            border: 1px solid #428bca;
+            color: #fff;
+        }
+        .zi-hou{
+            float: left;
+            color: #666;
+            position: relative;
+            top: 6px;
+            left: 10px;
+        }
+        .alert-success{
+            display: none;
+            text-align: center;
+            position: fixed;
+            left: 44%;
+            z-index: 10000;
+            top: 54px;
+            width: 360px;
+        }
+        .right-12{
+            right: -12px!important;
+        }
+        .wth100{
+            width: 100px;
+            margin-top: 6px;
+            float: left;
+        }
+        .wth200{
+            width: 200px;
+            float: left;
+        }
+        .item-all{
+            padding-left: 35px;
+        }
+        .ell{
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        .layui-table-body {
+            overflow: initial!important;
+        }
+        .form-group:after{
+            clear: both;content:'';display:block;width:0;height:0;visibility:hidden;
+        }
+        .export-tmpl{
+            float: left;
+            position: relative;
+            top: 5px;
+            margin-left: 15px;
+            color: #0066ff;
+            cursor: pointer;
+        }
+        #excel_name{
+            float: left;
+            position: relative;
+            top: 5px;
+            margin-left: 15px;
+            width: 150px;
+            text-align:left;
+        }
+        .excel-div{
+            margin-top: 20px;
+        }
+        #item_pro span {
+            display: inline-block;
+            margin-right: 10px;
+            width: 74px;
+            height: 32px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+            text-align: center;
+            line-height: 32px;
+            cursor: pointer;
+        }
+        .item-active {
+            border: 1px solid #199ED8!important;
+            background: #199ED8!important;
+            color: #fff;
+        }
+        .marr-20{
+            margin-right: 20px;
+        }
+        #myModal .modal-footer{
+            margin-top: 0!important;
+            border-top:none;
+            text-align:center;
+        }
+        #myModal .modal-header{
+            border-bottom:none;
+        }
+        #type_lan {
+            float: right;
+            margin-bottom: 0;
+            margin-right: 30px;
+        }
+        .lan-li{
+            margin-right: 15px;
+            float: left;
+        }
+        .lan-li label{
+            font-weight: normal;
+        }
+        .lan-li input{
+            position: relative;
+            top: 2px;
+            margin-right: 5px;
+        }
+        #languageModal .modal-header{
+            overflow: hidden;
+        }
+        #lan_title{
+            float: left;
+            font-size: 18px!important;
+        }
+        .form-horizontal .form-group{
+            margin-right: 0;
+        }
+        #language_pro h5{
+            margin-left: 47px;
+            padding-left: 10px;
+            border-left: 2px solid #0066FF;
+            margin-bottom: 22px;
+            margin-top: 25px;
+        }
+        .cn-show label{
+            padding-top: 0!important;
+            width: 134px;
+        }
+        .cn-show .form-group>div{
+            width: 560px;
+            display: inline-block;
+        }
+        .cn-show .form-group:last-child{
+            position: relative;
+        }
+        .cn-show .form-group:last-child>label{
+            position: absolute;
+            top: 0px;
+        }
+        .cn-show .form-group:last-child>div{
+            margin-left: 139px;
+        }
+        .cn-show h5{
+            margin-top: 8px!important;
+        }
+        #language_pro .modal-header{
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="layui-bg-cyan">
+<div class="innerContent" id="problemConfig">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">常见问题配置</div>
+        </div>
+        <div class="form-group row">
+            <label class="col-lg-1 control-label" style="width: 90px;padding-right: 0;margin-top: 7px;" for="paymentType">选择分类</label>
+            <div class="col-lg-1" style="padding: 0;width: 120px;">
+                <select class="form-control" id="selectType">
+                    <option value="0" selected="selected">全部</option>
+                    <option value="1">登录注册</option>
+                    <option value="2">账户安全</option>
+                    <option value="3">充值投资</option>
+                    <option value="4">提现</option>
+                    <option value="5">费用</option>
+                    <option value="6">资产</option>
+                </select>
+            </div>
+            <div class="btn btn-info new-create">+新增</div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+            </table>
+        </div>
+    </div>
+    <!--新增-->
+    <div id="newProjectModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 450px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabl" class="modal-title">常见问题</h4>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 320px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal" id="myformProjet">
+                            <input name="projectUuid" id="myprojecti" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>问题分类</label>
+                                            <div class="col-lg-10" id="item_pro"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>问题</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="输入问题" id="pro_pro" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp">*</span>回答</label>
+                                            <div class="col-lg-10">
+                                                <textarea name="attentions" id="pro_answer" class="form-control textarea-wysihtml5 attentionEvent" style="width: 100%; height: 100px" placeholder="输入回答"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label"><span class="red-sp"></span>权重</label>
+                                            <div class="col-lg-10">
+                                                <input type="text" class="form-control" placeholder="输入数字，权重越高，排序越靠前" id="weight_pro" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveProject">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body" style="text-align: center">确定要删除此问题吗？</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default marr-20" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary delete-confirm">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!--适配语言弹窗-->
+    <div id="language_pro" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 660px;width: 720px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="lan_title" class="modal-title">多语言配置</h4>
+                    <ul id="type_lan"></ul>
+                </div>
+                <div class="modal-body" style="padding-bottom: 0px;height: 534px;width:717px;overflow-y: auto;overflow-x: hidden">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <input name="projectUuid" type="hidden" />
+                            <fieldset>
+                                <div class="languageWrapper">
+                                    <div class="row dymaticSpecial" style="position: relative;margin-left: 0px;margin-right: 0px;border-bottom: 1px solid #cccccc;margin-bottom: 10px;">
+                                        <div class="cn-show">
+                                            <h5>中文</h5>
+                                            <div>
+                                                <div class="form-group">
+                                                    <label class="control-label">问题：</label>
+                                                    <div id="cn_title">-</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">回答：</label>
+                                                    <div id="cn_attention">-</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="lan_detail"></div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" id="editLanguage">保存</button>
+                    <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alertTip" id="languageSet"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+<script type="text/html" id="barDemo">
+    <a href="javascript:void(0);" class="update-problem" lay-event="detail" tradeId={{d.ccqId}}>修改</a>
+    <a style="margin-left: 15px;" href="javascript:void(0);" class="lan-config" tradeId={{d.ccqId}}>多语言配置</a>
+    <a style="margin-left: 15px;" href="javascript:void(0);" class="delete-problem" tradeId={{d.ccqId}}>删除</a>
+</script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/operationManage/problemConfig.js"></script>
+</body>
+</html>

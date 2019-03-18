@@ -1,0 +1,163 @@
+*{margin: 0;padding: 0}
+body{
+    margin: 40px;
+}
+#transFlowTable_wrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+li{list-style: none}
+.fl{float: left}
+.fr{float: right}
+.d-title{
+    font-size: 20px;
+    font-weight: bold;
+    width: 82px;
+    border-bottom: 3px solid #0066ff;
+    padding-bottom: 5px;
+    margin-bottom: 50px;
+}
+.d-sinle{
+    display: flex;
+    margin-bottom: 40px;
+}
+.d-sinle>div{
+    width: 320px;
+}
+.font-bold{
+    font-weight: bold;
+    margin-right: 16px;
+}
+.d-part-1{
+    background: #f2f2f2;
+    height: 128px;
+    padding: 25px 0 0 20px;
+    margin-bottom: 45px;
+}
+.d-part-1>ul{
+    display: flex;
+    justify-content: space-around;
+}
+.d-part-1>ul li{
+    margin-right: 125px;
+}
+.d-part-1>ul li div:last-child{
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 25px;
+}
+.invest-part{
+    display: flex;
+    justify-content: space-between;
+}
+.invest-part>div{
+    width: 40%;
+}
+.invest-part>div:first-child{
+    width: 20%;
+}
+.invest-part>div{
+    /*width: 350px;*/
+    height: 320px;
+    /*margin-right: 102px;*/
+}
+.invest-part h5,.invest-list h5{
+    font-weight: bold;
+    padding: 3px 0 3px 10px;
+    margin-bottom: 30px;
+}
+.has-geted h5,.invest-list h5{
+    border-left: 3px solid #67bedf;
+}
+.has-payed h5{
+    border-left: 3px solid #ff9900;
+}
+.to-pay h5{
+    border-left: 3px solid #5c89fd;
+}
+.has-geted .rate{
+    background: #67bedf;
+}
+.has-payed .rate{
+    background: #ff9900;
+}
+.to-pay .rate{
+    background: #5c89fd;
+}
+.invest-part li{
+    display: flex;
+    margin-bottom: 22px;
+}
+.rate{
+    height: 20px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.sinle-name{
+    width: 85px;
+}
+.invest-list{
+    margin-top: 40px;
+    position: relative;
+}
+#information {
+    float: left;
+}
+#information>div{
+    padding-top: 4px;
+}
+.dataTables_length label {
+    font-weight: normal;
+}
+.user-flag{
+    display: flex;
+    margin-left: 15px;
+    color: #555;
+}
+.user-flag span{
+    width: 100px;
+    height: 34px;
+    line-height: 34px;
+    border: 1px solid #e8e8e8;
+    text-align: center;
+    cursor: pointer;
+}
+.user-flag span:first-child{
+    border-radius: 3px 0 0 3px;
+    border-right: none;
+}
+.user-flag span:last-child{
+    border-radius: 0px 3px 3px 0;
+}
+.user-active {
+    color: #0066ff;
+}
+.title-all{
+    overflow: hidden;
+}
+thead tr {
+    background-color: #eef1f1;
+}
+#export_excel_item{
+    text-align: center;
+    background: #333;
+    color: #fff;
+    height: 34px;
+    line-height: 34px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 80px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#paidBCB{
+    color: #999;
+    position: relative;
+    /*top: -4px;*/
+    left: 4px;
+}
+label{
+    font-weight: normal;
+}

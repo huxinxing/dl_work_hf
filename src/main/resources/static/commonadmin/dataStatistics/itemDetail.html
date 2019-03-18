@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目详情</title>
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/DT_bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/css/videolist.css" rel="stylesheet" media="screen">
+    <link href="/css/items/itemDetail.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <header>
+        <div class="title-all">
+            <div class="d-title fl">统计详情</div>
+            <div class="user-flag fr">
+                <span class="user-active">全部</span>
+                <span>只看平台用户</span>
+            </div>
+        </div>
+        <div class="d-sinle">
+            <div><span class="font-bold">项目名称:</span><span class="item-name">-</span></div>
+            <div><span class="font-bold">发布时间:</span><span class="publish-time">-</span></div>
+            <div><span class="font-bold">项目状态:</span><span class="item-state">-</span></div>
+        </div>
+        <div class="d-part-1">
+            <ul>
+                <li>
+                    <div>募集额度（BCB）</div>
+                    <div class="raise-num">-</div>
+                </li>
+                <li>
+                    <div>已募集（BCB）</div>
+                    <div class="raised-num">-</div>
+                </li>
+                <li>
+                    <div>进度</div>
+                    <div class="raise-progress">-</div>
+                </li>
+                <li>
+                    <div>投资人数</div>
+                    <div class="invest-people">-</div>
+                </li>
+                <li>
+                    <div>投资金额（USDX）</div>
+                    <div class="invest-money">-</div>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="content" style="position: relative">
+        <div style="position: absolute;left: 38%"><label>已收资金：</label><span id="money_my"></span>usdx</div>
+        <div style="position: absolute;left: 74%"><label>已支付资金：</label><span id="money_paid"></span>usdx<span id="paidBCB"></span></div>
+        <div class="invest-part">
+            <div id="d-circle"></div>
+            <div id="d-money"></div>
+            <div id="d-payed"></div>
+        </div>
+        <div class="invest-list">
+            <h5>投资列表</h5>
+            <div id="export_excel_item" class="">导出表格</div>
+            <div class="bootstrap-admin-panel-content" style="width:100%;">
+                <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>UID</th>
+                        <th>昵称</th>
+                        <th>from</th>
+                        <th>to</th>
+                        <th>投资金额</th>
+                        <th>折算法币</th>
+                        <th>BCB理财价格（usdx）</th>
+                        <th>投资时间</th>
+                        <th>到期时间</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="/../js/vendors/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/../js/vendors/dataTables/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/js/DT_bootstrap.js"></script>
+<script type="text/javascript" src="/js/echarts.js"></script>
+<script type="text/javascript" src="/../js/items/itemDetail.js"></script>
+</html>

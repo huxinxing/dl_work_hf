@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        a{
+            cursor: pointer;
+        }
+        .table th{ /*数据表格标题文字居中*/
+            text-align: center;
+            vertical-align: middle!important;
+        }
+        .table td{ /*数据表格标题文字居中*/
+            text-align: center;
+            vertical-align: middle!important;
+        }
+        #tableContent tbody tr td {
+            white-space: normal;
+        }
+    </style>
+</head>
+<body>
+    <div class="innerContent">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="text-muted bootstrap-admin-box-title">角色管理</div>
+                    <button class="btn btn-xs btn-info addNewRole" style="margin:0 auto;">新增角色</button>
+                </div>
+                <div id="tableContent" class="bootstrap-admin-panel-content" style="width:100%">
+                    <div style="padding: 0px 10px;">
+                        <table class="table table-bordered table-hover data-table" id="permissionTable" cellspacing="0" style="width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>角色名称</th>
+                                <th>权限</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        <div id="roleManageModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content" style="height: 500px;">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 id="myModalLabel" class="modal-title">新增</h4>
+                    </div>
+                    <div class="modal-body" style="padding-bottom: 0px">
+                        <div class="form-group" style="text-align: center">
+                            <label for="roleName2">名称：</label>
+                            <input type="text" class="form-control" id="roleName2" placeholder="名称" style="display: inline-block;width: 360px;" readonly="true">
+                        </div>
+                        <div style="margin-top: 20px;margin-left: 70px">
+                            <div style="font-size: 14px;font-weight: bold;margin-bottom: 5px;">权限：</div>
+                            <ul id="treeDemo" class="shutree ztree" style="padding-left: 18px;height: 263px;overflow: auto;">
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                        <button type="button" class="btn btn-default" style="margin-top:20px;" id="saveRole">保存</button>
+                        <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="confirmModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content" style="height: 114px;width: 390px;margin: 100px;">
+                    <div class="modal-body" style="padding-bottom: 0px">
+                        <div style="font-size: 18px"></div>
+                    </div>
+                    <div class="modal-footer" style="border-top:0;padding-top: 0px;margin-top: 0px">
+                        <button type="button" class="btn btn-default" style="margin-top:20px;" id="confirmDelete">确定</button>
+                        <button type="button" class="btn btn-default" style="margin-top:20px;" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="alertTip" id="roleAlert"></div>
+    </div>
+
+    <script>
+        var newFlag = 'add';
+        var currentId;
+    $(function () {
+        var oTable = $('#permissionTable').DataTable({
+            "bJQueryUI": true,
+            "info":  false,
+            "paging":false,
+            "searching": false,
+            "bStateSave": false,
+            // "scrollX":true,
+            "bAutoWidth": false,
+            "columns": [
+                { data: 'roleName',"sWidth": "120px"},
+                { data: 'listSystemLoginMenu',"sWidth": "120px"},
+                { data: 'createTime',"sWidth": "120px"},
+                { data: 'createTime',"sWidth": "120px"}
+            ],
+            "bServerSide": true,
+            "fnServerData": retrieveData,
+            "sAjaxSource": "/role/queryAllRolesAndMenu",
+            "bFilter": true,
+            "bLengthChange": true,
+            "fnCreatedRow": function (nRow, aData, iDataIndex) {
+                var arrElement = '';
+                for(var i=0;i<aData.listSystemLoginMenu.length;i++){
+                    arrElement += '<span>'+'['+aData.listSystemLoginMenu[i].menuName+']'+'</span>'
+                }
+                $('td:eq(1)', nRow).html(arrElement);
+                var opts ="";
+                var timer = "";
+                opts +='<a href="javascript:void(0)" class="editRole" roleName="'+aData.roleName+'" aid="'+aData.id+'" style="margin-left:20px;">编辑</a>'
+                opts +='<a href="javascript:void(0)" style="margin-left: 10px;color:red;" class="delete" aid="'+aData.id+'" style="margin-left:20px;">删除</a>'
+                $('td:eq(3)', nRow).html(opts);
+                timer += '<span>'+format(new Date(aData.createTime))+'</span>';
+                $('td:eq(2)', nRow).html(timer);
+            },
+        });
+
+
+        function builePlanTree() {
+            var setting = {
+                view: {
+                    addHoverDom: false,
+                    removeHoverDom: false,
+                    selectedMulti: false
+                },
+                check: {
+                    enable: true,
+                    chkboxType:{ "Y" : "ps", "N" : "ps" },
+                    chkStyle: "checkbox"
+                },
+                data: {
+                    key:{
+                        children:"nodes",
+                        name:"text"
+                    },
+                    simpleData: {
+                        enable: true,
+                    }
+                },
+                edit: {
+                    enable: false
+                },
+
+            };
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/user/getAllTableList",
+                "dataType": "json",
+                "success": function(data) {
+                    if(data.code == '200'){
+                        var datas = data.data.nodes;
+                        for(var i=0;i<datas.length;i++){
+                            if(datas[i].nodes.length<1){
+                                delete datas[i].nodes;
+                            }else if(datas[i].nodes.length>0) {
+                                var currNode = datas[i].nodes;
+                                for (var j = 0; j < currNode.length; j++) {
+                                    if (currNode[j].nodes < 1) {
+                                        delete currNode[j].nodes;
+                                    }
+                                }
+                                }
+                            }
+                        }
+
+                        $.fn.zTree.init($("#treeDemo"), setting, datas);
+                    }
+            })
+
+
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/admin/user/queryButtonMenuList",
+                "dataType": "json",
+                "success": function(data) {
+
+                }
+            })
+
+
+
+
+
+        }
+
+
+        var deleteId;
+
+        $('#saveRole').click(function () {
+            var roleName = $('#roleName2').val();
+            roleName = roleName.trim();
+            if(!roleName){
+                $('#roleAlert').slideDown();
+                $('#roleAlert').text("请输入角色名称");
+                setTimeout(function () {
+                    $('#roleAlert').slideUp();
+                },2000);
+                return
+            }
+            if(roleName.length>15){
+                $('#roleAlert').slideDown();
+                $('#roleAlert').text("输入名称过长");
+                setTimeout(function () {
+                    $('#roleAlert').slideUp();
+                },2000);
+                return
+            }
+            var nodeId = getcheckNodes();
+            var saveData;
+            if(newFlag == 'add'){
+                saveData = {
+                    "id": '',
+                    "roleName":roleName,
+                    "menuIdArray": nodeId
+                };
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "contentType": "application/json",
+                    "type": "post",
+                    "url": "/role/createNewRole",
+                    "data":JSON.stringify(saveData),
+                    "dataType": "json",
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            $('#roleManageModal').modal('hide');
+                            oTable.draw(false);
+                        }else if(data.message =='用户已存在'){
+                            $('#roleAlert').slideDown();
+                            $('#roleAlert').text("用户已存在");
+                            setTimeout(function () {
+                                $('#roleAlert').slideUp();
+                            },2000);
+                        }
+                    }
+                })
+            }else if(newFlag == 'edit'){
+                saveData = {
+                    "id": currentId,
+                    "roleName":roleName,
+                    "menuIdArray": nodeId
+                };
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "contentType": "application/json",
+                    "type": "post",
+                    "url": "/role/editRole",
+                    "data":JSON.stringify(saveData),
+                    "dataType": "json",
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            $('#roleManageModal').modal('hide');
+                            oTable.draw(false);
+                        }else if(data.message =='用户已存在'){
+                            $('#roleAlert').slideDown();
+                            $('#roleAlert').text("用户已存在");
+                            setTimeout(function () {
+                                $('#roleAlert').slideUp();
+                            },2000);
+                        }
+                    }
+                })
+            }
+            // $.ajax({
+            //     "headers": {
+            //         "Authorization":localStorage.getItem("loginToken")
+            //     },
+            //     "contentType": "application/json",
+            //     "type": "post",
+            //     "url": "/role/createNewRole",
+            //     "data":JSON.stringify(saveData),
+            //     "dataType": "json",
+            //     "success": function(data) {
+            //         if(data.code == '200'){
+            //             $('#roleManageModal').modal('hide');
+            //             oTable.draw(false);
+            //         }else if(data.message =='用户已存在'){
+            //             $('#roleAlert').slideDown();
+            //             $('#roleAlert').text("用户已存在");
+            //             setTimeout(function () {
+            //                 $('#roleAlert').slideUp();
+            //             },2000);
+            //         }
+            //     }
+            // })
+        })
+        $('.innerContent').delegate('.addNewRole','click',function () {
+            $('#roleManageModal').modal('show');
+            $('#myModalLabel').text('新增角色');
+            $('#roleName2').val('');
+            $('#roleName2').attr('readonly',false);
+            newFlag = 'add';
+            builePlanTree();
+        }).delegate('.editRole','click',function () {
+            $('#myModalLabel').text('编辑角色');
+            var aid = $(this).attr("aid");
+            var name = $(this).attr('roleName');
+
+            $('#roleName2').attr('readonly',true);
+            $('#roleName2').val(name);
+            newFlag = 'edit';
+            builePlanTree();
+            $.ajax({
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "url": "/role/queryAllRolesAndMenuById/"+aid,
+                "dataType": "json",
+                "success": function(data) {
+                    $('#roleName2').val(data.data[0].roleName);
+                    currentId = data.data[0].id;
+                    if(data.code == '200'){
+                       var editData=data.data[0].listSystemLoginMenu;
+                        zTreeOnAsyncSuccess(editData);
+                        $('#roleManageModal').modal('show');
+                    }
+                }
+            })
+        }).delegate('.delete','click',function () {
+            deleteId = $(this).attr("aid");
+            layer.confirm('是否确定要删除？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    "headers": {
+                        "Authorization":localStorage.getItem("loginToken")
+                    },
+                    "contentType": "application/json",
+                    "type": "get",
+                    "url": "/role/deleteRoleByIds",
+                    "data":{'ids':deleteId},
+                    "dataType": "json",
+                    "success": function(data) {
+                        if(data.code == '200'){
+                            layer.closeAll();
+                            oTable.draw(false);
+                        }else if(data.code == '10010'){
+                            layer.closeAll();
+                            $('#roleAlert').slideDown();
+                            $('#roleAlert').text(data.message);
+                            setTimeout(function () {
+                                $('#roleAlert').slideUp();
+                            },2000);
+                        }
+                    }
+                })
+            }, function(){
+
+            });
+
+        });
+        function getcheckNodes() {
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = treeObj.getCheckedNodes(true);
+            var idArray = [];
+            for(var i=0;i<nodes.length;i++){
+                idArray.push(nodes[i].nodeId);
+            }
+            return idArray;
+
+        }
+
+        function zTreeOnAsyncSuccess(editData) {
+            var arrayL = [];
+            var tree = $.fn.zTree.getZTreeObj("treeDemo");
+            if(editData.length>0){
+                for(var i=0;i<editData.length;i++){
+                    arrayL.push(editData[i].id);
+                }
+                for(var i = 0; i < arrayL.length; i++ ){
+                    var node = tree.getNodeByParam("nodeId",arrayL[i]);
+                        tree.checkNode(node, true);
+                }
+            }
+        };
+        
+
+        function retrieveData( sSource, aoData, fnCallback ) {
+            $.ajax( {
+                "headers": {
+                    "Authorization":localStorage.getItem("loginToken")
+                },
+                "type": "get",
+                "contentType": "application/json",
+                "url": sSource,
+                "dataType": "json",
+                "success": function(resp) {
+                    fnCallback(resp);
+                }
+            });
+        }
+
+        function format(timestamp) {
+            var year = timestamp.getFullYear();
+            var month = timestamp.getMonth()+1;
+            var days = timestamp.getDate();
+            var hours = timestamp.getHours();
+            var minutes = timestamp.getMinutes();
+            var second = timestamp.getSeconds();
+            if(minutes<10){
+                minutes = '0' + minutes;
+            }
+            if(month<10){
+                month = '0' + month;
+            }
+            if(hours<10){
+                hours = '0' + hours;
+            }
+            if(second<10){
+                second = '0' + second;
+            }
+            var dateFormat = year+'-'+month +'-'+days+' '+hours+':'+minutes+':'+second;
+            return dateFormat
+        }
+        
+        
+    })
+</script>
+</body>
+</html>

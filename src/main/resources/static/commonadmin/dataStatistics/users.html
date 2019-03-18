@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <title>用户</title>
+
+    <style>
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        .form-group {
+            padding: 15px 15px 0 15px;
+            margin-bottom: 0;
+        }
+        .red-cl{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">用户</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="form-group row">
+
+            <div class="col-lg-2">
+                <input class="form-control" id="walletAddr"  name="walletAddr" type="text" placeholder="UID / 昵称">
+            </div>
+            <div class="col-lg-2">
+                <button onclick="search()" class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>UID</th>
+                    <th>昵称</th>
+                    <th>层级</th>
+                    <th>下级代理数</th>
+                    <th>投资项目数</th>
+                    <th>投资金额（usdx）</th>
+                    <th><span class="red-cl">* </span>投资收益(usdx)</th>
+                    <th><span class="red-cl">* </span>代理收益(usdx)</th>
+                    <!--<th>返点</th>
+                    <th>用户保底收益率（%）</th>
+                    <th>额外收益分享给上级的比例（%）</th>-->
+                    <th>操作</th>
+                    <!--<th>时间</th>-->
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/items/users.js"></script>
+</body>
+</html>

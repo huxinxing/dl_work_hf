@@ -1,0 +1,79 @@
+.block-me{
+	text-align: center;
+	margin-top: 4px;
+	box-sizing: border-box;
+	padding: 20px;
+}
+.block-me .el-pagination .btn-prev:before{
+    content: "上一页";
+}
+.block-me .el-pagination .btn-next:before{
+    content: "下一页";
+}
+.block-me .el-pagination .el-icon.el-icon-arrow-left {
+	display: none;
+}
+.block-me .el-pagination .el-icon.el-icon-arrow-right {
+	display: none;
+}
+.block-me .el-pagination .el-pager li{
+	background-color: #E3E7EA;
+	border: 1px solid #E3E7EA;
+}
+.block-me .el-pagination .el-pager li.active {
+	border-color: #20a0ff; 
+	background-color: #20a0ff;
+}
+.block-me .el-pagination .el-pager li.active {
+	color: #fff;
+}
+.block-me .el-pagination .btn-prev {
+	background-color: #E3E7EA;
+	border: 1px solid #E3E7EA;
+}
+.block-me .el-pagination button.disabled {
+	background-color: #E3E7EA;
+	color: #97a8be;
+}
+.block-me .el-pagination .btn-next {
+	background-color: #E3E7EA;
+	border: 1px solid #E3E7EA;
+}
+.memberWrapper .necessary:after {
+	content: "*";
+	color: #f56c6c;
+	margin-right: 4px;
+}
+.memberWrapper {
+	margin: 10px 0px;
+	text-align: left;
+}
+.memberWrapper .el-input, .memberWrapper .el-textarea{
+	width: 340px;
+	margin-top: 10px;
+}
+.memberWrapper .labelSpan {
+	display: inline-block;
+	width: 100px;
+	text-align: left;
+}
+.tableWrapper {
+	margin-left: 20px;
+	margin-top: 20px;
+	margin-right: 15px;
+}
+.btnWrapper {
+	text-align: center;
+	margin-top: 60px;
+}
+.b-inputWrapper .el-input {
+	margin-left: 20px;
+	width: 160px;
+	margin-bottom: 20px;
+}
+.b-inputWrapper .el-button {
+	margin-left: 20px;
+}
+.b-inputWrapper .el-date-editor .el-range-separator {
+	width: 8%;
+}

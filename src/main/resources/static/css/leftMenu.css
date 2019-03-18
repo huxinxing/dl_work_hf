@@ -1,0 +1,216 @@
+.contentWrapper {
+    margin-top: 50px;
+    margin-right: -15px;
+    margin-left: -15px;
+    overflow: hidden;
+}
+
+.menuWrapper{
+    width: 190px;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    bottom: 0;
+    background-color: #34495e;
+    overflow-y: auto;
+    z-index: 20;
+}
+#tree span.indent {
+    margin-left: 4px;
+}
+
+#tree .list-group-item:last-child {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+#tree .list-group {
+    box-shadow: 0 0 0;
+    -webkit-box-shadow:0 0 0;
+}
+/*.container .mainContent {*/
+    /*margin-left: 200px;*/
+    /*margin-right: 0px;*/
+/*}*/
+.menuWrapper .nav-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    border-right: solid 1px #333;
+}
+
+.menuWrapper .nav-list a {
+    display: block;
+    text-decoration: none;
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    padding-left: 20px;
+    color: #ffffff;
+    position: relative;
+}
+.menuWrapper .nav-list .glyphicon {
+    position: absolute;
+    top: 11px;
+    right: 16px;
+}
+
+.menuWrapper .nav-list a:hover {
+    background-color: #d1dbe5;
+    color: #CD853F;
+}
+.menuWrapper .nav-list a.active {
+    background-color: #d1dbe5;
+    color: #CD853F;
+}
+.contentWrapper .mainContent {
+    margin-left: 190px;
+}
+
+#tree .list-group-item {
+    border: 0;
+    color: #ffffff;
+}
+
+#pull-push{
+    color: #ffffff;
+    position: fixed;
+    left: 140px;
+    bottom: 20px;
+    z-index: 100;
+}
+
+#tree .list-group-item:hover {
+    color: #998866;
+}
+.alertTip{
+    display: none;
+    text-align: center;
+    position: fixed;
+    left: 44%;
+    z-index: 10000;
+    top: 54px;
+    color: #E6A23C;
+    background-color: #FDF6EC;
+    width: 360px;
+    height: 50px;
+    border-radius: 5px;
+    line-height: 50px;
+    border: 1px solid #E6A23C;
+}
+.alert-success{
+    display: none;
+    text-align: center;
+    position: fixed;
+    left: 44%;
+    z-index: 10000;
+    top: 54px;
+    width: 360px;
+}
+.invest-tab{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin: 30px 15px 0 15px;
+}
+.invest-tab span{
+    padding-bottom: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+}
+.table-active{
+    border-bottom: 2px solid #0066FF;
+    color: #0066ff;
+}
+.red-sp{
+    color: red;
+}
+.dn{
+    display: none!important;
+}
+
+.ell{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.dataTables_length label{
+    font-weight: normal;
+}
+
+    /*二级菜单*/
+
+.menuWrapper .nav-list ul{
+    padding: 0;
+    background-color: #2d3f51;
+}
+.menuWrapper .nav-list ul a {
+    display: block;
+    padding-left: 25px;
+    position: relative;
+}
+
+/*三级菜单*/
+.menuWrapper .nav-list .thirdMenu{
+    padding: 0;
+    background-color: #232f3c;
+}
+.menuWrapper .nav-list .thirdMenu a{
+    display: block;
+    padding-left: 30px;
+    position: relative;
+}
+/*设置管理*/
+.mainContent .innerContent .field .form-group {
+    margin-left: 30px;
+}
+
+.modal-dialog .modal-content {
+    background-color: #f0f0f0;
+}
+
+/*后台账号管理*/
+#accountModal .modal-body{
+    padding-bottom: 0px;
+}
+#accountModal .row{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+#accountModal .modal-footer{
+    padding-top: 0px;
+    margin-top: 0px;
+    padding-right: 36px;
+}
+#accountModal .modal-body .form-group label {
+    line-height: 28px;
+    margin-right: -12px;
+}
+#filteropt a {
+    text-decoration: none;
+}
+.modal {
+    overflow: hidden;
+}
+/*全局样式*/
+thead tr {
+    background-color: #eef1f1;
+}
+
+.inputWrapper {
+    color: #00ee00;
+    width: 300px;
+}
+/*修改密码样式*/
+.control-label.newpassword {
+    margin-top: 16px;
+}
+.passwordInput {
+    margin-top: 10px;
+}
+
+
+/*.bootstrap-admin-panel-content .dataTables_wrapper{*/
+    /*overflow-x: auto;*/
+/*}*/
+/*.bootstrap-admin-panel-content table {*/
+    /*width: 100%;*/
+/*}*/

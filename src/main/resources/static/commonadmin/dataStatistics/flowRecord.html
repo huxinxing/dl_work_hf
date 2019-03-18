@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="/vendors/layUI/css/layui.css" rel="stylesheet" media="screen">
+    <title>流水记录</title>
+    <style>
+        .user-flag{
+            display: flex;
+            margin-left: 15px;
+            color: #555;
+        }
+        .user-flag span{
+            width: 100px;
+            height: 34px;
+            line-height: 34px;
+            border: 1px solid #e8e8e8;
+            text-align: center;
+            cursor: pointer;
+        }
+        .user-flag span:first-child{
+            border-radius: 3px 0 0 3px;
+            border-right: none;
+        }
+        .user-flag span:last-child{
+            border-radius: 0 3px 3px 0;
+        }
+        .user-active {
+            color: #0066ff;
+        }
+        .fl{float: left}
+        .alert-success{
+            display: none;
+            text-align: center;
+            position: fixed;
+            left: 44%;
+            z-index: 10000;
+            top: 54px;
+            width: 360px;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent" id="flowRecord">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">流水记录</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="form-group" style="margin-top:20px;margin-left: 0px;display: flex;position: relative;">
+            <label class="col-lg-1 control-label" style="width: 60px;padding-right: 0px;margin-top: 7px;" for="paymentType">状态</label>
+            <div class="col-lg-1" style="padding: 0px;">
+                <select class="form-control" name="paymentType" id="paymentType">
+                    <option value="0" selected="selected">全部</option>
+                    <option value="1">提币</option>
+                    <option value="2">充币</option>
+                    <option value="3">投资</option>
+                    <option value="4">代理返点</option>
+                    <option value="5">归还本息</option>
+                    <option value="6">额外收益本人分拥</option>
+                    <option value="7">资金担保机构分拥</option>
+                    <option value="8">基金公司分拥</option>
+                    <option value="9">赎回本金</option>
+                    <option value="10">赎回利息</option>
+                    <option value="11">体验金收益</option>
+                    <option value="12">加息收益</option>
+                    <!--<option value="13">税费</option>-->
+                    <option value="14">服务费</option>
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="flowId" type="text" placeholder="流水ID">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="nameId" type="text" placeholder="用户ID/昵称">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeStart"  name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeEnd"  name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+            </div>
+
+            <div class="fl">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+            <div class="fr" style="position: absolute;right: 15px;">
+                <button class="btn btn-info" id="downList">导出表格</button>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+
+            </table>
+        </div>
+    </div>
+</div>
+<div class="alertTip" id="languageSet"></div>
+<div class="alert alert-success" role="alert" id="success"></div>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/items/flowRecord.js"></script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+#information {
+    float: left;
+}
+.fl{
+    float: left;
+}
+.select-items li,.item-all li{list-style: none;float:left}
+#information>div{
+    padding-top: 4px;
+}
+.form-group {
+    padding: 15px 15px 0 15px;
+    margin-bottom: 0;
+}
+header{
+    overflow: hidden;
+    margin: 20px 50px 20px 30px;
+}
+.content{
+    margin: 0 50px;
+}
+.invest-tab{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin: 30px 15px 0 15px;
+}
+.invest-tab span{
+    padding-bottom: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+}
+.table-active{
+    border-bottom: 2px solid #0066FF;
+    color: #0066ff;
+}
+.new-create{
+    float: right;
+    margin-right: 15px;
+}
+.btn-upload,.btn-black{
+    text-align: center;
+    background: #333;
+    color: #fff;
+    height: 32px;
+    line-height: 32px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 82px;
+    float: left;
+}
+.btn-black{
+    float: initial;
+    display: inline-block;
+}
+.btn-black:first-child{
+    margin-right: 22px;
+    margin-left: 12px;
+}
+.status{
+    display: inline-block;
+    background: #b3d1FF;
+    color: #fff;
+    border: 1px solid #0066FF;
+    border-radius: 3px;
+    height: 30px;
+    line-height: 30px;
+    width: 100px;
+    text-align: center;
+    color: #0066ff;
+    padding: 0;
+}
+.control-label{
+    margin-right: 40px;
+}
+.red-sp{
+    color: red;
+}
+.form-control-o{
+    border: none;
+    width: 150px;
+    display: inline-block;
+    border-right: 1px solid #ccc;
+    border-radius: 0;
+    height: 24px;
+    line-height: 24px;
+    outline: none;
+    position: relative;
+    top: 4px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.form-outer{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0;
+    height: 34px;
+    background-color: #fff;
+    width: 200px;
+    float: left;
+}
+.form-outer span{
+    position: relative;
+    top: 5px;
+    right: -5px;
+}
+.padding-top-6{
+    padding-top: 6px;
+}
+.wdt-200{
+    width: 200px;
+    display: inline-block;
+}
+.margin-50{
+    margin-right: 50px;
+}
+.select-items{
+    float: left;
+    margin: 0;
+    width: 560px;
+    padding: 0;
+}
+.li-item{
+    list-style: none;
+    float: left;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    /* padding: 0; */
+    height: 30px;
+    background-color: #fff;
+    width: 154px;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    position: relative;
+    line-height: 30px;
+    padding-left: 10px;
+}
+.li-item span{
+    color: red;
+    position: absolute;
+    right: 8px;
+    top: 0px;
+    cursor: pointer;
+}
+.item-all li{cursor: pointer}
+.padding-top-0{
+    padding-top: 0;
+    margin-bottom: 35px;
+}
+.dn{
+    display: none!important;
+}
+#selectItems{
+    z-index: 99999;
+    top: 67px;
+}
+#selectItems .modal-dialog{
+    z-index: 100000;
+}
+.item-active{
+    background: #428bca;
+    border: 1px solid #428bca;
+    color: #fff;
+}
+.zi-hou{
+    float: left;
+    color: #666;
+    position: relative;
+    top: 6px;
+    left: 10px;
+}
+.alert-success{
+    display: none;
+    text-align: center;
+    position: fixed;
+    left: 44%;
+    z-index: 10000;
+    top: 54px;
+    width: 360px;
+}
+.alertTip {
+    display: none;
+    text-align: center;
+    position: fixed;
+    left: 44%;
+    z-index: 10000;
+    top: 54px;
+    color: #E6A23C;
+    background-color: #FDF6EC;
+    width: 360px;
+    height: 50px;
+    border-radius: 5px;
+    line-height: 50px;
+    border: 1px solid #E6A23C;
+}
+.col-lg-2{
+    width: 106px!important;
+}
+.form-group{
+    margin-bottom: 15px;
+}
+label{
+    font-weight: initial;
+}
+.right-12{
+    right: -12px!important;
+}
+.btn-all{
+    margin-top: 20px;
+    margin-bottom: 28px;
+}
+.modal-header {
+    border-bottom: 0;
+}
+.modal-footer {
+    border-top: 0;
+    text-align: center;
+    margin-top: 0;
+}
+.marr-20 {
+    margin-right: 20px;
+}
+#myModal .modal-dialog {
+    width: 500px;
+}
+#myModal .modal-body {
+    text-align: center;
+    height: 80px;
+    line-height: 60px;
+}
+.right-0{
+    right: 0!important;
+}
+.border-right-none{
+    border-right: none;
+    width: 196px;
+}
+.layui-table {
+    width: 100%!important;
+
+}
+.padding-left-0{
+    padding-left: 0!important;
+}
+.createTime{
+    padding-top: 7px;
+}
+.item-all{
+    padding-left: 35px;
+}
+.ell{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.layui-table-body {
+    overflow: initial!important;
+}
+.li-item div{
+    display: inline-block;
+    width: 120px;
+}

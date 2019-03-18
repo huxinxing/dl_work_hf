@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/js/vendors/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <!--<link href="/css/items/items.css" rel="stylesheet" media="screen">-->
+    <title>项目</title>
+    <style>
+        #information {
+            float: left;
+        }
+        #information>div{
+            padding-top: 4px;
+        }
+        #transFlowTable_wrapper{
+            position: relative;
+        }
+        .user-flag{
+            display: flex;
+            margin-left: 15px;
+            color: #555;
+        }
+        .user-flag span{
+            width: 100px;
+            height: 34px;
+            line-height: 34px;
+            border: 1px solid #e8e8e8;
+            text-align: center;
+            cursor: pointer;
+        }
+        .user-flag span:first-child{
+            border-radius: 3px 0 0 3px;
+            border-right: none;
+        }
+        .user-flag span:last-child{
+            border-radius: 0 3px 3px 0;
+        }
+        .user-active {
+            color: #0066ff;
+        }
+    </style>
+</head>
+<body>
+<div class="innerContent">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="text-muted bootstrap-admin-box-title">项目</div>
+        </div>
+        <!-- 查询条件 -->
+        <div class="form-group row" style="margin-top:20px;margin-left: 0px;display: flex">
+
+            <div class="user-flag">
+                <span class="user-active">全部</span>
+                <span>只看平台用户</span>
+            </div>
+            <label class="col-lg-1 control-label" style="width: 90px;padding-right: 0px;margin-top: 7px;" for="paymentType">项目状态</label>
+            <div class="col-lg-1" style="padding: 0px;">
+                <select class="combobox form-control" name="paymentType" id="paymentType">
+                    <!--<option value="4" selected="selected">全部</option>-->
+                    <option value="0">待开启</option>
+                    <option value="1" selected="selected">募集中</option>
+                    <option value="2">募集暂停</option>
+                    <option value="3">募集结束</option>
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeStart"  name="createTimeStart" type="text" placeholder="开始时间" autocomplete="off">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="createTimeEnd"  name="createTimeEnd" type="text" placeholder="结束时间" autocomplete="off">
+            </div>
+            <div class="col-lg-2">
+                <input class="form-control" id="walletAddr"  name="itemId" type="text" placeholder="项目名称/ID">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-primary" id="trandQuerybyServer">查询</button>
+            </div>
+        </div>
+        <div class="bootstrap-admin-panel-content" style="width:100%;">
+            <table class="table table-bordered table-hover data-table" id="transFlowTable" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>项目ID</th>
+                    <th>项目名称</th>
+                    <th>发布时间</th>
+                    <th>项目状态</th>
+                    <th>募集额度</th>
+                    <th>进度</th>
+                    <th><span class="red-sp">*</span>已收资金(USDX)</th>
+                    <th><span class="red-sp">*</span>已支付资金(USDX)</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <div id="agentsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 id="myModalLabel" class="modal-title">各级代理收益</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                        <th>编号</th>
+                        <th>名称</th>
+                        <th>代理层级</th>
+                        <th>收益</th>
+                        </thead>
+                        <tbody class="agentsTable">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="/vendors/layer/layer.js"></script>
+<script type="text/javascript" src="/js/vendors/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/js/items/items.js"></script>
+</body>
+</html>
